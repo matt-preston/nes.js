@@ -16,7 +16,6 @@ CPU =
 	init: function()
 	{
 		this.context = {};
-		this.context.opcodes = initOpcodes();
 	},
 
 	reset: function()
@@ -46,7 +45,7 @@ CPU =
             this.context.pc = (this.context.pc + 1) & 0xFFFF;
 
             // Work out how many clock cycles this instruction takes
-            //_clocksRemain = _clocksRemain - this.context.opcodes.cycleCount[_opcode];
+            //_clocksRemain = _clocksRemain - Opcodes.cycleCount[_opcode];
 
 	        switch(_opcode)
 	        {
@@ -199,7 +198,7 @@ CPU =
                 case 0x9A: this.TXS(); break;
                 case 0x98: this.TYA(); break;
 
-                default: Console.log("******* Unhandled opcode [" + _opcode + "]"); break;
+                default: console.log("******* Unhandled opcode [" + _opcode + "]"); break;
             }
         }
 
@@ -208,742 +207,742 @@ CPU =
 
     ADC: function()
     {
-        Console.log('opcode not implemented [ADC]');
+        console.log('opcode not implemented [ADC]');
     },
 
     ADC_zero_page: function()
     {
-        Console.log('opcode not implemented [ADC_zero_page]');
+        console.log('opcode not implemented [ADC_zero_page]');
     },
 
     ADC_zero_page_X: function()
     {
-        Console.log('opcode not implemented [ADC_zero_page_X]');
+        console.log('opcode not implemented [ADC_zero_page_X]');
     },
 
     ADC_absolute: function()
     {
-        Console.log('opcode not implemented [ADC_absolute]');
+        console.log('opcode not implemented [ADC_absolute]');
     },
 
     ADC_absolute_X: function()
     {
-        Console.log('opcode not implemented [ADC_absolute_X]');
+        console.log('opcode not implemented [ADC_absolute_X]');
     },
 
     AND: function()
     {
-        Console.log('opcode not implemented [AND]');
+        console.log('opcode not implemented [AND]');
     },
 
     AND_zero_page: function()
     {
-        Console.log('opcode not implemented [AND_zero_page]');
+        console.log('opcode not implemented [AND_zero_page]');
     },
 
     AND_zero_page_X: function()
     {
-        Console.log('opcode not implemented [AND_zero_page_X]');
+        console.log('opcode not implemented [AND_zero_page_X]');
     },
 
     AND_absolute: function()
     {
-        Console.log('opcode not implemented [AND_absolute]');
+        console.log('opcode not implemented [AND_absolute]');
     },
 
     AND_absolute_X: function()
     {
-        Console.log('opcode not implemented [AND_absolute_X]');
+        console.log('opcode not implemented [AND_absolute_X]');
     },
 
     AND_absolute_Y: function()
     {
-        Console.log('opcode not implemented [AND_absolute_Y]');
+        console.log('opcode not implemented [AND_absolute_Y]');
     },
 
     AND_indirect_X: function()
     {
-        Console.log('opcode not implemented [AND_indirect_X]');
+        console.log('opcode not implemented [AND_indirect_X]');
     },
 
     AND_indirect_Y: function()
     {
-        Console.log('opcode not implemented [AND_indirect_Y]');
+        console.log('opcode not implemented [AND_indirect_Y]');
     },
 
     ASL: function()
     {
-        Console.log('opcode not implemented [ASL]');
+        console.log('opcode not implemented [ASL]');
     },
 
     ASL_zero_page: function()
     {
-        Console.log('opcode not implemented [ASL_zero_page]');
+        console.log('opcode not implemented [ASL_zero_page]');
     },
 
     ASL_zero_page_X: function()
     {
-        Console.log('opcode not implemented [ASL_zero_page_X]');
+        console.log('opcode not implemented [ASL_zero_page_X]');
     },
 
     ASL_absolute: function()
     {
-        Console.log('opcode not implemented [ASL_absolute]');
+        console.log('opcode not implemented [ASL_absolute]');
     },
 
     ASL_absolute_X: function()
     {
-        Console.log('opcode not implemented [ASL_absolute_X]');
+        console.log('opcode not implemented [ASL_absolute_X]');
     },
 
     BCC: function()
     {
-        Console.log('opcode not implemented [BCC]');
+        console.log('opcode not implemented [BCC]');
     },
 
     BCS: function()
     {
-        Console.log('opcode not implemented [BCS]');
+        console.log('opcode not implemented [BCS]');
     },
 
     BEQ: function()
     {
-        Console.log('opcode not implemented [BEQ]');
+        console.log('opcode not implemented [BEQ]');
     },
 
     BIT_zero_page: function()
     {
-        Console.log('opcode not implemented [BIT_zero_page]');
+        console.log('opcode not implemented [BIT_zero_page]');
     },
 
     BIT_absolute: function()
     {
-        Console.log('opcode not implemented [BIT_absolute]');
+        console.log('opcode not implemented [BIT_absolute]');
     },
 
     BMI: function()
     {
-        Console.log('opcode not implemented [BMI]');
+        console.log('opcode not implemented [BMI]');
     },
 
     BNE: function()
     {
-        Console.log('opcode not implemented [BNE]');
+        console.log('opcode not implemented [BNE]');
     },
 
     BPL: function()
     {
-        Console.log('opcode not implemented [BPL]');
+        console.log('opcode not implemented [BPL]');
     },
 
     BRK: function()
     {
-        Console.log('opcode not implemented [BRK]');
+        console.log('opcode not implemented [BRK]');
     },
 
     BVC: function()
     {
-        Console.log('opcode not implemented [BVC]');
+        console.log('opcode not implemented [BVC]');
     },
 
     BVS: function()
     {
-        Console.log('opcode not implemented [BVS]');
+        console.log('opcode not implemented [BVS]');
     },
 
     CLC: function()
     {
-        Console.log('opcode not implemented [CLC]');
+        console.log('opcode not implemented [CLC]');
     },
 
     CLD: function()
     {
-        Console.log('opcode not implemented [CLD]');
+        console.log('opcode not implemented [CLD]');
     },
 
     CLI: function()
     {
-        Console.log('opcode not implemented [CLI]');
+        console.log('opcode not implemented [CLI]');
     },
 
     CLV: function()
     {
-        Console.log('opcode not implemented [CLV]');
+        console.log('opcode not implemented [CLV]');
     },
 
     CMP: function()
     {
-        Console.log('opcode not implemented [CMP]');
+        console.log('opcode not implemented [CMP]');
     },
 
     CMP_zero_page: function()
     {
-        Console.log('opcode not implemented [CMP_zero_page]');
+        console.log('opcode not implemented [CMP_zero_page]');
     },
 
     CMP_zero_page_X: function()
     {
-        Console.log('opcode not implemented [CMP_zero_page_X]');
+        console.log('opcode not implemented [CMP_zero_page_X]');
     },
 
     CMP_absolute: function()
     {
-        Console.log('opcode not implemented [CMP_absolute]');
+        console.log('opcode not implemented [CMP_absolute]');
     },
 
     CMP_absolute_X: function()
     {
-        Console.log('opcode not implemented [CMP_absolute_X]');
+        console.log('opcode not implemented [CMP_absolute_X]');
     },
 
     CMP_absolute_Y: function()
     {
-        Console.log('opcode not implemented [CMP_absolute_Y]');
+        console.log('opcode not implemented [CMP_absolute_Y]');
     },
 
     CMP_indirect_X: function()
     {
-        Console.log('opcode not implemented [CMP_indirect_X]');
+        console.log('opcode not implemented [CMP_indirect_X]');
     },
 
     CMP_indirect_Y: function()
     {
-        Console.log('opcode not implemented [CMP_indirect_Y]');
+        console.log('opcode not implemented [CMP_indirect_Y]');
     },
 
     CPX: function()
     {
-        Console.log('opcode not implemented [CPX]');
+        console.log('opcode not implemented [CPX]');
     },
 
     CPX_zero_page: function()
     {
-        Console.log('opcode not implemented [CPX_zero_page]');
+        console.log('opcode not implemented [CPX_zero_page]');
     },
 
     CPX_absolute: function()
     {
-        Console.log('opcode not implemented [CPX_absolute]');
+        console.log('opcode not implemented [CPX_absolute]');
     },
 
     CPY: function()
     {
-        Console.log('opcode not implemented [CPY]');
+        console.log('opcode not implemented [CPY]');
     },
 
     CPY_zero_page: function()
     {
-        Console.log('opcode not implemented [CPY_zero_page]');
+        console.log('opcode not implemented [CPY_zero_page]');
     },
 
     CPY_absolute: function()
     {
-        Console.log('opcode not implemented [CPY_absolute]');
+        console.log('opcode not implemented [CPY_absolute]');
     },
 
     DEC_zero_page: function()
     {
-        Console.log('opcode not implemented [DEC_zero_page]');
+        console.log('opcode not implemented [DEC_zero_page]');
     },
 
     DEC_zero_page_X: function()
     {
-        Console.log('opcode not implemented [DEC_zero_page_X]');
+        console.log('opcode not implemented [DEC_zero_page_X]');
     },
 
     DEC_absolute: function()
     {
-        Console.log('opcode not implemented [DEC_absolute]');
+        console.log('opcode not implemented [DEC_absolute]');
     },
 
     DEC_absolute_X: function()
     {
-        Console.log('opcode not implemented [DEC_absolute_X]');
+        console.log('opcode not implemented [DEC_absolute_X]');
     },
 
     DEX: function()
     {
-        Console.log('opcode not implemented [DEX]');
+        console.log('opcode not implemented [DEX]');
     },
 
     DEY: function()
     {
-        Console.log('opcode not implemented [DEY]');
+        console.log('opcode not implemented [DEY]');
     },
 
     EOR: function()
     {
-        Console.log('opcode not implemented [EOR]');
+        console.log('opcode not implemented [EOR]');
     },
 
     EOR_zero_page: function()
     {
-        Console.log('opcode not implemented [EOR_zero_page]');
+        console.log('opcode not implemented [EOR_zero_page]');
     },
 
     EOR_zero_page_X: function()
     {
-        Console.log('opcode not implemented [EOR_zero_page_X]');
+        console.log('opcode not implemented [EOR_zero_page_X]');
     },
 
     EOR_absolute: function()
     {
-        Console.log('opcode not implemented [EOR_absolute]');
+        console.log('opcode not implemented [EOR_absolute]');
     },
 
     EOR_absolute_X: function()
     {
-        Console.log('opcode not implemented [EOR_absolute_X]');
+        console.log('opcode not implemented [EOR_absolute_X]');
     },
 
     EOR_absolute_Y: function()
     {
-        Console.log('opcode not implemented [EOR_absolute_Y]');
+        console.log('opcode not implemented [EOR_absolute_Y]');
     },
 
     EOR_indirect_X: function()
     {
-        Console.log('opcode not implemented [EOR_indirect_X]');
+        console.log('opcode not implemented [EOR_indirect_X]');
     },
 
     EOR_indirect_Y: function()
     {
-        Console.log('opcode not implemented [EOR_indirect_Y]');
+        console.log('opcode not implemented [EOR_indirect_Y]');
     },
 
     INC_zero_page: function()
     {
-        Console.log('opcode not implemented [INC_zero_page]');
+        console.log('opcode not implemented [INC_zero_page]');
     },
 
     INC_zero_page_X: function()
     {
-        Console.log('opcode not implemented [INC_zero_page_X]');
+        console.log('opcode not implemented [INC_zero_page_X]');
     },
 
     INC_absolute: function()
     {
-        Console.log('opcode not implemented [INC_absolute]');
+        console.log('opcode not implemented [INC_absolute]');
     },
 
     INC_absolute_X: function()
     {
-        Console.log('opcode not implemented [INC_absolute_X]');
+        console.log('opcode not implemented [INC_absolute_X]');
     },
 
     INX: function()
     {
-        Console.log('opcode not implemented [INX]');
+        console.log('opcode not implemented [INX]');
     },
 
     INY: function()
     {
-        Console.log('opcode not implemented [INY]');
+        console.log('opcode not implemented [INY]');
     },
 
     JMP: function()
     {
-        Console.log('opcode not implemented [JMP]');
+        console.log('opcode not implemented [JMP]');
     },
 
     JMP_absolute: function()
     {
-        Console.log('opcode not implemented [JMP_absolute]');
+        console.log('opcode not implemented [JMP_absolute]');
     },
 
     JSR: function()
     {
-        Console.log('opcode not implemented [JSR]');
+        console.log('opcode not implemented [JSR]');
     },
 
     LDA: function()
     {
-        Console.log('opcode not implemented [LDA]');
+        console.log('opcode not implemented [LDA]');
     },
 
     LDA_zero_page: function()
     {
-        Console.log('opcode not implemented [LDA_zero_page]');
+        console.log('opcode not implemented [LDA_zero_page]');
     },
 
     LDA_zero_page_X: function()
     {
-        Console.log('opcode not implemented [LDA_zero_page_X]');
+        console.log('opcode not implemented [LDA_zero_page_X]');
     },
 
     LDA_absolute: function()
     {
-        Console.log('opcode not implemented [LDA_absolute]');
+        console.log('opcode not implemented [LDA_absolute]');
     },
 
     LDA_absolute_X: function()
     {
-        Console.log('opcode not implemented [LDA_absolute_X]');
+        console.log('opcode not implemented [LDA_absolute_X]');
     },
 
     LDA_absolute_Y: function()
     {
-        Console.log('opcode not implemented [LDA_absolute_Y]');
+        console.log('opcode not implemented [LDA_absolute_Y]');
     },
 
     LDA_indirect_X: function()
     {
-        Console.log('opcode not implemented [LDA_indirect_X]');
+        console.log('opcode not implemented [LDA_indirect_X]');
     },
 
     LDA_indirect_Y: function()
     {
-        Console.log('opcode not implemented [LDA_indirect_Y]');
+        console.log('opcode not implemented [LDA_indirect_Y]');
     },
 
     LDX: function()
     {
-        Console.log('opcode not implemented [LDX]');
+        console.log('opcode not implemented [LDX]');
     },
 
     LDX_zero_page: function()
     {
-        Console.log('opcode not implemented [LDX_zero_page]');
+        console.log('opcode not implemented [LDX_zero_page]');
     },
 
     LDX_zero_page_Y: function()
     {
-        Console.log('opcode not implemented [LDX_zero_page_Y]');
+        console.log('opcode not implemented [LDX_zero_page_Y]');
     },
 
     LDX_absolute: function()
     {
-        Console.log('opcode not implemented [LDX_absolute]');
+        console.log('opcode not implemented [LDX_absolute]');
     },
 
     LDX_absolute_Y: function()
     {
-        Console.log('opcode not implemented [LDX_absolute_Y]');
+        console.log('opcode not implemented [LDX_absolute_Y]');
     },
 
     LDY: function()
     {
-        Console.log('opcode not implemented [LDY]');
+        console.log('opcode not implemented [LDY]');
     },
 
     LDY_zero_page: function()
     {
-        Console.log('opcode not implemented [LDY_zero_page]');
+        console.log('opcode not implemented [LDY_zero_page]');
     },
 
     LDY_zero_page_X: function()
     {
-        Console.log('opcode not implemented [LDY_zero_page_X]');
+        console.log('opcode not implemented [LDY_zero_page_X]');
     },
 
     LDY_absolute: function()
     {
-        Console.log('opcode not implemented [LDY_absolute]');
+        console.log('opcode not implemented [LDY_absolute]');
     },
 
     LDY_absolute_X: function()
     {
-        Console.log('opcode not implemented [LDY_absolute_X]');
+        console.log('opcode not implemented [LDY_absolute_X]');
     },
 
     LSR: function()
     {
-        Console.log('opcode not implemented [LSR]');
+        console.log('opcode not implemented [LSR]');
     },
 
     LSR_zero_page: function()
     {
-        Console.log('opcode not implemented [LSR_zero_page]');
+        console.log('opcode not implemented [LSR_zero_page]');
     },
 
     LSR_zero_page_X: function()
     {
-        Console.log('opcode not implemented [LSR_zero_page_X]');
+        console.log('opcode not implemented [LSR_zero_page_X]');
     },
 
     LSR_absolute: function()
     {
-        Console.log('opcode not implemented [LSR_absolute]');
+        console.log('opcode not implemented [LSR_absolute]');
     },
 
     LSR_absolute_X: function()
     {
-        Console.log('opcode not implemented [LSR_absolute_X]');
+        console.log('opcode not implemented [LSR_absolute_X]');
     },
 
     NOP: function()
     {
-        Console.log('opcode not implemented [NOP]');
+        console.log('opcode not implemented [NOP]');
     },
 
     ORA: function()
     {
-        Console.log('opcode not implemented [ORA]');
+        console.log('opcode not implemented [ORA]');
     },
 
     ORA_zero_page: function()
     {
-        Console.log('opcode not implemented [ORA_zero_page]');
+        console.log('opcode not implemented [ORA_zero_page]');
     },
 
     ORA_zero_page_X: function()
     {
-        Console.log('opcode not implemented [ORA_zero_page_X]');
+        console.log('opcode not implemented [ORA_zero_page_X]');
     },
 
     ORA_absolute: function()
     {
-        Console.log('opcode not implemented [ORA_absolute]');
+        console.log('opcode not implemented [ORA_absolute]');
     },
 
     ORA_absolute_X: function()
     {
-        Console.log('opcode not implemented [ORA_absolute_X]');
+        console.log('opcode not implemented [ORA_absolute_X]');
     },
 
     ORA_absolute_Y: function()
     {
-        Console.log('opcode not implemented [ORA_absolute_Y]');
+        console.log('opcode not implemented [ORA_absolute_Y]');
     },
 
     ORA_indirect_X: function()
     {
-        Console.log('opcode not implemented [ORA_indirect_X]');
+        console.log('opcode not implemented [ORA_indirect_X]');
     },
 
     ORA_indirect_Y: function()
     {
-        Console.log('opcode not implemented [ORA_indirect_Y]');
+        console.log('opcode not implemented [ORA_indirect_Y]');
     },
 
     PHA: function()
     {
-        Console.log('opcode not implemented [PHA]');
+        console.log('opcode not implemented [PHA]');
     },
 
     PHP: function()
     {
-        Console.log('opcode not implemented [PHP]');
+        console.log('opcode not implemented [PHP]');
     },
 
     PLA: function()
     {
-        Console.log('opcode not implemented [PLA]');
+        console.log('opcode not implemented [PLA]');
     },
 
     PLP: function()
     {
-        Console.log('opcode not implemented [PLP]');
+        console.log('opcode not implemented [PLP]');
     },
 
     ROL: function()
     {
-        Console.log('opcode not implemented [ROL]');
+        console.log('opcode not implemented [ROL]');
     },
 
     ROL_zero_page: function()
     {
-        Console.log('opcode not implemented [ROL_zero_page]');
+        console.log('opcode not implemented [ROL_zero_page]');
     },
 
     ROL_zero_page_X: function()
     {
-        Console.log('opcode not implemented [ROL_zero_page_X]');
+        console.log('opcode not implemented [ROL_zero_page_X]');
     },
 
     ROL_absolute: function()
     {
-        Console.log('opcode not implemented [ROL_absolute]');
+        console.log('opcode not implemented [ROL_absolute]');
     },
 
     ROL_absolute_X: function()
     {
-        Console.log('opcode not implemented [ROL_absolute_X]');
+        console.log('opcode not implemented [ROL_absolute_X]');
     },
 
     ROR: function()
     {
-        Console.log('opcode not implemented [ROR]');
+        console.log('opcode not implemented [ROR]');
     },
 
     ROR_zero_page: function()
     {
-        Console.log('opcode not implemented [ROR_zero_page]');
+        console.log('opcode not implemented [ROR_zero_page]');
     },
 
     ROR_zero_page_X: function()
     {
-        Console.log('opcode not implemented [ROR_zero_page_X]');
+        console.log('opcode not implemented [ROR_zero_page_X]');
     },
 
     ROR_absolute: function()
     {
-        Console.log('opcode not implemented [ROR_absolute]');
+        console.log('opcode not implemented [ROR_absolute]');
     },
 
     ROR_absolute_X: function()
     {
-        Console.log('opcode not implemented [ROR_absolute_X]');
+        console.log('opcode not implemented [ROR_absolute_X]');
     },
 
     RTI: function()
     {
-        Console.log('opcode not implemented [RTI]');
+        console.log('opcode not implemented [RTI]');
     },
 
     RTS: function()
     {
-        Console.log('opcode not implemented [RTS]');
+        console.log('opcode not implemented [RTS]');
     },
 
     SBC: function()
     {
-        Console.log('opcode not implemented [SBC]');
+        console.log('opcode not implemented [SBC]');
     },
 
     SBC_zero_page: function()
     {
-        Console.log('opcode not implemented [SBC_zero_page]');
+        console.log('opcode not implemented [SBC_zero_page]');
     },
 
     SBC_zero_page_X: function()
     {
-        Console.log('opcode not implemented [SBC_zero_page_X]');
+        console.log('opcode not implemented [SBC_zero_page_X]');
     },
 
     SBC_absolute: function()
     {
-        Console.log('opcode not implemented [SBC_absolute]');
+        console.log('opcode not implemented [SBC_absolute]');
     },
 
     SBC_absolute_X: function()
     {
-        Console.log('opcode not implemented [SBC_absolute_X]');
+        console.log('opcode not implemented [SBC_absolute_X]');
     },
 
     SBC_absolute_Y: function()
     {
-        Console.log('opcode not implemented [SBC_absolute_Y]');
+        console.log('opcode not implemented [SBC_absolute_Y]');
     },
 
     SBC_indirect_X: function()
     {
-        Console.log('opcode not implemented [SBC_indirect_X]');
+        console.log('opcode not implemented [SBC_indirect_X]');
     },
 
     SBC_indirect_Y: function()
     {
-        Console.log('opcode not implemented [SBC_indirect_Y]');
+        console.log('opcode not implemented [SBC_indirect_Y]');
     },
 
     SEC: function()
     {
-        Console.log('opcode not implemented [SEC]');
+        console.log('opcode not implemented [SEC]');
     },
 
     SED: function()
     {
-        Console.log('opcode not implemented [SED]');
+        console.log('opcode not implemented [SED]');
     },
 
     SEI: function()
     {
-        Console.log('opcode not implemented [SEI]');
+        console.log('opcode not implemented [SEI]');
     },
 
     STA_zero_page: function()
     {
-        Console.log('opcode not implemented [STA_zero_page]');
+        console.log('opcode not implemented [STA_zero_page]');
     },
 
     STA_zero_page_X: function()
     {
-        Console.log('opcode not implemented [STA_zero_page_X]');
+        console.log('opcode not implemented [STA_zero_page_X]');
     },
 
     STA_absolute: function()
     {
-        Console.log('opcode not implemented [STA_absolute]');
+        console.log('opcode not implemented [STA_absolute]');
     },
 
     STA_absolute_X: function()
     {
-        Console.log('opcode not implemented [STA_absolute_X]');
+        console.log('opcode not implemented [STA_absolute_X]');
     },
 
     STA_absolute_Y: function()
     {
-        Console.log('opcode not implemented [STA_absolute_Y]');
+        console.log('opcode not implemented [STA_absolute_Y]');
     },
 
     STA_indirect_X: function()
     {
-        Console.log('opcode not implemented [STA_indirect_X]');
+        console.log('opcode not implemented [STA_indirect_X]');
     },
 
     STA_indirect_Y: function()
     {
-        Console.log('opcode not implemented [STA_indirect_Y]');
+        console.log('opcode not implemented [STA_indirect_Y]');
     },
 
     STX_zero_page: function()
     {
-        Console.log('opcode not implemented [STX_zero_page]');
+        console.log('opcode not implemented [STX_zero_page]');
     },
 
     STX_zero_page_Y: function()
     {
-        Console.log('opcode not implemented [STX_zero_page_Y]');
+        console.log('opcode not implemented [STX_zero_page_Y]');
     },
 
     STX_absolute: function()
     {
-        Console.log('opcode not implemented [STX_absolute]');
+        console.log('opcode not implemented [STX_absolute]');
     },
 
     STY_zero_page: function()
     {
-        Console.log('opcode not implemented [STY_zero_page]');
+        console.log('opcode not implemented [STY_zero_page]');
     },
 
     STY_zero_page_X: function()
     {
-        Console.log('opcode not implemented [STY_zero_page_X]');
+        console.log('opcode not implemented [STY_zero_page_X]');
     },
 
     STY_absolute: function()
     {
-        Console.log('opcode not implemented [STY_absolute]');
+        console.log('opcode not implemented [STY_absolute]');
     },
 
     TAX: function()
     {
-        Console.log('opcode not implemented [TAX]');
+        console.log('opcode not implemented [TAX]');
     },
 
     TAY: function()
     {
-        Console.log('opcode not implemented [TAY]');
+        console.log('opcode not implemented [TAY]');
     },
 
     TSX: function()
     {
-        Console.log('opcode not implemented [TSX]');
+        console.log('opcode not implemented [TSX]');
     },
 
     TXA: function()
     {
-        Console.log('opcode not implemented [TXA]');
+        console.log('opcode not implemented [TXA]');
     },
 
     TXS: function()
     {
-        Console.log('opcode not implemented [TXS]');
+        console.log('opcode not implemented [TXS]');
     },
 
     TYA: function()
     {
-        Console.log('opcode not implemented [TYA]');
+        console.log('opcode not implemented [TYA]');
     }
 };
 
