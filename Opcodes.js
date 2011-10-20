@@ -1,9 +1,11 @@
 
-function initOpcodes()
+/**
+ * Information about the 6502 opcodes
+ */
+Opcodes =
 {
-    // Opcode instruction sizes (in bytes)
-    var _opcodeSize =
-    [
+	size:
+	[
         /*0x00*/ 1,2,0,0,0,2,2,0,1,2,1,0,0,3,3,0,
         /*0x10*/ 2,2,0,0,0,2,2,0,1,3,0,0,0,3,3,0,
         /*0x20*/ 3,2,0,0,2,2,2,0,1,2,1,0,3,3,3,0,
@@ -20,7 +22,7 @@ function initOpcodes()
         /*0xD0*/ 2,2,0,0,0,2,2,0,1,3,0,0,0,3,3,0,
         /*0xE0*/ 2,2,0,0,2,2,2,0,1,2,1,0,3,3,3,0,
         /*0xF0*/ 2,2,0,0,0,2,2,0,1,3,0,0,0,3,3,0
-    ];
+    ],
 
     //  Addressing modes
     //  0 = Implied\Accumulator\Immediate\Branch\NULL
@@ -33,7 +35,7 @@ function initOpcodes()
     //  7 = Absolute,X
     //  8 = Zero Page,Y
     //
-    var _addressingMode =
+    addressingMode:
     [
         /*0x00*/ 0,1,0,0,0,2,2,0,0,0,0,0,0,3,3,0,
         /*0x10*/ 0,4,0,0,0,5,5,0,0,6,0,0,0,7,7,0,
@@ -51,10 +53,10 @@ function initOpcodes()
         /*0xD0*/ 0,4,0,0,0,5,5,0,0,6,0,0,0,7,7,0,
         /*0xE0*/ 0,1,0,0,2,2,2,0,0,0,0,0,3,3,3,0,
         /*0xF0*/ 0,4,0,0,0,5,5,0,0,6,0,0,0,7,7,0
-    ];
+    ],
 
     //  The number of cycles for each instruction
-    var _cycleCount =
+    cycleCount:
     [
         /*0x00*/ 7,6,2,8,3,3,5,5,3,2,2,2,4,4,6,6,
         /*0x10*/ 2,5,2,8,4,4,6,6,2,4,2,7,4,4,7,7,
@@ -72,13 +74,5 @@ function initOpcodes()
         /*0xD0*/ 2,5,2,8,4,4,6,6,2,4,2,7,4,4,7,7,
         /*0xE0*/ 2,6,3,8,3,3,5,5,2,2,2,2,4,4,6,6,
         /*0xF0*/ 2,5,2,8,4,4,6,6,2,4,2,7,4,4,7,7
-    ];
-
-    var _result = {};
-
-    _result.opcodeSize     = _opcodeSize;
-    _result.addressingMode = _addressingMode;
-    _result.cycleCount     = _cycleCount;
-
-    return _result;
-}
+    ]
+};

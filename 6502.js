@@ -23,7 +23,19 @@ CPU =
 		this.context.a = 0;
         this.context.x = 0;
         this.context.y = 0;
+
+        // flags
+        this.context.carry     = false;
+        this.context.zero      = false;
+        this.context.irDisable = false;
+        this.context.decimal   = false;
+        this.context.brk       = false;
+        this.context.overflow  = false;
+        this.context.nagative  = false;
+
+        // The processor status, based on the flags
         this.context.p = 0;
+
         this.context.sp = 0;
         this.context.pc = 0;
 	},
@@ -39,13 +51,19 @@ CPU =
 
         while(_clocksRemain > 0)
         {
-            var _opcode = this.context.memory.readByte(this.context.pc);
+            _clocksRemain--;
+
+            console.log("PC now at: " + this.context.pc);
+
+            var _opcode = Memory.readByte(this.context.pc);
 
             // Increment the program counter and mask
             this.context.pc = (this.context.pc + 1) & 0xFFFF;
 
             // Work out how many clock cycles this instruction takes
             //_clocksRemain = _clocksRemain - Opcodes.cycleCount[_opcode];
+
+
 
 	        switch(_opcode)
 	        {
@@ -352,12 +370,14 @@ CPU =
 
     CLC: function()
     {
-        console.log('opcode not implemented [CLC]');
+        // Clear the carry flag
+        this.context.carry = false;
     },
 
     CLD: function()
     {
-        console.log('opcode not implemented [CLD]');
+        // Clear decimal mode.
+        this.context.decimal = false;
     },
 
     CLI: function()
