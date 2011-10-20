@@ -25,13 +25,13 @@ CPU =
         this.context.y = 0;
 
         // flags
-        this.context.carry     = false;
-        this.context.zero      = false;
-        this.context.irDisable = false;
-        this.context.decimal   = false;
-        this.context.brk       = false;
-        this.context.overflow  = false;
-        this.context.nagative  = false;
+        this.context.carry     = 0;
+        this.context.zero      = 0;
+        this.context.irDisable = 0;
+        this.context.decimal   = 0;
+        this.context.brk       = 0;
+        this.context.overflow  = 0;
+        this.context.nagative  = 0;
 
         // The processor status, based on the flags
         this.context.p = 0;
@@ -55,17 +55,9 @@ CPU =
 
             console.log("PC now at: " + this.context.pc);
 
-            var _opcode = Memory.readByte(this.context.pc);
+            var _opcode = Memory.readByte(this.context.pc++);
 
-            // Increment the program counter and mask
-            this.context.pc = (this.context.pc + 1) & 0xFFFF;
-
-            // Work out how many clock cycles this instruction takes
-            //_clocksRemain = _clocksRemain - Opcodes.cycleCount[_opcode];
-
-
-
-	        switch(_opcode)
+            switch(_opcode)
 	        {
                 case 0x69: this.ADC(); break;
                 case 0x65: this.ADC_zero_page(); break;
@@ -218,6 +210,8 @@ CPU =
 
                 default: console.log("******* Unhandled opcode [" + _opcode + "]"); break;
             }
+
+            this.context.pc = this.context.pc & 0xFFFF;
         }
 
         return _clocksRemain;
@@ -557,7 +551,12 @@ CPU =
 
     INY: function()
     {
-        console.log('opcode not implemented [INY]');
+        // Increment Y by 1
+        this.context.y++;
+        this.context.y &= 0xFF; // mask to 1 byte
+
+        this.context.nagative = (this.context.y >> 7) & 1;
+		this.context.zero     = this.context.y;
     },
 
     JMP: function()
@@ -577,7 +576,11 @@ CPU =
 
     LDA: function()
     {
-        console.log('opcode not implemented [LDA]');
+        // Load Accumulator with memory
+        this.context.a = Memory.readByte(this.context.pc++);
+
+        this.context.nagative = (this.context.a >> 7) & 1;
+		this.context.zero     = this.context.a;
     },
 
     LDA_zero_page: function()
@@ -617,7 +620,11 @@ CPU =
 
     LDX: function()
     {
-        console.log('opcode not implemented [LDX]');
+        // Load X with memory
+        this.context.x = Memory.readByte(this.context.pc++);
+
+        this.context.nagative = (this.context.x >> 7) & 1;
+		this.context.zero     = this.context.x;
     },
 
     LDX_zero_page: function()
@@ -642,7 +649,11 @@ CPU =
 
     LDY: function()
     {
-        console.log('opcode not implemented [LDY]');
+        // Load Y with memory
+        this.context.y = Memory.readByte(this.context.pc++);
+
+        this.context.nagative = (this.context.y >> 7) & 1;
+		this.context.zero     = this.context.y;
     },
 
     LDY_zero_page: function()

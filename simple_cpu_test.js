@@ -27,6 +27,7 @@ Memory.writeByte(0xF2, 0x0011);  //     $0004
 Memory.writeByte(0x00, 0x0012);  // BRK
 Memory.writeByte(0xED, 0x0013);  //
 
-CPU.step();
-CPU.step();
-CPU.step();
+for(var _index = 0; _index < 7; _index++)
+{
+	CPU.step();
+}
