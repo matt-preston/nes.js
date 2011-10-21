@@ -27,7 +27,9 @@ Memory.writeByte(0xF2, 0x0011);  //     $0004
 Memory.writeByte(0x00, 0x0012);  // BRK
 Memory.writeByte(0xED, 0x0013);  //
 
-for(var _index = 0; _index < 7; _index++)
+for(var _index = 0; _index < 100; _index++)
 {
 	CPU.step();
 }
+
+console.log("y is set to: " + CPU.context.y);

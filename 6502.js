@@ -339,7 +339,26 @@ CPU =
 
     BNE: function()
     {
-        console.log('opcode not implemented [BNE]');
+        // Branch zero flag set (which means context.zero == 0)
+        if(this.context.zero !== 0)
+        {
+            var _address = Memory.readByte(this.context.pc++);
+
+            if(_address < 0x80)
+            {
+                _address += this.context.pc;
+            }
+            else
+            {
+                _address += this.context.pc - 256;
+            }
+
+            this.context.pc = _address & 0x00FF;
+        }
+        else
+        {
+            this.context.pc++;
+        }
     },
 
     BPL: function()
