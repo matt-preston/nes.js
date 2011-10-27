@@ -1,6 +1,5 @@
 Simple NES emulator implemented in JavaScript
 
-Testing:
+Test cases
 
-http://wiki.nesdev.com/w/index.php/Emulator_tests
 http://visual6502.org/wiki/index.php?title=6502TestPrograms
