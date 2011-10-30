@@ -25,7 +25,7 @@ public class MOS6502
     
     public int carry;
     public int zero;
-    public int irDisable;
+    public int interruptDisable;
     public int decimal;
     public int brk;
     public int overflow;
@@ -42,18 +42,18 @@ public class MOS6502
         y = 0;
 
         // flags
-        carry     = 0;
-        zero      = 0;
-        irDisable = 0;
-        decimal   = 0;
-        brk       = 0;
-        overflow  = 0;
-        negative  = 0;
+        carry            = 0;
+        zero             = 0;
+        interruptDisable = 1;
+        decimal          = 0;
+        brk              = 0;
+        overflow         = 0;
+        negative         = 0;
 
         // The processor status, based on the flags
-        p = 0;
+        setProcessorStatusRegisterFromFlags();
 
-        sp = 0;
+        sp = 0xFD; // 0x00 - 3
         pc = 0;
     }
     
@@ -232,11 +232,31 @@ public class MOS6502
             
             // Mask to 16 bit
             pc = pc & 0xFFFF;
+            
+            setProcessorStatusRegisterFromFlags();
         }
         
         return _clocksRemain;
     }
+    
+    /**
+     * [0] carry
+     * [1] zero
+     * [2] interrupt disable
+     * [3] decimal - not used 
+     * [4] break - probably not used
+     * [5] UNUSED - always set
+     * [6] overflow
+     * [7] negative
+     */
+    private void setProcessorStatusRegisterFromFlags()
+    {
+        int _decimal = 0; // not used
+        
+        p = carry << 0 | (zero << 1) | (interruptDisable << 2) | (_decimal << 3) | (brk << 4) | (1 << 5) | (overflow << 6) | (negative << 7);        
+    }
 
+    
 //-------------------------------------------------------------
 // Opcodes
 //-------------------------------------------------------------    
