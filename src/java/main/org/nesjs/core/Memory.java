@@ -19,6 +19,11 @@ public class Memory
         }
     }
     
+    public static final int readWord(int anAddress)
+    {
+        return readUnsignedByte(anAddress) | (readUnsignedByte(anAddress + 1) << 8);
+    }
+    
     public static final int readUnsignedByte(int anAddress)
     {
         // Mask to 16 bit
@@ -27,12 +32,12 @@ public class Memory
         if(_address < 0x2000)
         {
             // Low memory 2KB (mirrored 3 times)
-            return lowMem[_address & 0x7FF];
+            return lowMem[_address & 0x7FF] & 0xFF; // TODO, mask to a byte in the ROM loading?
         }
         else if (_address > 0x4017)
         {
             // Program ROM
-            return prom[_address];
+            return prom[_address] & 0xFF;  // TODO, mask to a byte in the ROM loading?
         }
 
         System.out.println("Don't know how to read from memory address [" + _address + "]");
@@ -40,7 +45,7 @@ public class Memory
         return 0;  // TODO
     }
     
-    public static final void writeUnsignedByte(int aByte, int anAddress)
+    public static final void writeUnsignedByte(byte aByte, int anAddress)
     {
         if (anAddress < 0x2000)
         {

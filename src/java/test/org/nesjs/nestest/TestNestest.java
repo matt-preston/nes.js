@@ -24,7 +24,7 @@ public class TestNestest
 
         int _stepCount = 0;
         
-        for (CPUState _state : getExpectedCpuStates())
+        for (CPUState _state : getExpectedCpuStates(2))
         {
             assertHexEquals("PC not valid at step [" + _stepCount + "]", _state.pc, _6502.pc);
             
@@ -35,8 +35,9 @@ public class TestNestest
             assertHexEquals("Y not valid at step [" + _stepCount + "]", _state.y, _6502.y);
             assertHexEquals("P not valid at step [" + _stepCount + "]", _state.p, _6502.p);
             assertHexEquals("SP not valid at step [" + _stepCount + "]", _state.sp, _6502.sp);
+            System.out.println();
             
-            _stepCount++;            
+            _stepCount++;
         }
     }
     
@@ -48,6 +49,13 @@ public class TestNestest
         }
     }
 
+    private List<CPUState> getExpectedCpuStates(int aLimit) throws Exception
+    {
+        List<CPUState> _all = getExpectedCpuStates();
+        
+        return _all.subList(0, aLimit);
+    }
+    
     private List<CPUState> getExpectedCpuStates() throws Exception
     {
         Scanner _scanner = new Scanner(new File("nestest-simple.log"), "UTF-8");

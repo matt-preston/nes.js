@@ -74,7 +74,7 @@ public class MOS6502
 
             int _opcode = Memory.readUnsignedByte(pc++);
 
-            System.out.println("Opcode is: " + _opcode);
+            System.out.println("Opcode is: " + Integer.toHexString(_opcode));
 
             switch(_opcode)
             {
@@ -598,7 +598,7 @@ public class MOS6502
 
     private void opcode_JMP()
     {
-        System.out.println("opcode not implemented [opcode_JMP]");
+        pc = Memory.readWord(pc);
     }
 
     private void opcode_JMP_absolute()
