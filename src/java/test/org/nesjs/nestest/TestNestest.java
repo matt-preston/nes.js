@@ -7,6 +7,7 @@ import junit.framework.ComparisonFailure;
 
 import org.junit.*;
 import org.nesjs.core.*;
+import static org.nesjs.core.Utils.*;
 
 public class TestNestest
 {
@@ -33,9 +34,7 @@ public class TestNestest
             assertHexEquals("P not valid at step [" + _stepCount + "]", _state.p, _6502.p);
             assertHexEquals("SP not valid at step [" + _stepCount + "]", _state.sp, _6502.sp);
             
-            _6502.step();
-            System.out.println();
-            
+            _6502.step();            
             _stepCount++;
         }
     }
@@ -48,11 +47,6 @@ public class TestNestest
         }
     }
 
-    private String toHexString(int aValue)
-    {
-        return "0x" + Integer.toHexString(aValue);
-    }
-    
     private List<CPUState> getExpectedCpuStates(int aLimit) throws Exception
     {
         List<CPUState> _all = getExpectedCpuStates();
