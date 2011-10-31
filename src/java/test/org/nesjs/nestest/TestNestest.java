@@ -24,17 +24,16 @@ public class TestNestest
 
         int _stepCount = 0;
         
-        for (CPUState _state : getExpectedCpuStates(2))
+        for (CPUState _state : getExpectedCpuStates(5))
         {
             assertHexEquals("PC not valid at step [" + _stepCount + "]", _state.pc, _6502.pc);
-            
-            _6502.step();
-            
             assertHexEquals("A not valid at step [" + _stepCount + "]", _state.a, _6502.a);
             assertHexEquals("X not valid at step [" + _stepCount + "]", _state.x, _6502.x);
             assertHexEquals("Y not valid at step [" + _stepCount + "]", _state.y, _6502.y);
             assertHexEquals("P not valid at step [" + _stepCount + "]", _state.p, _6502.p);
             assertHexEquals("SP not valid at step [" + _stepCount + "]", _state.sp, _6502.sp);
+            
+            _6502.step();
             System.out.println();
             
             _stepCount++;
@@ -45,10 +44,15 @@ public class TestNestest
     {
         if(anExpected != anActual)
         {
-            throw new ComparisonFailure(aMessage, Integer.toHexString(anExpected), Integer.toHexString(anActual));
+            throw new ComparisonFailure(aMessage, toHexString(anExpected), toHexString(anActual));
         }
     }
 
+    private String toHexString(int aValue)
+    {
+        return "0x" + Integer.toHexString(aValue);
+    }
+    
     private List<CPUState> getExpectedCpuStates(int aLimit) throws Exception
     {
         List<CPUState> _all = getExpectedCpuStates();

@@ -24,7 +24,7 @@ public class MOS6502
     public int pc;
     
     public int carry;
-    public int zero;
+    public int not_zero;
     public int interruptDisable;
     public int decimal;
     public int brk;
@@ -43,7 +43,7 @@ public class MOS6502
 
         // flags
         carry            = 0;
-        zero             = 0;
+        not_zero         = 1;
         interruptDisable = 1;
         decimal          = 0;
         brk              = 0;
@@ -70,11 +70,11 @@ public class MOS6502
         {
             _clocksRemain--;
 
-            System.out.println("PC now at: " + Integer.toHexString(pc));
+            System.out.print("PC now at: " + Integer.toHexString(pc));
 
             int _opcode = Memory.readUnsignedByte(pc++);
 
-            System.out.println("Opcode is: " + Integer.toHexString(_opcode));
+            System.out.println(", opcode is: " + Integer.toHexString(_opcode));
 
             switch(_opcode)
             {
@@ -251,9 +251,10 @@ public class MOS6502
      */
     private void setProcessorStatusRegisterFromFlags()
     {
-        int _decimal = 0; // not used
+        int _decimal = 0; // not used        
+        int _zero = not_zero != 0 ? 0 : 1;
         
-        p = carry << 0 | (zero << 1) | (interruptDisable << 2) | (_decimal << 3) | (brk << 4) | (1 << 5) | (overflow << 6) | (negative << 7);        
+        p = carry << 0 | (_zero << 1) | (interruptDisable << 2) | (_decimal << 3) | (brk << 4) | (1 << 5) | (overflow << 6) | (negative << 7);        
     }
 
     
@@ -653,7 +654,11 @@ public class MOS6502
 
     private void opcode_LDX()
     {
-        System.out.println("opcode not implemented [opcode_LDX]");
+        // Load X with memory
+        this.x = Memory.readUnsignedByte(pc++);
+
+        negative = (this.x >> 7) & 1;
+        not_zero = this.x;
     }
 
     private void opcode_LDX_zero_page()
@@ -943,7 +948,8 @@ public class MOS6502
 
     private void opcode_STX_zero_page()
     {
-        System.out.println("opcode not implemented [opcode_STX_zero_page]");
+        int _address = Memory.readUnsignedByte(pc++);
+        Memory.writeUnsignedByte(x, _address);
     }
 
     private void opcode_STX_zero_page_Y()

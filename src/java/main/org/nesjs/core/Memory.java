@@ -45,7 +45,7 @@ public class Memory
         return 0;  // TODO
     }
     
-    public static final void writeUnsignedByte(byte aByte, int anAddress)
+    public static final void writeUnsignedByte(int aByte, int anAddress)
     {
         if (anAddress < 0x2000)
         {
