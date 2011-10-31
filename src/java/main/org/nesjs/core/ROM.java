@@ -25,12 +25,12 @@ public class ROM
         }
         
         int _romCount   = _header[4];
-        int _vromCount  = _header[5] * 2;
-        int _mirroring  = ((_header[6] & 1) != 0 ? 1 : 0);
-        boolean _batteryRam = (_header[6] & 2) != 0;
-        boolean _trainer    = (_header[6] & 4) != 0;
-        boolean _fourScreen = (_header[6] & 8) != 0;
-        int _mapperType = (_header[6] >> 4) | (_header[7] & 0xF0);
+        //int _vromCount  = _header[5] * 2;
+        //int _mirroring  = ((_header[6] & 1) != 0 ? 1 : 0);
+        //boolean _batteryRam = (_header[6] & 2) != 0;
+        //boolean _trainer    = (_header[6] & 4) != 0;
+        //boolean _fourScreen = (_header[6] & 8) != 0;
+        //int _mapperType = (_header[6] >> 4) | (_header[7] & 0xF0);
         
          // Load PRG-ROM banks:
         int _offset = 16;

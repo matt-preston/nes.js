@@ -28,13 +28,11 @@ public class OpcodeMethods
             
     private static class Opcode
     {
-        public String mnemonic;
         public String opcode;
         public String function;
         
         public Opcode(String aMnemonic, String anOpcode, String aFunction)
         {
-            mnemonic = aMnemonic;
             opcode = anOpcode;
             function = aFunction;
         }        

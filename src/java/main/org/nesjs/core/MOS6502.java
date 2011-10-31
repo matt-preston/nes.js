@@ -53,7 +53,11 @@ public class MOS6502
         // The processor status, based on the flags
         setProcessorStatusRegisterFromFlags();
 
-        sp = 0xFD; // 0x00 - 3
+        /**
+         * TODO, stack pointer should run between 0x0100 and 0x01FF, using only the lower 8 bits.
+         *       ON reset, the pc and p (?) should be pushed onto the stack.
+         */
+        sp = 0x01FF - 2;
         pc = 0;
     }
     
@@ -257,6 +261,11 @@ public class MOS6502
         p = carry << 0 | (_zero << 1) | (interruptDisable << 2) | (_decimal << 3) | (brk << 4) | (1 << 5) | (overflow << 6) | (negative << 7);        
     }
 
+    private void push(int aByte)
+    {
+        Memory.writeUnsignedByte(aByte, sp);
+        sp--;
+    }
     
 //-------------------------------------------------------------
 // Opcodes
@@ -609,7 +618,13 @@ public class MOS6502
 
     private void opcode_JSR()
     {
-        System.out.println("opcode not implemented [opcode_JSR]");
+        // Jump to subroutine
+        int _address = Memory.readWord(pc);
+        
+        push((pc >> 8) & 255);
+        push(pc & 255);
+        
+        pc = _address;
     }
 
     private void opcode_LDA()
@@ -733,7 +748,7 @@ public class MOS6502
 
     private void opcode_NOP()
     {
-        System.out.println("opcode not implemented [opcode_NOP]");
+        // No operation
     }
 
     private void opcode_ORA()
@@ -898,7 +913,8 @@ public class MOS6502
 
     private void opcode_SEC()
     {
-        System.out.println("opcode not implemented [opcode_SEC]");
+        // Set the carry flag
+        carry = 1;
     }
 
     private void opcode_SED()

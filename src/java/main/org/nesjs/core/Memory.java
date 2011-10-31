@@ -51,7 +51,6 @@ public class Memory
         {
             // Low memory 2KB (mirrored 3 times)
             lowMem[anAddress & 0x7FF] = aByte;
-
         }
         else if (anAddress > 0x4017)
         {
