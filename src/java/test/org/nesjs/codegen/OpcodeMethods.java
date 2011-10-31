@@ -53,7 +53,7 @@ public class OpcodeMethods
         {
             System.out.printf("    private void %s()\n", _opcode.function);
             System.out.println("    {");
-            System.out.printf("        System.out.println(\"opcode not implemented [%s]\");\n", _opcode.function);
+            System.out.printf("        throw new RuntimeException(\"opcode not implemented [%s]\");\n", _opcode.function);
             System.out.println("    }");
             System.out.println();            
         }

@@ -273,337 +273,337 @@ public class MOS6502
     
     private void opcode_ADC()
     {
-        System.out.println("opcode not implemented [opcode_ADC]");
+        throw new RuntimeException("opcode not implemented [opcode_ADC]");
     }
 
     private void opcode_ADC_zero_page()
     {
-        System.out.println("opcode not implemented [opcode_ADC_zero_page]");
+        throw new RuntimeException("opcode not implemented [opcode_ADC_zero_page]");
     }
 
     private void opcode_ADC_zero_page_X()
     {
-        System.out.println("opcode not implemented [opcode_ADC_zero_page_X]");
+        throw new RuntimeException("opcode not implemented [opcode_ADC_zero_page_X]");
     }
 
     private void opcode_ADC_absolute()
     {
-        System.out.println("opcode not implemented [opcode_ADC_absolute]");
+        throw new RuntimeException("opcode not implemented [opcode_ADC_absolute]");
     }
 
     private void opcode_ADC_absolute_X()
     {
-        System.out.println("opcode not implemented [opcode_ADC_absolute_X]");
+        throw new RuntimeException("opcode not implemented [opcode_ADC_absolute_X]");
     }
 
     private void opcode_AND()
     {
-        System.out.println("opcode not implemented [opcode_AND]");
+        throw new RuntimeException("opcode not implemented [opcode_AND]");
     }
 
     private void opcode_AND_zero_page()
     {
-        System.out.println("opcode not implemented [opcode_AND_zero_page]");
+        throw new RuntimeException("opcode not implemented [opcode_AND_zero_page]");
     }
 
     private void opcode_AND_zero_page_X()
     {
-        System.out.println("opcode not implemented [opcode_AND_zero_page_X]");
+        throw new RuntimeException("opcode not implemented [opcode_AND_zero_page_X]");
     }
 
     private void opcode_AND_absolute()
     {
-        System.out.println("opcode not implemented [opcode_AND_absolute]");
+        throw new RuntimeException("opcode not implemented [opcode_AND_absolute]");
     }
 
     private void opcode_AND_absolute_X()
     {
-        System.out.println("opcode not implemented [opcode_AND_absolute_X]");
+        throw new RuntimeException("opcode not implemented [opcode_AND_absolute_X]");
     }
 
     private void opcode_AND_absolute_Y()
     {
-        System.out.println("opcode not implemented [opcode_AND_absolute_Y]");
+        throw new RuntimeException("opcode not implemented [opcode_AND_absolute_Y]");
     }
 
     private void opcode_AND_indirect_X()
     {
-        System.out.println("opcode not implemented [opcode_AND_indirect_X]");
+        throw new RuntimeException("opcode not implemented [opcode_AND_indirect_X]");
     }
 
     private void opcode_AND_indirect_Y()
     {
-        System.out.println("opcode not implemented [opcode_AND_indirect_Y]");
+        throw new RuntimeException("opcode not implemented [opcode_AND_indirect_Y]");
     }
 
     private void opcode_ASL()
     {
-        System.out.println("opcode not implemented [opcode_ASL]");
+        throw new RuntimeException("opcode not implemented [opcode_ASL]");
     }
 
     private void opcode_ASL_zero_page()
     {
-        System.out.println("opcode not implemented [opcode_ASL_zero_page]");
+        throw new RuntimeException("opcode not implemented [opcode_ASL_zero_page]");
     }
 
     private void opcode_ASL_zero_page_X()
     {
-        System.out.println("opcode not implemented [opcode_ASL_zero_page_X]");
+        throw new RuntimeException("opcode not implemented [opcode_ASL_zero_page_X]");
     }
 
     private void opcode_ASL_absolute()
     {
-        System.out.println("opcode not implemented [opcode_ASL_absolute]");
+        throw new RuntimeException("opcode not implemented [opcode_ASL_absolute]");
     }
 
     private void opcode_ASL_absolute_X()
     {
-        System.out.println("opcode not implemented [opcode_ASL_absolute_X]");
+        throw new RuntimeException("opcode not implemented [opcode_ASL_absolute_X]");
     }
 
     private void opcode_BCC()
     {
-        System.out.println("opcode not implemented [opcode_BCC]");
+        throw new RuntimeException("opcode not implemented [opcode_BCC]");
     }
 
     private void opcode_BCS()
     {
-        System.out.println("opcode not implemented [opcode_BCS]");
+        throw new RuntimeException("opcode not implemented [opcode_BCS]");
     }
 
     private void opcode_BEQ()
     {
-        System.out.println("opcode not implemented [opcode_BEQ]");
+        throw new RuntimeException("opcode not implemented [opcode_BEQ]");
     }
 
     private void opcode_BIT_zero_page()
     {
-        System.out.println("opcode not implemented [opcode_BIT_zero_page]");
+        throw new RuntimeException("opcode not implemented [opcode_BIT_zero_page]");
     }
 
     private void opcode_BIT_absolute()
     {
-        System.out.println("opcode not implemented [opcode_BIT_absolute]");
+        throw new RuntimeException("opcode not implemented [opcode_BIT_absolute]");
     }
 
     private void opcode_BMI()
     {
-        System.out.println("opcode not implemented [opcode_BMI]");
+        throw new RuntimeException("opcode not implemented [opcode_BMI]");
     }
 
     private void opcode_BNE()
     {
-        System.out.println("opcode not implemented [opcode_BNE]");
+        throw new RuntimeException("opcode not implemented [opcode_BNE]");
     }
 
     private void opcode_BPL()
     {
-        System.out.println("opcode not implemented [opcode_BPL]");
+        throw new RuntimeException("opcode not implemented [opcode_BPL]");
     }
 
     private void opcode_BRK()
     {
-        System.out.println("opcode not implemented [opcode_BRK]");
+        throw new RuntimeException("opcode not implemented [opcode_BRK]");
     }
 
     private void opcode_BVC()
     {
-        System.out.println("opcode not implemented [opcode_BVC]");
+        throw new RuntimeException("opcode not implemented [opcode_BVC]");
     }
 
     private void opcode_BVS()
     {
-        System.out.println("opcode not implemented [opcode_BVS]");
+        throw new RuntimeException("opcode not implemented [opcode_BVS]");
     }
 
     private void opcode_CLC()
     {
-        System.out.println("opcode not implemented [opcode_CLC]");
+        throw new RuntimeException("opcode not implemented [opcode_CLC]");
     }
 
     private void opcode_CLD()
     {
-        System.out.println("opcode not implemented [opcode_CLD]");
+        throw new RuntimeException("opcode not implemented [opcode_CLD]");
     }
 
     private void opcode_CLI()
     {
-        System.out.println("opcode not implemented [opcode_CLI]");
+        throw new RuntimeException("opcode not implemented [opcode_CLI]");
     }
 
     private void opcode_CLV()
     {
-        System.out.println("opcode not implemented [opcode_CLV]");
+        throw new RuntimeException("opcode not implemented [opcode_CLV]");
     }
 
     private void opcode_CMP()
     {
-        System.out.println("opcode not implemented [opcode_CMP]");
+        throw new RuntimeException("opcode not implemented [opcode_CMP]");
     }
 
     private void opcode_CMP_zero_page()
     {
-        System.out.println("opcode not implemented [opcode_CMP_zero_page]");
+        throw new RuntimeException("opcode not implemented [opcode_CMP_zero_page]");
     }
 
     private void opcode_CMP_zero_page_X()
     {
-        System.out.println("opcode not implemented [opcode_CMP_zero_page_X]");
+        throw new RuntimeException("opcode not implemented [opcode_CMP_zero_page_X]");
     }
 
     private void opcode_CMP_absolute()
     {
-        System.out.println("opcode not implemented [opcode_CMP_absolute]");
+        throw new RuntimeException("opcode not implemented [opcode_CMP_absolute]");
     }
 
     private void opcode_CMP_absolute_X()
     {
-        System.out.println("opcode not implemented [opcode_CMP_absolute_X]");
+        throw new RuntimeException("opcode not implemented [opcode_CMP_absolute_X]");
     }
 
     private void opcode_CMP_absolute_Y()
     {
-        System.out.println("opcode not implemented [opcode_CMP_absolute_Y]");
+        throw new RuntimeException("opcode not implemented [opcode_CMP_absolute_Y]");
     }
 
     private void opcode_CMP_indirect_X()
     {
-        System.out.println("opcode not implemented [opcode_CMP_indirect_X]");
+        throw new RuntimeException("opcode not implemented [opcode_CMP_indirect_X]");
     }
 
     private void opcode_CMP_indirect_Y()
     {
-        System.out.println("opcode not implemented [opcode_CMP_indirect_Y]");
+        throw new RuntimeException("opcode not implemented [opcode_CMP_indirect_Y]");
     }
 
     private void opcode_CPX()
     {
-        System.out.println("opcode not implemented [opcode_CPX]");
+        throw new RuntimeException("opcode not implemented [opcode_CPX]");
     }
 
     private void opcode_CPX_zero_page()
     {
-        System.out.println("opcode not implemented [opcode_CPX_zero_page]");
+        throw new RuntimeException("opcode not implemented [opcode_CPX_zero_page]");
     }
 
     private void opcode_CPX_absolute()
     {
-        System.out.println("opcode not implemented [opcode_CPX_absolute]");
+        throw new RuntimeException("opcode not implemented [opcode_CPX_absolute]");
     }
 
     private void opcode_CPY()
     {
-        System.out.println("opcode not implemented [opcode_CPY]");
+        throw new RuntimeException("opcode not implemented [opcode_CPY]");
     }
 
     private void opcode_CPY_zero_page()
     {
-        System.out.println("opcode not implemented [opcode_CPY_zero_page]");
+        throw new RuntimeException("opcode not implemented [opcode_CPY_zero_page]");
     }
 
     private void opcode_CPY_absolute()
     {
-        System.out.println("opcode not implemented [opcode_CPY_absolute]");
+        throw new RuntimeException("opcode not implemented [opcode_CPY_absolute]");
     }
 
     private void opcode_DEC_zero_page()
     {
-        System.out.println("opcode not implemented [opcode_DEC_zero_page]");
+        throw new RuntimeException("opcode not implemented [opcode_DEC_zero_page]");
     }
 
     private void opcode_DEC_zero_page_X()
     {
-        System.out.println("opcode not implemented [opcode_DEC_zero_page_X]");
+        throw new RuntimeException("opcode not implemented [opcode_DEC_zero_page_X]");
     }
 
     private void opcode_DEC_absolute()
     {
-        System.out.println("opcode not implemented [opcode_DEC_absolute]");
+        throw new RuntimeException("opcode not implemented [opcode_DEC_absolute]");
     }
 
     private void opcode_DEC_absolute_X()
     {
-        System.out.println("opcode not implemented [opcode_DEC_absolute_X]");
+        throw new RuntimeException("opcode not implemented [opcode_DEC_absolute_X]");
     }
 
     private void opcode_DEX()
     {
-        System.out.println("opcode not implemented [opcode_DEX]");
+        throw new RuntimeException("opcode not implemented [opcode_DEX]");
     }
 
     private void opcode_DEY()
     {
-        System.out.println("opcode not implemented [opcode_DEY]");
+        throw new RuntimeException("opcode not implemented [opcode_DEY]");
     }
 
     private void opcode_EOR()
     {
-        System.out.println("opcode not implemented [opcode_EOR]");
+        throw new RuntimeException("opcode not implemented [opcode_EOR]");
     }
 
     private void opcode_EOR_zero_page()
     {
-        System.out.println("opcode not implemented [opcode_EOR_zero_page]");
+        throw new RuntimeException("opcode not implemented [opcode_EOR_zero_page]");
     }
 
     private void opcode_EOR_zero_page_X()
     {
-        System.out.println("opcode not implemented [opcode_EOR_zero_page_X]");
+        throw new RuntimeException("opcode not implemented [opcode_EOR_zero_page_X]");
     }
 
     private void opcode_EOR_absolute()
     {
-        System.out.println("opcode not implemented [opcode_EOR_absolute]");
+        throw new RuntimeException("opcode not implemented [opcode_EOR_absolute]");
     }
 
     private void opcode_EOR_absolute_X()
     {
-        System.out.println("opcode not implemented [opcode_EOR_absolute_X]");
+        throw new RuntimeException("opcode not implemented [opcode_EOR_absolute_X]");
     }
 
     private void opcode_EOR_absolute_Y()
     {
-        System.out.println("opcode not implemented [opcode_EOR_absolute_Y]");
+        throw new RuntimeException("opcode not implemented [opcode_EOR_absolute_Y]");
     }
 
     private void opcode_EOR_indirect_X()
     {
-        System.out.println("opcode not implemented [opcode_EOR_indirect_X]");
+        throw new RuntimeException("opcode not implemented [opcode_EOR_indirect_X]");
     }
 
     private void opcode_EOR_indirect_Y()
     {
-        System.out.println("opcode not implemented [opcode_EOR_indirect_Y]");
+        throw new RuntimeException("opcode not implemented [opcode_EOR_indirect_Y]");
     }
 
     private void opcode_INC_zero_page()
     {
-        System.out.println("opcode not implemented [opcode_INC_zero_page]");
+        throw new RuntimeException("opcode not implemented [opcode_INC_zero_page]");
     }
 
     private void opcode_INC_zero_page_X()
     {
-        System.out.println("opcode not implemented [opcode_INC_zero_page_X]");
+        throw new RuntimeException("opcode not implemented [opcode_INC_zero_page_X]");
     }
 
     private void opcode_INC_absolute()
     {
-        System.out.println("opcode not implemented [opcode_INC_absolute]");
+        throw new RuntimeException("opcode not implemented [opcode_INC_absolute]");
     }
 
     private void opcode_INC_absolute_X()
     {
-        System.out.println("opcode not implemented [opcode_INC_absolute_X]");
+        throw new RuntimeException("opcode not implemented [opcode_INC_absolute_X]");
     }
 
     private void opcode_INX()
     {
-        System.out.println("opcode not implemented [opcode_INX]");
+        throw new RuntimeException("opcode not implemented [opcode_INX]");
     }
 
     private void opcode_INY()
     {
-        System.out.println("opcode not implemented [opcode_INY]");
+        throw new RuntimeException("opcode not implemented [opcode_INY]");
     }
 
     private void opcode_JMP()
@@ -613,7 +613,7 @@ public class MOS6502
 
     private void opcode_JMP_absolute()
     {
-        System.out.println("opcode not implemented [opcode_JMP_absolute]");
+        throw new RuntimeException("opcode not implemented [opcode_JMP_absolute]");
     }
 
     private void opcode_JSR()
@@ -629,42 +629,42 @@ public class MOS6502
 
     private void opcode_LDA()
     {
-        System.out.println("opcode not implemented [opcode_LDA]");
+        throw new RuntimeException("opcode not implemented [opcode_LDA]");
     }
 
     private void opcode_LDA_zero_page()
     {
-        System.out.println("opcode not implemented [opcode_LDA_zero_page]");
+        throw new RuntimeException("opcode not implemented [opcode_LDA_zero_page]");
     }
 
     private void opcode_LDA_zero_page_X()
     {
-        System.out.println("opcode not implemented [opcode_LDA_zero_page_X]");
+        throw new RuntimeException("opcode not implemented [opcode_LDA_zero_page_X]");
     }
 
     private void opcode_LDA_absolute()
     {
-        System.out.println("opcode not implemented [opcode_LDA_absolute]");
+        throw new RuntimeException("opcode not implemented [opcode_LDA_absolute]");
     }
 
     private void opcode_LDA_absolute_X()
     {
-        System.out.println("opcode not implemented [opcode_LDA_absolute_X]");
+        throw new RuntimeException("opcode not implemented [opcode_LDA_absolute_X]");
     }
 
     private void opcode_LDA_absolute_Y()
     {
-        System.out.println("opcode not implemented [opcode_LDA_absolute_Y]");
+        throw new RuntimeException("opcode not implemented [opcode_LDA_absolute_Y]");
     }
 
     private void opcode_LDA_indirect_X()
     {
-        System.out.println("opcode not implemented [opcode_LDA_indirect_X]");
+        throw new RuntimeException("opcode not implemented [opcode_LDA_indirect_X]");
     }
 
     private void opcode_LDA_indirect_Y()
     {
-        System.out.println("opcode not implemented [opcode_LDA_indirect_Y]");
+        throw new RuntimeException("opcode not implemented [opcode_LDA_indirect_Y]");
     }
 
     private void opcode_LDX()
@@ -678,72 +678,72 @@ public class MOS6502
 
     private void opcode_LDX_zero_page()
     {
-        System.out.println("opcode not implemented [opcode_LDX_zero_page]");
+        throw new RuntimeException("opcode not implemented [opcode_LDX_zero_page]");
     }
 
     private void opcode_LDX_zero_page_Y()
     {
-        System.out.println("opcode not implemented [opcode_LDX_zero_page_Y]");
+        throw new RuntimeException("opcode not implemented [opcode_LDX_zero_page_Y]");
     }
 
     private void opcode_LDX_absolute()
     {
-        System.out.println("opcode not implemented [opcode_LDX_absolute]");
+        throw new RuntimeException("opcode not implemented [opcode_LDX_absolute]");
     }
 
     private void opcode_LDX_absolute_Y()
     {
-        System.out.println("opcode not implemented [opcode_LDX_absolute_Y]");
+        throw new RuntimeException("opcode not implemented [opcode_LDX_absolute_Y]");
     }
 
     private void opcode_LDY()
     {
-        System.out.println("opcode not implemented [opcode_LDY]");
+        throw new RuntimeException("opcode not implemented [opcode_LDY]");
     }
 
     private void opcode_LDY_zero_page()
     {
-        System.out.println("opcode not implemented [opcode_LDY_zero_page]");
+        throw new RuntimeException("opcode not implemented [opcode_LDY_zero_page]");
     }
 
     private void opcode_LDY_zero_page_X()
     {
-        System.out.println("opcode not implemented [opcode_LDY_zero_page_X]");
+        throw new RuntimeException("opcode not implemented [opcode_LDY_zero_page_X]");
     }
 
     private void opcode_LDY_absolute()
     {
-        System.out.println("opcode not implemented [opcode_LDY_absolute]");
+        throw new RuntimeException("opcode not implemented [opcode_LDY_absolute]");
     }
 
     private void opcode_LDY_absolute_X()
     {
-        System.out.println("opcode not implemented [opcode_LDY_absolute_X]");
+        throw new RuntimeException("opcode not implemented [opcode_LDY_absolute_X]");
     }
 
     private void opcode_LSR()
     {
-        System.out.println("opcode not implemented [opcode_LSR]");
+        throw new RuntimeException("opcode not implemented [opcode_LSR]");
     }
 
     private void opcode_LSR_zero_page()
     {
-        System.out.println("opcode not implemented [opcode_LSR_zero_page]");
+        throw new RuntimeException("opcode not implemented [opcode_LSR_zero_page]");
     }
 
     private void opcode_LSR_zero_page_X()
     {
-        System.out.println("opcode not implemented [opcode_LSR_zero_page_X]");
+        throw new RuntimeException("opcode not implemented [opcode_LSR_zero_page_X]");
     }
 
     private void opcode_LSR_absolute()
     {
-        System.out.println("opcode not implemented [opcode_LSR_absolute]");
+        throw new RuntimeException("opcode not implemented [opcode_LSR_absolute]");
     }
 
     private void opcode_LSR_absolute_X()
     {
-        System.out.println("opcode not implemented [opcode_LSR_absolute_X]");
+        throw new RuntimeException("opcode not implemented [opcode_LSR_absolute_X]");
     }
 
     private void opcode_NOP()
@@ -753,162 +753,162 @@ public class MOS6502
 
     private void opcode_ORA()
     {
-        System.out.println("opcode not implemented [opcode_ORA]");
+        throw new RuntimeException("opcode not implemented [opcode_ORA]");
     }
 
     private void opcode_ORA_zero_page()
     {
-        System.out.println("opcode not implemented [opcode_ORA_zero_page]");
+        throw new RuntimeException("opcode not implemented [opcode_ORA_zero_page]");
     }
 
     private void opcode_ORA_zero_page_X()
     {
-        System.out.println("opcode not implemented [opcode_ORA_zero_page_X]");
+        throw new RuntimeException("opcode not implemented [opcode_ORA_zero_page_X]");
     }
 
     private void opcode_ORA_absolute()
     {
-        System.out.println("opcode not implemented [opcode_ORA_absolute]");
+        throw new RuntimeException("opcode not implemented [opcode_ORA_absolute]");
     }
 
     private void opcode_ORA_absolute_X()
     {
-        System.out.println("opcode not implemented [opcode_ORA_absolute_X]");
+        throw new RuntimeException("opcode not implemented [opcode_ORA_absolute_X]");
     }
 
     private void opcode_ORA_absolute_Y()
     {
-        System.out.println("opcode not implemented [opcode_ORA_absolute_Y]");
+        throw new RuntimeException("opcode not implemented [opcode_ORA_absolute_Y]");
     }
 
     private void opcode_ORA_indirect_X()
     {
-        System.out.println("opcode not implemented [opcode_ORA_indirect_X]");
+        throw new RuntimeException("opcode not implemented [opcode_ORA_indirect_X]");
     }
 
     private void opcode_ORA_indirect_Y()
     {
-        System.out.println("opcode not implemented [opcode_ORA_indirect_Y]");
+        throw new RuntimeException("opcode not implemented [opcode_ORA_indirect_Y]");
     }
 
     private void opcode_PHA()
     {
-        System.out.println("opcode not implemented [opcode_PHA]");
+        throw new RuntimeException("opcode not implemented [opcode_PHA]");
     }
 
     private void opcode_PHP()
     {
-        System.out.println("opcode not implemented [opcode_PHP]");
+        throw new RuntimeException("opcode not implemented [opcode_PHP]");
     }
 
     private void opcode_PLA()
     {
-        System.out.println("opcode not implemented [opcode_PLA]");
+        throw new RuntimeException("opcode not implemented [opcode_PLA]");
     }
 
     private void opcode_PLP()
     {
-        System.out.println("opcode not implemented [opcode_PLP]");
+        throw new RuntimeException("opcode not implemented [opcode_PLP]");
     }
 
     private void opcode_ROL()
     {
-        System.out.println("opcode not implemented [opcode_ROL]");
+        throw new RuntimeException("opcode not implemented [opcode_ROL]");
     }
 
     private void opcode_ROL_zero_page()
     {
-        System.out.println("opcode not implemented [opcode_ROL_zero_page]");
+        throw new RuntimeException("opcode not implemented [opcode_ROL_zero_page]");
     }
 
     private void opcode_ROL_zero_page_X()
     {
-        System.out.println("opcode not implemented [opcode_ROL_zero_page_X]");
+        throw new RuntimeException("opcode not implemented [opcode_ROL_zero_page_X]");
     }
 
     private void opcode_ROL_absolute()
     {
-        System.out.println("opcode not implemented [opcode_ROL_absolute]");
+        throw new RuntimeException("opcode not implemented [opcode_ROL_absolute]");
     }
 
     private void opcode_ROL_absolute_X()
     {
-        System.out.println("opcode not implemented [opcode_ROL_absolute_X]");
+        throw new RuntimeException("opcode not implemented [opcode_ROL_absolute_X]");
     }
 
     private void opcode_ROR()
     {
-        System.out.println("opcode not implemented [opcode_ROR]");
+        throw new RuntimeException("opcode not implemented [opcode_ROR]");
     }
 
     private void opcode_ROR_zero_page()
     {
-        System.out.println("opcode not implemented [opcode_ROR_zero_page]");
+        throw new RuntimeException("opcode not implemented [opcode_ROR_zero_page]");
     }
 
     private void opcode_ROR_zero_page_X()
     {
-        System.out.println("opcode not implemented [opcode_ROR_zero_page_X]");
+        throw new RuntimeException("opcode not implemented [opcode_ROR_zero_page_X]");
     }
 
     private void opcode_ROR_absolute()
     {
-        System.out.println("opcode not implemented [opcode_ROR_absolute]");
+        throw new RuntimeException("opcode not implemented [opcode_ROR_absolute]");
     }
 
     private void opcode_ROR_absolute_X()
     {
-        System.out.println("opcode not implemented [opcode_ROR_absolute_X]");
+        throw new RuntimeException("opcode not implemented [opcode_ROR_absolute_X]");
     }
 
     private void opcode_RTI()
     {
-        System.out.println("opcode not implemented [opcode_RTI]");
+        throw new RuntimeException("opcode not implemented [opcode_RTI]");
     }
 
     private void opcode_RTS()
     {
-        System.out.println("opcode not implemented [opcode_RTS]");
+        throw new RuntimeException("opcode not implemented [opcode_RTS]");
     }
 
     private void opcode_SBC()
     {
-        System.out.println("opcode not implemented [opcode_SBC]");
+        throw new RuntimeException("opcode not implemented [opcode_SBC]");
     }
 
     private void opcode_SBC_zero_page()
     {
-        System.out.println("opcode not implemented [opcode_SBC_zero_page]");
+        throw new RuntimeException("opcode not implemented [opcode_SBC_zero_page]");
     }
 
     private void opcode_SBC_zero_page_X()
     {
-        System.out.println("opcode not implemented [opcode_SBC_zero_page_X]");
+        throw new RuntimeException("opcode not implemented [opcode_SBC_zero_page_X]");
     }
 
     private void opcode_SBC_absolute()
     {
-        System.out.println("opcode not implemented [opcode_SBC_absolute]");
+        throw new RuntimeException("opcode not implemented [opcode_SBC_absolute]");
     }
 
     private void opcode_SBC_absolute_X()
     {
-        System.out.println("opcode not implemented [opcode_SBC_absolute_X]");
+        throw new RuntimeException("opcode not implemented [opcode_SBC_absolute_X]");
     }
 
     private void opcode_SBC_absolute_Y()
     {
-        System.out.println("opcode not implemented [opcode_SBC_absolute_Y]");
+        throw new RuntimeException("opcode not implemented [opcode_SBC_absolute_Y]");
     }
 
     private void opcode_SBC_indirect_X()
     {
-        System.out.println("opcode not implemented [opcode_SBC_indirect_X]");
+        throw new RuntimeException("opcode not implemented [opcode_SBC_indirect_X]");
     }
 
     private void opcode_SBC_indirect_Y()
     {
-        System.out.println("opcode not implemented [opcode_SBC_indirect_Y]");
+        throw new RuntimeException("opcode not implemented [opcode_SBC_indirect_Y]");
     }
 
     private void opcode_SEC()
@@ -919,47 +919,47 @@ public class MOS6502
 
     private void opcode_SED()
     {
-        System.out.println("opcode not implemented [opcode_SED]");
+        throw new RuntimeException("opcode not implemented [opcode_SED]");
     }
 
     private void opcode_SEI()
     {
-        System.out.println("opcode not implemented [opcode_SEI]");
+        throw new RuntimeException("opcode not implemented [opcode_SEI]");
     }
 
     private void opcode_STA_zero_page()
     {
-        System.out.println("opcode not implemented [opcode_STA_zero_page]");
+        throw new RuntimeException("opcode not implemented [opcode_STA_zero_page]");
     }
 
     private void opcode_STA_zero_page_X()
     {
-        System.out.println("opcode not implemented [opcode_STA_zero_page_X]");
+        throw new RuntimeException("opcode not implemented [opcode_STA_zero_page_X]");
     }
 
     private void opcode_STA_absolute()
     {
-        System.out.println("opcode not implemented [opcode_STA_absolute]");
+        throw new RuntimeException("opcode not implemented [opcode_STA_absolute]");
     }
 
     private void opcode_STA_absolute_X()
     {
-        System.out.println("opcode not implemented [opcode_STA_absolute_X]");
+        throw new RuntimeException("opcode not implemented [opcode_STA_absolute_X]");
     }
 
     private void opcode_STA_absolute_Y()
     {
-        System.out.println("opcode not implemented [opcode_STA_absolute_Y]");
+        throw new RuntimeException("opcode not implemented [opcode_STA_absolute_Y]");
     }
 
     private void opcode_STA_indirect_X()
     {
-        System.out.println("opcode not implemented [opcode_STA_indirect_X]");
+        throw new RuntimeException("opcode not implemented [opcode_STA_indirect_X]");
     }
 
     private void opcode_STA_indirect_Y()
     {
-        System.out.println("opcode not implemented [opcode_STA_indirect_Y]");
+        throw new RuntimeException("opcode not implemented [opcode_STA_indirect_Y]");
     }
 
     private void opcode_STX_zero_page()
@@ -970,56 +970,56 @@ public class MOS6502
 
     private void opcode_STX_zero_page_Y()
     {
-        System.out.println("opcode not implemented [opcode_STX_zero_page_Y]");
+        throw new RuntimeException("opcode not implemented [opcode_STX_zero_page_Y]");
     }
 
     private void opcode_STX_absolute()
     {
-        System.out.println("opcode not implemented [opcode_STX_absolute]");
+        throw new RuntimeException("opcode not implemented [opcode_STX_absolute]");
     }
 
     private void opcode_STY_zero_page()
     {
-        System.out.println("opcode not implemented [opcode_STY_zero_page]");
+        throw new RuntimeException("opcode not implemented [opcode_STY_zero_page]");
     }
 
     private void opcode_STY_zero_page_X()
     {
-        System.out.println("opcode not implemented [opcode_STY_zero_page_X]");
+        throw new RuntimeException("opcode not implemented [opcode_STY_zero_page_X]");
     }
 
     private void opcode_STY_absolute()
     {
-        System.out.println("opcode not implemented [opcode_STY_absolute]");
+        throw new RuntimeException("opcode not implemented [opcode_STY_absolute]");
     }
 
     private void opcode_TAX()
     {
-        System.out.println("opcode not implemented [opcode_TAX]");
+        throw new RuntimeException("opcode not implemented [opcode_TAX]");
     }
 
     private void opcode_TAY()
     {
-        System.out.println("opcode not implemented [opcode_TAY]");
+        throw new RuntimeException("opcode not implemented [opcode_TAY]");
     }
 
     private void opcode_TSX()
     {
-        System.out.println("opcode not implemented [opcode_TSX]");
+        throw new RuntimeException("opcode not implemented [opcode_TSX]");
     }
 
     private void opcode_TXA()
     {
-        System.out.println("opcode not implemented [opcode_TXA]");
+        throw new RuntimeException("opcode not implemented [opcode_TXA]");
     }
 
     private void opcode_TXS()
     {
-        System.out.println("opcode not implemented [opcode_TXS]");
+        throw new RuntimeException("opcode not implemented [opcode_TXS]");
     }
 
     private void opcode_TYA()
     {
-        System.out.println("opcode not implemented [opcode_TYA]");
+        throw new RuntimeException("opcode not implemented [opcode_TYA]");
     }    
 }
