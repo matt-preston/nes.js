@@ -5,6 +5,7 @@ public class Memory
     public static final int[] lowMem = new int[0x0800];
     public static final int[] prom   = new int[0x10000];
     
+    /*
     public static final int readSignedByte(int anAddress)
     {
         int _byte = readUnsignedByte(anAddress);
@@ -18,26 +19,22 @@ public class Memory
             return _byte - 256;
         }
     }
+    */
     
-    public static final int readWord(int anAddress)
-    {
-        return readUnsignedByte(anAddress) | (readUnsignedByte(anAddress + 1) << 8);
-    }
-    
-    public static final int readUnsignedByte(int anAddress)
+    public static final int readByte(int anAddress)
     {
         // Mask to 16 bit
         int _address = anAddress & 0xFFFF;
 
         if(_address < 0x2000)
         {
-            // Low memory 2KB (mirrored 3 times)
-            return lowMem[_address & 0x7FF] & 0xFF; // TODO, mask to a byte in the ROM loading?
+            // Low memory 2KB (mirrored 3 times)            
+            return byteAtIndex(lowMem, _address & 0x7FF);
         }
         else if (_address > 0x4017)
         {
             // Program ROM
-            return prom[_address] & 0xFF;  // TODO, mask to a byte in the ROM loading?
+            return byteAtIndex(prom, _address);
         }
 
         System.out.println("Don't know how to read from memory address [" + _address + "]");
@@ -45,7 +42,7 @@ public class Memory
         return 0;  // TODO
     }
     
-    public static final void writeUnsignedByte(int aByte, int anAddress)
+    public static final void writeByte(int aByte, int anAddress)
     {
         if (anAddress < 0x2000)
         {
@@ -61,5 +58,14 @@ public class Memory
         {
             System.out.println("Don't know how to write to memory at address [" + anAddress + "]");
         }
+    }
+    
+    private static final int byteAtIndex(int[] aMemory, int anIndex)
+    {
+        /**
+         * Mask to the lowest byte
+         * TODO - do this during ROM loading instead?
+         */
+        return aMemory[anIndex] & 0xFF;
     }
 }

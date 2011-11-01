@@ -57,6 +57,13 @@ public class OpcodeMethods
             System.out.println("    }");
             System.out.println();            
         }
+        
+        System.out.println("\n\n");
+        
+        for (Opcode _opcode : _opcodes)
+        {
+            System.out.printf("                    case 0x%s: return \"%s\";\n", _opcode.opcode, _opcode.function);
+        }
     }
             
     private static List<Opcode> getOpcodes(String aFile) throws Exception

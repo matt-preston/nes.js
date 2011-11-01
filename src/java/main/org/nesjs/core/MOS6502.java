@@ -1,5 +1,6 @@
 package org.nesjs.core;
 
+
 /**
  * MOS Technology 6502 core
  *
@@ -76,10 +77,10 @@ public class MOS6502
 
             System.out.print("PC now at: " + Utils.toHexString(pc));
 
-            int _opcode = Memory.readUnsignedByte(pc++);
+            int _opcode = Memory.readByte(pc++);
 
-            System.out.println(", opcode is: " + Utils.toHexString(_opcode));
-
+            System.out.printf(", opcode is: %s [%s]\n", Utils.toHexString(_opcode), Opcodes.name(_opcode));
+            
             switch(_opcode)
             {
                 case 0x69: opcode_ADC(); break;
@@ -263,7 +264,7 @@ public class MOS6502
 
     private void push(int aByte)
     {
-        Memory.writeUnsignedByte(aByte, sp);
+        Memory.writeByte(aByte, sp);
         sp--;
     }
     
@@ -368,7 +369,16 @@ public class MOS6502
 
     private void opcode_BCS()
     {
-        throw new RuntimeException("opcode not implemented [opcode_BCS]");
+        // Branch if Carry Set
+        if(carry > 0)
+        {
+            int _relative = Addressing.relative(pc++);
+            pc += _relative;
+        }
+        else
+        {
+            pc++;
+        }
     }
 
     private void opcode_BEQ()
@@ -608,7 +618,8 @@ public class MOS6502
 
     private void opcode_JMP()
     {
-        pc = Memory.readWord(pc);
+        // Jump to target address
+        pc = Addressing.absolute(pc);        
     }
 
     private void opcode_JMP_absolute()
@@ -619,7 +630,7 @@ public class MOS6502
     private void opcode_JSR()
     {
         // Jump to subroutine
-        int _address = Memory.readWord(pc);
+        int _address = Addressing.absolute(pc);
         
         push((pc >> 8) & 255);
         push(pc & 255);
@@ -670,8 +681,8 @@ public class MOS6502
     private void opcode_LDX()
     {
         // Load X with memory
-        this.x = Memory.readUnsignedByte(pc++);
-
+        this.x = Addressing.immediate(pc++);
+        
         negative = (this.x >> 7) & 1;
         not_zero = this.x;
     }
@@ -964,8 +975,8 @@ public class MOS6502
 
     private void opcode_STX_zero_page()
     {
-        int _address = Memory.readUnsignedByte(pc++);
-        Memory.writeUnsignedByte(x, _address);
+        // Store X register
+        Memory.writeByte(x, Addressing.zeroPage(pc++));
     }
 
     private void opcode_STX_zero_page_Y()
