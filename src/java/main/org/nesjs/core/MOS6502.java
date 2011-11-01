@@ -260,17 +260,40 @@ public class MOS6502
      * [7] negative
      */
     private void setProcessorStatusRegisterFromFlags()
-    {
-        int _decimal = 0; // not used
+    {        
         int _zero = isZeroFlagSet() ? 1 : 0;
         
-        p = carry << 0 | (_zero << 1) | (interruptDisable << 2) | (_decimal << 3) | (brk << 4) | (1 << 5) | (overflow << 6) | (negative << 7);        
+        p = carry << 0 | (_zero << 1) | (interruptDisable << 2) | (decimal << 3) | (brk << 4) | (1 << 5) | (overflow << 6) | (negative << 7);        
     }
+
+    
+//-------------------------------------------------------------
+// Stack
+//-------------------------------------------------------------    
 
     private void push(int aByte)
     {
         Memory.writeByte(aByte, sp);
         sp--;
+    }
+    
+    private int pop()
+    {
+        sp++;
+        sp = 0x0100 | (sp & 0xFF);
+        return Memory.readByte(sp);
+    }
+    
+    private void pushWord(int aWord)
+    {
+        push((aWord >> 8) & 255);
+        push(aWord & 255);
+    }
+    
+    private int popWord()
+    {
+        int _byte1 = pop();
+        return (pop() << 8) | _byte1;
     }
     
 //-------------------------------------------------------------
@@ -304,7 +327,11 @@ public class MOS6502
 
     private void opcode_AND()
     {
-        throw new RuntimeException("opcode not implemented [opcode_AND]");
+        // Logical AND
+        a &= Addressing.immediate(pc++);
+        
+        negative = (a >> 7) & 1;
+        not_zero = a;        
     }
 
     private void opcode_AND_zero_page()
@@ -412,20 +439,13 @@ public class MOS6502
     private void opcode_BIT_zero_page()
     {
         // Bit Test
-        int _value = Addressing.zeroPage(pc++);
-        
-        System.out.println("n: " + negative);
-        System.out.println("o: " + overflow);
-        
-        System.out.println("value: " + Integer.toBinaryString(_value));
+        int _address = Addressing.zeroPage(pc++);        
+        int _value = Memory.readByte(_address);
         
         negative = (_value >> 7) & 1;
         overflow = (_value >> 6) & 1;
         _value &= a;
-        not_zero = _value;
-        
-        System.out.println("n: " + negative);
-        System.out.println("o: " + overflow);
+        not_zero = _value;        
     }
 
     private void opcode_BIT_absolute()
@@ -454,7 +474,16 @@ public class MOS6502
 
     private void opcode_BPL()
     {
-        throw new RuntimeException("opcode not implemented [opcode_BPL]");
+        // Branch if Positive
+        if(negative == 0)
+        {
+            int _relative = Addressing.relative(pc++);
+            pc += _relative;
+        }
+        else
+        {
+            pc++;
+        }
     }
 
     private void opcode_BRK()
@@ -464,12 +493,30 @@ public class MOS6502
 
     private void opcode_BVC()
     {
-        throw new RuntimeException("opcode not implemented [opcode_BVC]");
+        // Branch if Overflow Clear
+        if(overflow == 0)
+        {
+            int _relative = Addressing.relative(pc++);
+            pc += _relative;
+        }
+        else
+        {
+            pc++;
+        }
     }
 
     private void opcode_BVS()
     {
-        throw new RuntimeException("opcode not implemented [opcode_BVS]");
+        // Branch if Overflow Set
+        if(overflow != 0)
+        {
+            int _relative = Addressing.relative(pc++);
+            pc += _relative;
+        }
+        else
+        {
+            pc++;
+        }
     }
 
     private void opcode_CLC()
@@ -480,7 +527,8 @@ public class MOS6502
 
     private void opcode_CLD()
     {
-        throw new RuntimeException("opcode not implemented [opcode_CLD]");
+        // Clear Decimal Mode
+        decimal = 0;
     }
 
     private void opcode_CLI()
@@ -495,7 +543,12 @@ public class MOS6502
 
     private void opcode_CMP()
     {
-        throw new RuntimeException("opcode not implemented [opcode_CMP]");
+        // Compare
+        int _temp = a - Addressing.immediate(pc++);
+        
+        carry = (_temp >= 0 ? 1:0);
+        not_zero = _temp & 0xFF;;
+        negative = (_temp >> 7) & 1;        
     }
 
     private void opcode_CMP_zero_page()
@@ -679,8 +732,7 @@ public class MOS6502
         // Jump to subroutine
         int _address = Addressing.absolute(pc);
         
-        push((pc >> 8) & 255);
-        push(pc & 255);
+        pushWord(pc + 2);
         
         pc = _address;
     }
@@ -860,12 +912,30 @@ public class MOS6502
 
     private void opcode_PHP()
     {
-        throw new RuntimeException("opcode not implemented [opcode_PHP]");
+        // Push Processor Status
+        
+        /**
+         * TODO, need a way of easily setting brk to 1 in the
+         * pushed processor status 
+         */
+        int _oldBrk = brk;
+        brk = 1;
+        
+        setProcessorStatusRegisterFromFlags();
+        
+        push(p);
+        
+        // Restore brk to what it was before - the needs to be an easier method
+        brk = _oldBrk;        
     }
 
     private void opcode_PLA()
     {
-        throw new RuntimeException("opcode not implemented [opcode_PLA]");
+        // Pull Accumulator
+        a = pop();
+        
+        not_zero = a;
+        negative = (a >> 7) & 1;
     }
 
     private void opcode_PLP()
@@ -930,7 +1000,8 @@ public class MOS6502
 
     private void opcode_RTS()
     {
-        throw new RuntimeException("opcode not implemented [opcode_RTS]");
+        // Return from Subroutine
+        pc = popWord();        
     }
 
     private void opcode_SBC()
@@ -981,12 +1052,14 @@ public class MOS6502
 
     private void opcode_SED()
     {
-        throw new RuntimeException("opcode not implemented [opcode_SED]");
+        // Set Decimal Flag
+        decimal = 1;  // TODO NOP??
     }
 
     private void opcode_SEI()
     {
-        throw new RuntimeException("opcode not implemented [opcode_SEI]");
+        // Set Interrupt Disable
+        interruptDisable = 1;
     }
 
     private void opcode_STA_zero_page()
