@@ -411,7 +411,21 @@ public class MOS6502
 
     private void opcode_BIT_zero_page()
     {
-        throw new RuntimeException("opcode not implemented [opcode_BIT_zero_page]");
+        // Bit Test
+        int _value = Addressing.zeroPage(pc++);
+        
+        System.out.println("n: " + negative);
+        System.out.println("o: " + overflow);
+        
+        System.out.println("value: " + Integer.toBinaryString(_value));
+        
+        negative = (_value >> 7) & 1;
+        overflow = (_value >> 6) & 1;
+        _value &= a;
+        not_zero = _value;
+        
+        System.out.println("n: " + negative);
+        System.out.println("o: " + overflow);
     }
 
     private void opcode_BIT_absolute()
@@ -426,7 +440,16 @@ public class MOS6502
 
     private void opcode_BNE()
     {
-        throw new RuntimeException("opcode not implemented [opcode_BNE]");
+        // Branch if Not Equal
+        if(!isZeroFlagSet())
+        {            
+            int _relative = Addressing.relative(pc++);
+            pc += _relative;
+        }
+        else
+        {
+            pc++;
+        }
     }
 
     private void opcode_BPL()
@@ -968,7 +991,8 @@ public class MOS6502
 
     private void opcode_STA_zero_page()
     {
-        throw new RuntimeException("opcode not implemented [opcode_STA_zero_page]");
+        // Store Accumulator        
+        Memory.writeByte(a, Addressing.zeroPage(pc++));
     }
 
     private void opcode_STA_zero_page_X()
