@@ -244,6 +244,11 @@ public class MOS6502
         return _clocksRemain;
     }
     
+    private boolean isZeroFlagSet()
+    {
+        return not_zero == 0;
+    }
+    
     /**
      * [0] carry
      * [1] zero
@@ -256,8 +261,8 @@ public class MOS6502
      */
     private void setProcessorStatusRegisterFromFlags()
     {
-        int _decimal = 0; // not used        
-        int _zero = not_zero != 0 ? 0 : 1;
+        int _decimal = 0; // not used
+        int _zero = isZeroFlagSet() ? 1 : 0;
         
         p = carry << 0 | (_zero << 1) | (interruptDisable << 2) | (_decimal << 3) | (brk << 4) | (1 << 5) | (overflow << 6) | (negative << 7);        
     }
@@ -364,13 +369,8 @@ public class MOS6502
 
     private void opcode_BCC()
     {
-        throw new RuntimeException("opcode not implemented [opcode_BCC]");
-    }
-
-    private void opcode_BCS()
-    {
-        // Branch if Carry Set
-        if(carry > 0)
+        // Branch if Carry Clear
+        if(carry == 0)
         {
             int _relative = Addressing.relative(pc++);
             pc += _relative;
@@ -381,9 +381,32 @@ public class MOS6502
         }
     }
 
+    private void opcode_BCS()
+    {
+        // Branch if Carry Set
+        if(carry > 0)
+        {
+            int _relative = Addressing.relative(pc++); 
+            pc += _relative;
+        }
+        else
+        {
+            pc++;
+        }
+    }
+
     private void opcode_BEQ()
     {
-        throw new RuntimeException("opcode not implemented [opcode_BEQ]");
+        // Branch if Equal
+        if(isZeroFlagSet())
+        {            
+            int _relative = Addressing.relative(pc++);
+            pc += _relative;
+        }
+        else
+        {
+            pc++;
+        }
     }
 
     private void opcode_BIT_zero_page()
@@ -428,7 +451,8 @@ public class MOS6502
 
     private void opcode_CLC()
     {
-        throw new RuntimeException("opcode not implemented [opcode_CLC]");
+        // Clear Carry Flag
+        carry = 0;
     }
 
     private void opcode_CLD()
@@ -640,7 +664,11 @@ public class MOS6502
 
     private void opcode_LDA()
     {
-        throw new RuntimeException("opcode not implemented [opcode_LDA]");
+        // Load Accumulator
+        a = Addressing.immediate(pc++);
+        
+        negative = (a >> 7) & 1;
+        not_zero = a;
     }
 
     private void opcode_LDA_zero_page()
@@ -683,8 +711,8 @@ public class MOS6502
         // Load X with memory
         this.x = Addressing.immediate(pc++);
         
-        negative = (this.x >> 7) & 1;
-        not_zero = this.x;
+        negative = (x >> 7) & 1;
+        not_zero = x;
     }
 
     private void opcode_LDX_zero_page()
