@@ -4,23 +4,7 @@ public class Memory
 {
     public static final int[] lowMem = new int[0x0800];
     public static final int[] prom   = new int[0x10000];
-    
-    /*
-    public static final int readSignedByte(int anAddress)
-    {
-        int _byte = readUnsignedByte(anAddress);
-
-        if (_byte < 0x80)
-        {
-            return _byte;
-        } 
-        else
-        {
-            return _byte - 256;
-        }
-    }
-    */
-    
+        
     public static final int readByte(int anAddress)
     {
         // Mask to 16 bit

@@ -263,7 +263,20 @@ public class MOS6502
     {        
         int _zero = isZeroFlagSet() ? 1 : 0;
         
-        p = carry << 0 | (_zero << 1) | (interruptDisable << 2) | (decimal << 3) | (brk << 4) | (1 << 5) | (overflow << 6) | (negative << 7);        
+        p = carry << 0 | (_zero << 1) | (interruptDisable << 2) | (decimal << 3) | (brk << 4) | (1 << 5) | (overflow << 6) | (negative << 7);
+        
+        /*
+        if(p > 0xFF)
+        {
+            System.out.println("oops, p is: " + Utils.toHexString(p));
+            System.out.println("carry: " + carry);
+            System.out.println("interrupt disable: " + interruptDisable);
+            System.out.println("decimal: " + decimal);
+            System.out.println("brk: " + brk);
+            System.out.println("overflow: " + overflow);
+            System.out.println("negative: " + negative);
+        }
+        */
     }
 
     
@@ -302,7 +315,16 @@ public class MOS6502
     
     private void opcode_ADC()
     {
-        throw new RuntimeException("opcode not implemented [opcode_ADC]");
+        // Add with Carry
+        int _value = Addressing.immediate(pc++);
+        int _temp = a + _value + carry;
+        
+        carry = _temp > 0xFF ? 1 : 0;
+        not_zero = _temp & 0xFF;
+        overflow = ((!(((a ^ _value) & 0x80) != 0) && (((a ^ _temp) & 0x80)) != 0) ? 1 : 0);
+        negative = (_temp >> 7) & 1;
+        
+        a = _temp & 0xFF;
     }
 
     private void opcode_ADC_zero_page()
@@ -371,7 +393,12 @@ public class MOS6502
 
     private void opcode_ASL()
     {
-        throw new RuntimeException("opcode not implemented [opcode_ASL]");
+        // Arithmetic Shift Left
+        carry = (a >> 7) & 1;
+        a = (a << 1) & 0xFF;
+        
+        negative = (a >> 7) & 1;
+        not_zero = a;
     }
 
     private void opcode_ASL_zero_page()
@@ -547,7 +574,8 @@ public class MOS6502
 
     private void opcode_CLV()
     {
-        throw new RuntimeException("opcode not implemented [opcode_CLV]");
+        // Clear Overflow Flag
+        overflow = 0;
     }
 
     private void opcode_CMP()
@@ -597,7 +625,12 @@ public class MOS6502
 
     private void opcode_CPX()
     {
-        throw new RuntimeException("opcode not implemented [opcode_CPX]");
+        // Compare X Register
+        int _temp = x - Addressing.immediate(pc++);
+        
+        carry = (_temp >= 0 ? 1:0);
+        not_zero = _temp & 0xFF;;
+        negative = (_temp >> 7) & 1;
     }
 
     private void opcode_CPX_zero_page()
@@ -612,7 +645,12 @@ public class MOS6502
 
     private void opcode_CPY()
     {
-        throw new RuntimeException("opcode not implemented [opcode_CPY]");
+        // Compare Y Register
+        int _temp = y - Addressing.immediate(pc++);
+        
+        carry = (_temp >= 0 ? 1:0);
+        not_zero = _temp & 0xFF;;
+        negative = (_temp >> 7) & 1;
     }
 
     private void opcode_CPY_zero_page()
@@ -647,17 +685,29 @@ public class MOS6502
 
     private void opcode_DEX()
     {
-        throw new RuntimeException("opcode not implemented [opcode_DEX]");
+        // Decrement X Register
+        x = (x - 1) & 0xFF;
+        
+        not_zero = x & 0xFF;
+        negative = (x >> 7) & 1;
     }
 
     private void opcode_DEY()
     {
-        throw new RuntimeException("opcode not implemented [opcode_DEY]");
+        // Decrement Y Register
+        y = (y - 1) & 0xFF;
+        
+        not_zero = y & 0xFF;
+        negative = (y >> 7) & 1;
     }
 
     private void opcode_EOR()
     {
-        throw new RuntimeException("opcode not implemented [opcode_EOR]");
+        // Exclusive OR
+        a ^=  Addressing.immediate(pc++);
+        
+        not_zero = a & 0xFF;;
+        negative = (a >> 7) & 1;        
     }
 
     private void opcode_EOR_zero_page()
@@ -717,12 +767,20 @@ public class MOS6502
 
     private void opcode_INX()
     {
-        throw new RuntimeException("opcode not implemented [opcode_INX]");
+       // Increment X Register
+        x = (x + 1) & 0xFF;
+        
+        not_zero = x & 0xFF;
+        negative = (x >> 7) & 1;
     }
 
     private void opcode_INY()
     {
-        throw new RuntimeException("opcode not implemented [opcode_INY]");
+        // Increment Y Register
+        y = (y + 1) & 0xFF;
+        
+        not_zero = y & 0xFF;
+        negative = (y >> 7) & 1;        
     }
 
     private void opcode_JMP()
@@ -741,7 +799,7 @@ public class MOS6502
         // Jump to subroutine
         int _address = Addressing.absolute(pc);
         
-        pushWord(pc + 2);
+        pushWord((pc + 2) - 1);
         
         pc = _address;
     }
@@ -767,7 +825,14 @@ public class MOS6502
 
     private void opcode_LDA_absolute()
     {
-        throw new RuntimeException("opcode not implemented [opcode_LDA_absolute]");
+        // Load Accumulator
+        int _address = Addressing.absolute(pc++); 
+        a = Memory.readByte(_address);
+        
+        negative = (a >> 7) & 1;
+        not_zero = a;
+        
+        pc++;
     }
 
     private void opcode_LDA_absolute_X()
@@ -811,7 +876,14 @@ public class MOS6502
 
     private void opcode_LDX_absolute()
     {
-        throw new RuntimeException("opcode not implemented [opcode_LDX_absolute]");
+        // Load X with memory
+        int _address = Addressing.absolute(pc++);
+        this.x = Memory.readByte(_address);
+        
+        negative = (x >> 7) & 1;
+        not_zero = x;
+        
+        pc++;
     }
 
     private void opcode_LDX_absolute_Y()
@@ -821,7 +893,11 @@ public class MOS6502
 
     private void opcode_LDY()
     {
-        throw new RuntimeException("opcode not implemented [opcode_LDY]");
+        // Load Y Register
+        y = Addressing.immediate(pc++);
+        
+        negative = (y >> 7) & 1;
+        not_zero = y;
     }
 
     private void opcode_LDY_zero_page()
@@ -846,7 +922,12 @@ public class MOS6502
 
     private void opcode_LSR()
     {
-        throw new RuntimeException("opcode not implemented [opcode_LSR]");
+        // Logical Shift Right
+        carry = a & 1; // old bit 0       
+        a >>= 1;
+        
+        not_zero = a;
+        negative = 0;        
     }
 
     private void opcode_LSR_zero_page()
@@ -876,7 +957,11 @@ public class MOS6502
 
     private void opcode_ORA()
     {
-        throw new RuntimeException("opcode not implemented [opcode_ORA]");
+        // Logical Inclusive OR
+        a |=  Addressing.immediate(pc++);
+        
+        not_zero = a & 0xFF;;
+        negative = (a >> 7) & 1; 
     }
 
     private void opcode_ORA_zero_page()
@@ -945,7 +1030,7 @@ public class MOS6502
         a = pop();
         
         not_zero = a;
-        negative = (a >> 7) & 1;
+        negative = (a >> 7) & 1;        
     }
 
     private void opcode_PLP()
@@ -1014,18 +1099,38 @@ public class MOS6502
 
     private void opcode_RTI()
     {
-        throw new RuntimeException("opcode not implemented [opcode_RTI]");
+        // Return from Interrupt        
+        int _temp = pop();
+        
+        carry            = (_temp) & 1;
+        not_zero         = ((_temp >> 1) & 1) == 1 ? 0 : 1;
+        interruptDisable = (_temp >> 2) & 1;
+        decimal          = (_temp >> 3) & 1; 
+        brk              = 0; // TODO, very unsure about this...
+        overflow         = (_temp >> 6) & 1;
+        negative         = (_temp >> 7) & 1;
+        
+        pc = popWord();
     }
 
     private void opcode_RTS()
     {
         // Return from Subroutine
-        pc = popWord();        
+        pc = popWord() + 1;        
     }
 
     private void opcode_SBC()
     {
-        throw new RuntimeException("opcode not implemented [opcode_SBC]");
+        // Subtract with Carry
+        int _value = Addressing.immediate(pc++);
+        int _temp = a - _value - (1 - carry);
+        
+        carry = _temp < 0 ? 0 : 1;
+        not_zero = _temp & 0xFF;
+        overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
+        negative = (_temp >> 7) & 1;
+        
+        a = _temp & 0xFF;
     }
 
     private void opcode_SBC_zero_page()
@@ -1130,7 +1235,9 @@ public class MOS6502
 
     private void opcode_STX_absolute()
     {
-        throw new RuntimeException("opcode not implemented [opcode_STX_absolute]");
+        // Store X register
+        Memory.writeByte(x, Addressing.absolute(pc++));        
+        pc++;
     }
 
     private void opcode_STY_zero_page()
@@ -1150,31 +1257,52 @@ public class MOS6502
 
     private void opcode_TAX()
     {
-        throw new RuntimeException("opcode not implemented [opcode_TAX]");
+        // Transfer Accumulator to X
+        x = a;
+        
+        not_zero = x & 0xFF;
+        negative = (x >> 7) & 1;
     }
 
     private void opcode_TAY()
     {
-        throw new RuntimeException("opcode not implemented [opcode_TAY]");
+        // Transfer Accumulator to Y
+        y = a;
+        
+        not_zero = y & 0xFF;
+        negative = (y >> 7) & 1;
     }
 
     private void opcode_TSX()
     {
-        throw new RuntimeException("opcode not implemented [opcode_TSX]");
+        //  Transfer Stack Pointer to X
+        x = sp & 0xFF; // Only transfer the lower 8 bits
+        
+        not_zero = x & 0xFF;
+        negative = (x >> 7) & 1;
     }
 
     private void opcode_TXA()
     {
-        throw new RuntimeException("opcode not implemented [opcode_TXA]");
+        // Transfer X to Accumulator
+        a = x;
+        
+        not_zero = a & 0xFF;
+        negative = (a >> 7) & 1;
     }
 
     private void opcode_TXS()
     {
-        throw new RuntimeException("opcode not implemented [opcode_TXS]");
+        // Transfer X to Stack Pointer
+        sp = x | 0x0100;
     }
 
     private void opcode_TYA()
     {
-        throw new RuntimeException("opcode not implemented [opcode_TYA]");
+        // Transfer Y to Accumulator
+        a = y;
+        
+        not_zero = a & 0xFF;
+        negative = (a >> 7) & 1;
     }    
 }
