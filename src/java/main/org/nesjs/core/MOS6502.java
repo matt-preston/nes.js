@@ -455,7 +455,16 @@ public class MOS6502
 
     private void opcode_BMI()
     {
-        throw new RuntimeException("opcode not implemented [opcode_BMI]");
+    	// Branch if Minus
+    	if(negative != 0)
+    	{
+    		int _address = Addressing.relative(pc++);
+    		pc += _address;
+    	}
+    	else
+    	{
+    		pc++;
+    	}
     }
 
     private void opcode_BNE()
@@ -907,14 +916,15 @@ public class MOS6502
 
     private void opcode_PHA()
     {
-        throw new RuntimeException("opcode not implemented [opcode_PHA]");
+        // Push Accumulator
+    	push(a);
     }
 
     private void opcode_PHP()
     {
         // Push Processor Status
         
-        /**
+    	/**
          * TODO, need a way of easily setting brk to 1 in the
          * pushed processor status 
          */
@@ -926,7 +936,7 @@ public class MOS6502
         push(p);
         
         // Restore brk to what it was before - the needs to be an easier method
-        brk = _oldBrk;        
+        brk = _oldBrk;
     }
 
     private void opcode_PLA()
@@ -940,7 +950,16 @@ public class MOS6502
 
     private void opcode_PLP()
     {
-        throw new RuntimeException("opcode not implemented [opcode_PLP]");
+        // Pull Processor Status
+    	int _temp = pop();
+    	
+    	carry            = (_temp) & 1;
+        not_zero         = ((_temp >> 1) & 1) == 1 ? 0 : 1;
+        interruptDisable = (_temp >> 2) & 1;
+        decimal          = (_temp >> 3) & 1; 
+        brk              = 0; // TODO, very unsure about this...
+        overflow         = (_temp >> 6) & 1;
+        negative         = (_temp >> 7) & 1;        
     }
 
     private void opcode_ROL()
