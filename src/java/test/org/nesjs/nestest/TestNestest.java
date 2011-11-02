@@ -9,6 +9,7 @@ import org.junit.*;
 import org.nesjs.core.*;
 import static org.nesjs.core.Utils.*;
 
+
 public class TestNestest
 {
     @Test
