@@ -815,12 +815,16 @@ public class MOS6502
 
     private void opcode_LDA_zero_page()
     {
-        throw new RuntimeException("opcode not implemented [opcode_LDA_zero_page]");
+    	// Load Accumulator
+    	a = Addressing.zeroPage(pc++);
+    	
+    	negative = (a >> 7) & 1;
+        not_zero = a;
     }
 
     private void opcode_LDA_zero_page_X()
     {
-        throw new RuntimeException("opcode not implemented [opcode_LDA_zero_page_X]");
+    	throw new RuntimeException("opcode not implemented [opcode_LDA_zero_page_X]");
     }
 
     private void opcode_LDA_absolute()
@@ -847,7 +851,12 @@ public class MOS6502
 
     private void opcode_LDA_indirect_X()
     {
-        throw new RuntimeException("opcode not implemented [opcode_LDA_indirect_X]");
+    	// Load Accumulator
+        int _address = Addressing.indirectX(pc++, x);
+        a = Memory.readByte(_address);
+        
+    	negative = (a >> 7) & 1;
+        not_zero = a;
     }
 
     private void opcode_LDA_indirect_Y()
@@ -1049,7 +1058,16 @@ public class MOS6502
 
     private void opcode_ROL()
     {
-        throw new RuntimeException("opcode not implemented [opcode_ROL]");
+        // Rotate Left
+        int _temp = a;
+		int _add = carry;
+		
+		carry = (_temp >> 7) &1;
+		
+		a = ((_temp << 1) & 0xFF) + _add;
+		
+		negative = (a >> 7) & 1;
+		not_zero = a & 0xFF;
     }
 
     private void opcode_ROL_zero_page()
@@ -1074,7 +1092,14 @@ public class MOS6502
 
     private void opcode_ROR()
     {
-        throw new RuntimeException("opcode not implemented [opcode_ROR]");
+        // Rotate Right
+    	int _add = carry << 7;
+    	
+		carry = a & 1;
+		a = (a >> 1) + _add;
+		
+		negative = (a >> 7) & 1;
+		not_zero = a & 0xFF;
     }
 
     private void opcode_ROR_zero_page()
@@ -1199,7 +1224,9 @@ public class MOS6502
 
     private void opcode_STA_absolute()
     {
-        throw new RuntimeException("opcode not implemented [opcode_STA_absolute]");
+        // Store Accumulator    	
+    	Memory.writeByte(a, Addressing.absolute(pc++));
+    	pc++;
     }
 
     private void opcode_STA_absolute_X()

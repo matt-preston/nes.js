@@ -61,6 +61,21 @@ public class Addressing
         return readSignedByte(anAddress);
     }
     
+    /**
+     * Indexed indirect addressing is normally used in conjunction with a table of address held on zero page. 
+     * The address of the table is taken from the instruction and the X register added to it (with zero page 
+     * wrap around) to give the location of the least significant byte of the target address.
+     * 
+     * @param anAddress
+     * @return
+     */
+    public static final int indirectX(int anAddress, int anX)
+    {
+    	int _address = (Memory.readByte(anAddress) + anX) & 0xFF;
+    	
+		return readWord(_address);
+    }
+    
 //--------------------------------------
 // Addressing utilities   
 //--------------------------------------    
