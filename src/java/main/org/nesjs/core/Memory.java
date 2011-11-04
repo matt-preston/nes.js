@@ -1,10 +1,25 @@
 package org.nesjs.core;
 
+
 public class Memory
 {
     public static final int[] lowMem = new int[0x0800];
     public static final int[] prom   = new int[0x10000];
         
+    public static void resetLowMemory() 
+    {
+        for (int _index = 0; _index < lowMem.length; _index++) 
+        {
+            lowMem[_index] = 0xFF;
+        }
+        
+        lowMem[0x008] = 0xF7;
+        lowMem[0x009] = 0xEF;
+        lowMem[0x00A] = 0xDF;
+        lowMem[0x00F] = 0xBF;
+    }
+    
+    
     public static final int readByte(int anAddress)
     {
         // Mask to 16 bit
@@ -28,6 +43,9 @@ public class Memory
     
     public static final void writeByte(int aByte, int anAddress)
     {
+        if(aByte == 0x04)
+            System.out.printf("Write to memory [%s] => [%s]\n", Utils.toHexString(anAddress), Utils.toHexString(aByte));
+        
         if (anAddress < 0x2000)
         {
             // Low memory 2KB (mirrored 3 times)

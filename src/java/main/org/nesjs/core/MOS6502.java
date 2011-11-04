@@ -38,6 +38,8 @@ public class MOS6502
     
     public void reset()
     {
+        Memory.resetLowMemory();
+        
         a = 0;
         x = 0;
         y = 0;
