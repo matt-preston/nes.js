@@ -12,6 +12,9 @@ public class Opcodes
             case 0x75: return "opcode_ADC_zero_page_X";
             case 0x6D: return "opcode_ADC_absolute";
             case 0x7D: return "opcode_ADC_absolute_X";
+            case 0x79: return "opcode_ADC_absolute_Y";
+            case 0x61: return "opcode_ADC_indirect_X";
+            case 0x71: return "opcode_ADC_indirect_Y";
             case 0x29: return "opcode_AND";
             case 0x25: return "opcode_AND_zero_page";
             case 0x35: return "opcode_AND_zero_page_X";

@@ -36,6 +36,12 @@ Lets begin shall we?
       ADC        aa,X                  75
       ADC        aaaa                  6D
       ADC        aaaa,X                7D
+      
+      // Matt additions...
+      
+      ADC        aaaa,Y                79
+      ADC        (aa,X)                61
+      ADC        (aa),Y                71
 
 ======================================================================
 
