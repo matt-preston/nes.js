@@ -53,6 +53,40 @@ public class Addressing
     }
     
     /**
+     * The address to be accessed by an instruction using indexed zero page addressing is calculated 
+     * by taking the 8 bit zero page address from the instruction and adding the current value of the 
+     * X register to it. For example if the X register contains $0F and the instruction LDA $80,X is 
+     * executed then the accumulator will be loaded from $008F (e.g. $80 + $0F => $8F).
+     * 
+     * NB:
+     * The address calculation wraps around if the sum of the base address and the register exceed $FF. 
+     * If we repeat the last example but with $FF in the X register then the accumulator will be loaded 
+     * from $007F (e.g. $80 + $FF => $7F) and not $017F.
+     * 
+     * @param anAddress
+     * @param anX
+     * @return
+     */
+    public static final int zeroPageX(int anAddress, int anX)
+    {
+        return (Memory.readByte(anAddress) + anX) & 0xFF;        
+    }
+    
+    /**
+     * The address to be accessed by an instruction using indexed zero page addressing is calculated by 
+     * taking the 8 bit zero page address from the instruction and adding the current value of the Y register
+     * to it. This mode can only be used with the LDX and STX instructions.
+     * 
+     * @param anAddress
+     * @param anY
+     * @return
+     */
+    public static final int zeroPageY(int anAddress, int anY)
+    {
+        return (Memory.readByte(anAddress) + anY) & 0xFF;        
+    }
+    
+    /**
      * Relative addressing mode is used by branch instructions (e.g. BEQ, BNE, etc.) which contain 
      * a signed 8 bit relative offset (e.g. -128 to +127) which is added to program counter if the 
      * condition is true. As the program counter itself is incremented during instruction execution 
