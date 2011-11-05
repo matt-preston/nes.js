@@ -492,7 +492,19 @@ public class MOS6502
 
     private void opcode_ASL_absolute()
     {
-        throw new RuntimeException("opcode not implemented [opcode_ASL_absolute]");
+        // Arithmetic Shift Left
+        int _address = Addressing.absolute(pc++);
+        int _value = Memory.readByte(_address);
+        
+        pc++;
+        
+        carry = (_value >> 7) & 1;
+        _value = (_value << 1) & 0xFF;
+        
+        Memory.writeByte(_value, _address);
+        
+        negative = (_value >> 7) & 1;
+        not_zero = _value;
     }
 
     private void opcode_ASL_absolute_X()
@@ -754,7 +766,15 @@ public class MOS6502
 
     private void opcode_CPX_absolute()
     {
-        throw new RuntimeException("opcode not implemented [opcode_CPX_absolute]");
+        // Compare X Register
+        int _address = Addressing.absolute(pc++);
+        int _temp = x - Memory.readByte(_address);
+        
+        pc++;
+        
+        carry = (_temp >= 0 ? 1:0);
+        not_zero = _temp & 0xFF;;
+        negative = (_temp >> 7) & 1;
     }
 
     private void opcode_CPY()
@@ -780,7 +800,15 @@ public class MOS6502
 
     private void opcode_CPY_absolute()
     {
-        throw new RuntimeException("opcode not implemented [opcode_CPY_absolute]");
+        // Compare Y Register
+        int _address = Addressing.absolute(pc++);
+        int _temp = y - Memory.readByte(_address);
+        
+        pc++;
+        
+        carry = (_temp >= 0 ? 1:0);
+        not_zero = _temp & 0xFF;;
+        negative = (_temp >> 7) & 1;
     }
 
     private void opcode_DEC_zero_page()
@@ -803,7 +831,17 @@ public class MOS6502
 
     private void opcode_DEC_absolute()
     {
-        throw new RuntimeException("opcode not implemented [opcode_DEC_absolute]");
+         // Decrement Memory
+        int _address = Addressing.absolute(pc++);
+        
+        pc++;
+        
+        int _value = Memory.readByte(_address) - 1;
+        
+        Memory.writeByte(_value, _address);
+        
+        not_zero = _value & 0xFF;
+        negative = (_value >> 7) & 1;
     }
 
     private void opcode_DEC_absolute_X()
@@ -910,7 +948,17 @@ public class MOS6502
 
     private void opcode_INC_absolute()
     {
-        throw new RuntimeException("opcode not implemented [opcode_INC_absolute]");
+        // Increment Memory
+        int _address = Addressing.absolute(pc++);
+        
+        pc++;
+        
+        int _value = Memory.readByte(_address) + 1;
+        
+        Memory.writeByte(_value, _address);
+        
+        not_zero = _value & 0xFF;
+        negative = (_value >> 7) & 1;
     }
 
     private void opcode_INC_absolute_X()
@@ -1132,7 +1180,19 @@ public class MOS6502
 
     private void opcode_LSR_absolute()
     {
-        throw new RuntimeException("opcode not implemented [opcode_LSR_absolute]");
+        // Logical Shift Right
+        int _address = Addressing.absolute(pc++);
+        int _value = Memory.readByte(_address);
+        
+        pc++;
+        
+        carry = _value & 1; // old bit 0       
+        _value >>= 1;
+        
+        Memory.writeByte(_value, _address);
+        
+        not_zero = _value;
+        negative = 0;
     }
 
     private void opcode_LSR_absolute_X()
@@ -1294,7 +1354,23 @@ public class MOS6502
 
     private void opcode_ROL_absolute()
     {
-        throw new RuntimeException("opcode not implemented [opcode_ROL_absolute]");
+        // Rotate Left
+        int _address = Addressing.absolute(pc++);
+        int _value = Memory.readByte(_address);
+        
+        pc++;
+        
+        int _temp = _value;
+        int _add = carry;
+        
+        carry = (_temp >> 7) &1;
+        
+        _value = ((_temp << 1) & 0xFF) + _add;
+        
+        Memory.writeByte(_value, _address);
+        
+        negative = (_value >> 7) & 1;
+        not_zero = _value & 0xFF;
     }
 
     private void opcode_ROL_absolute_X()
@@ -1338,7 +1414,21 @@ public class MOS6502
 
     private void opcode_ROR_absolute()
     {
-        throw new RuntimeException("opcode not implemented [opcode_ROR_absolute]");
+        // Rotate Right
+        int _address = Addressing.absolute(pc++);
+        int _value = Memory.readByte(_address);
+        
+        pc++;
+        
+        int _add = carry << 7;
+        
+        carry = _value & 1;
+        _value = (_value >> 1) + _add;
+        
+        Memory.writeByte(_value, _address);
+        
+        negative = (_value >> 7) & 1;
+        not_zero = _value & 0xFF;
     }
 
     private void opcode_ROR_absolute_X()
@@ -1404,7 +1494,19 @@ public class MOS6502
 
     private void opcode_SBC_absolute()
     {
-        throw new RuntimeException("opcode not implemented [opcode_SBC_absolute]");
+        // Subtract with Carry
+        int _address = Addressing.absolute(pc++);
+        int _value = Memory.readByte(_address);
+        int _temp = a - _value - (1 - carry);
+        
+        pc++;
+        
+        carry = _temp < 0 ? 0 : 1;
+        not_zero = _temp & 0xFF;
+        overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
+        negative = (_temp >> 7) & 1;
+        
+        a = _temp & 0xFF;
     }
 
     private void opcode_SBC_absolute_X()
