@@ -26,7 +26,7 @@ public class TestNestest
 
         int _stepCount = 0;
         
-        for (CPUState _state : getExpectedCpuStates(2000))
+        for (CPUState _state : getExpectedCpuStates(2600))
         {
             assertHexEquals("PC not valid at step [" + _stepCount + "]", _state.pc, _6502.pc);
             assertHexEquals("A not valid at step [" + _stepCount + "]", _state.a, _6502.a);

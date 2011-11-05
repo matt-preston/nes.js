@@ -2,7 +2,7 @@ package org.nesjs.core;
 
 /**
  * TODO, sort out the semantics.  Some methods return the address, others, like absolute, 
- *       return the value at the address.  All should return an address - not the value.
+ *       return the value at the address.  All should return an address or value?  Or should be named better?
  *       
  * @author Matt
  */
