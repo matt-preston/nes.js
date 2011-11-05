@@ -12,9 +12,9 @@ public class OpcodeMethods
         /*0x10*/ 0,4,0,0,0,5,5,0,0,6,0,0,0,7,7,0,
         /*0x20*/ 0,1,0,0,2,2,2,0,0,0,0,0,3,3,3,0,
         /*0x30*/ 0,4,0,0,0,5,5,0,0,6,0,0,0,7,7,0,
-        /*0x40*/ 0,1,0,0,0,2,2,0,0,0,0,0,0,3,3,0,
+        /*0x40*/ 0,1,0,0,0,2,2,0,0,0,0,0,3,3,3,0,
         /*0x50*/ 0,4,0,0,0,5,5,0,0,6,0,0,0,7,7,0,
-        /*0x60*/ 0,1,0,0,0,2,2,0,0,0,0,0,3,3,3,0,
+        /*0x60*/ 0,1,0,0,0,2,2,0,0,0,0,0,9,3,3,0,
         /*0x70*/ 0,4,0,0,0,5,5,0,0,6,0,0,0,7,7,0,
         /*0x80*/ 0,1,0,0,2,2,2,0,0,0,0,0,3,3,3,0,
         /*0x90*/ 0,4,0,0,5,5,8,0,0,6,0,0,0,7,0,0,
@@ -101,6 +101,7 @@ public class OpcodeMethods
                     case 6:  _functionSuffix = "_absolute_Y";   break;
                     case 7:  _functionSuffix = "_absolute_X";   break;
                     case 8:  _functionSuffix = "_zero_page_Y";  break;
+                    case 9:  _functionSuffix = "_indirect";     break;
                 }
                 
                 _opcodes.add(new Opcode(_mnemonic, _opcode, "opcode_" + _mnemonic + _functionSuffix));

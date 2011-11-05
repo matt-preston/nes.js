@@ -156,8 +156,8 @@ public class MOS6502
                 case 0xFE: opcode_INC_absolute_X(); break;
                 case 0xE8: opcode_INX(); break;
                 case 0xC8: opcode_INY(); break;
-                case 0x4C: opcode_JMP(); break;
-                case 0x6C: opcode_JMP_absolute(); break;
+                case 0x4C: opcode_JMP_absolute(); break;
+                case 0x6C: opcode_JMP_indirect(); break;
                 case 0x20: opcode_JSR(); break;
                 case 0xA9: opcode_LDA(); break;
                 case 0xA5: opcode_LDA_zero_page(); break;
@@ -1009,17 +1009,17 @@ public class MOS6502
         negative = (y >> 7) & 1;        
     }
 
-    private void opcode_JMP()
-    {
-        // Jump to target address
-        pc = Addressing.absolute(pc);        
-    }
-
     private void opcode_JMP_absolute()
     {
-        throw new RuntimeException("opcode not implemented [opcode_JMP_absolute]");
+        // Jump to target address
+        pc = Addressing.absolute(pc);
     }
 
+    private void opcode_JMP_indirect()
+    {
+        throw new RuntimeException("opcode not implemented [opcode_JMP_indirect]");
+    }
+    
     private void opcode_JSR()
     {
         // Jump to subroutine
