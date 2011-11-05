@@ -160,6 +160,7 @@ public class MOS6502
                 case 0x4C: opcode_JMP_absolute(); break;
                 case 0x6C: opcode_JMP_indirect(); break;
                 case 0x20: opcode_JSR(); break;
+                case 0xA3: opcode_LAX_indirect_X(); break;
                 case 0xA9: opcode_LDA_immediate(); break;
                 case 0xA5: opcode_LDA_zero_page(); break;
                 case 0xB5: opcode_LDA_zero_page_X(); break;
@@ -1207,6 +1208,17 @@ public class MOS6502
         pc = _address;
     }
 
+    private void opcode_LAX_indirect_X()
+    {
+        // Load Accumulator and X with memory
+        int _address = Addressing.indirectX(pc++, x);
+        a = Memory.readByte(_address);
+        x = a;
+        
+        negative = (a >> 7) & 1;
+        not_zero = a;
+    }
+    
     private void opcode_LDA_immediate()
     {
         // Load Accumulator

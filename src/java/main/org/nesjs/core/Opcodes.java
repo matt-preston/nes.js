@@ -80,6 +80,7 @@ public class Opcodes
             case 0x4C: return "opcode_JMP_absolute";
             case 0x6C: return "opcode_JMP_indirect";
             case 0x20: return "opcode_JSR";
+            case 0xA3: return "opcode_LAX_indirect_X";
             case 0xA9: return "opcode_LDA_immediate";
             case 0xA5: return "opcode_LDA_zero_page";
             case 0xB5: return "opcode_LDA_zero_page_X";

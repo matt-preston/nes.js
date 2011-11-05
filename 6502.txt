@@ -452,6 +452,19 @@ N.B. CMP, CPX, and CPY all set flags according to:
 
 ======================================================================
 
+   LAX  -  Load Accumulator and X with memory (Undocumented)
+
+						Flags Affected:
+						---------------
+      M -> A, X                                 N, Z
+
+      Mnemonic   Addressing Mode       Opcode
+      ---------------------------------------
+      
+      LAX        ($aa,X)               A3
+
+======================================================================
+
    LDA  -  Load Accumulator with memory
    
 						Flags Affected:
