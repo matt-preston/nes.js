@@ -2,6 +2,7 @@ package org.nesjs.core;
 
 
 
+
 /**
  * MOS Technology 6502 core
  *
@@ -1017,7 +1018,8 @@ public class MOS6502
 
     private void opcode_JMP_indirect()
     {
-        throw new RuntimeException("opcode not implemented [opcode_JMP_indirect]");
+        // Jump to target address
+        pc = Addressing.indirect(pc);   
     }
     
     private void opcode_JSR()

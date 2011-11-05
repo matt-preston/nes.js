@@ -102,6 +102,38 @@ public class Addressing
         return _address + anY;
     }
     
+    /**
+     * JMP is the only 6502 instruction to support indirection. The instruction contains a 16 bit address which 
+     * identifies the location of the least significant byte of another 16 bit memory address which is the real 
+     * target of the instruction.
+     * 
+     * For example if location $0120 contains $FC and location $0121 contains $BA then the instruction JMP ($0120) 
+     * will cause the next instruction execution to occur at $BAFC (e.g. the contents of $0120 and $0121).
+     * 
+     * N.B.
+     * An original 6502 has does not correctly fetch the target address if the indirect vector falls on a page 
+     * boundary (e.g. $xxFF where xx is and value from $00 to $FF). In this case fetches the LSB from $xxFF as expected 
+     * but takes the MSB from $xx00. This is fixed in some later chips like the 65SC02 so for compatibility always 
+     * ensure the indirect vector is not at the end of the page.
+     * 
+     * @param anAddress
+     * @return
+     */
+    public static final int indirect(int anAddress)
+    {
+        int _address = readWord(anAddress);
+        
+        if((_address & 0x00FF) == 0xFF)
+        {
+            // Page boundary bug
+            int _msb = _address - 0xFF;            
+            return readWord(_address, _msb);               
+        }
+        else
+        {
+            return readWord(_address);    
+        }
+    }
 //--------------------------------------
 // Addressing utilities   
 //--------------------------------------    
