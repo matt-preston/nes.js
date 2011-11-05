@@ -87,7 +87,7 @@ public class MOS6502
             
             switch(_opcode)
             {
-                case 0x69: opcode_ADC(); break;
+                case 0x69: opcode_ADC_immediate(); break;
                 case 0x65: opcode_ADC_zero_page(); break;
                 case 0x75: opcode_ADC_zero_page_X(); break;
                 case 0x6D: opcode_ADC_absolute(); break;
@@ -95,7 +95,7 @@ public class MOS6502
                 case 0x79: opcode_ADC_absolute_Y(); break;
                 case 0x61: opcode_ADC_indirect_X(); break;
                 case 0x71: opcode_ADC_indirect_Y(); break;
-                case 0x29: opcode_AND(); break;
+                case 0x29: opcode_AND_immediate(); break;
                 case 0x25: opcode_AND_zero_page(); break;
                 case 0x35: opcode_AND_zero_page_X(); break;
                 case 0x2D: opcode_AND_absolute(); break;
@@ -123,7 +123,7 @@ public class MOS6502
                 case 0xD8: opcode_CLD(); break;
                 case 0x58: opcode_CLI(); break;
                 case 0xB8: opcode_CLV(); break;
-                case 0xC9: opcode_CMP(); break;
+                case 0xC9: opcode_CMP_immediate(); break;
                 case 0xC5: opcode_CMP_zero_page(); break;
                 case 0xD5: opcode_CMP_zero_page_X(); break;
                 case 0xCD: opcode_CMP_absolute(); break;
@@ -131,10 +131,10 @@ public class MOS6502
                 case 0xD9: opcode_CMP_absolute_Y(); break;
                 case 0xC1: opcode_CMP_indirect_X(); break;
                 case 0xD1: opcode_CMP_indirect_Y(); break;
-                case 0xE0: opcode_CPX(); break;
+                case 0xE0: opcode_CPX_immediate(); break;
                 case 0xE4: opcode_CPX_zero_page(); break;
                 case 0xEC: opcode_CPX_absolute(); break;
-                case 0xC0: opcode_CPY(); break;
+                case 0xC0: opcode_CPY_immediate(); break;
                 case 0xC4: opcode_CPY_zero_page(); break;
                 case 0xCC: opcode_CPY_absolute(); break;
                 case 0xC6: opcode_DEC_zero_page(); break;
@@ -143,7 +143,7 @@ public class MOS6502
                 case 0xDE: opcode_DEC_absolute_X(); break;
                 case 0xCA: opcode_DEX(); break;
                 case 0x88: opcode_DEY(); break;
-                case 0x49: opcode_EOR(); break;
+                case 0x49: opcode_EOR_immediate(); break;
                 case 0x45: opcode_EOR_zero_page(); break;
                 case 0x55: opcode_EOR_zero_page_X(); break;
                 case 0x4D: opcode_EOR_absolute(); break;
@@ -160,7 +160,7 @@ public class MOS6502
                 case 0x4C: opcode_JMP_absolute(); break;
                 case 0x6C: opcode_JMP_indirect(); break;
                 case 0x20: opcode_JSR(); break;
-                case 0xA9: opcode_LDA(); break;
+                case 0xA9: opcode_LDA_immediate(); break;
                 case 0xA5: opcode_LDA_zero_page(); break;
                 case 0xB5: opcode_LDA_zero_page_X(); break;
                 case 0xAD: opcode_LDA_absolute(); break;
@@ -168,12 +168,12 @@ public class MOS6502
                 case 0xB9: opcode_LDA_absolute_Y(); break;
                 case 0xA1: opcode_LDA_indirect_X(); break;
                 case 0xB1: opcode_LDA_indirect_Y(); break;
-                case 0xA2: opcode_LDX(); break;
+                case 0xA2: opcode_LDX_immediate(); break;
                 case 0xA6: opcode_LDX_zero_page(); break;
                 case 0xB6: opcode_LDX_zero_page_Y(); break;
                 case 0xAE: opcode_LDX_absolute(); break;
                 case 0xBE: opcode_LDX_absolute_Y(); break;
-                case 0xA0: opcode_LDY(); break;
+                case 0xA0: opcode_LDY_immediate(); break;
                 case 0xA4: opcode_LDY_zero_page(); break;
                 case 0xB4: opcode_LDY_zero_page_X(); break;
                 case 0xAC: opcode_LDY_absolute(); break;
@@ -190,6 +190,7 @@ public class MOS6502
                 case 0x7A: opcode_NOP(); break;
                 case 0xDA: opcode_NOP(); break;
                 case 0xFA: opcode_NOP(); break;
+                case 0x80: opcode_NOP_immediate(); break;
                 case 0x04: opcode_NOP_zero_page(); break;
                 case 0x44: opcode_NOP_zero_page(); break;
                 case 0x64: opcode_NOP_zero_page(); break;
@@ -200,7 +201,7 @@ public class MOS6502
                 case 0x74: opcode_NOP_zero_page_X(); break;
                 case 0xD4: opcode_NOP_zero_page_X(); break;
                 case 0xF4: opcode_NOP_zero_page_X(); break;
-                case 0x09: opcode_ORA(); break;
+                case 0x09: opcode_ORA_immediate(); break;
                 case 0x05: opcode_ORA_zero_page(); break;
                 case 0x15: opcode_ORA_zero_page_X(); break;
                 case 0x0D: opcode_ORA_absolute(); break;
@@ -224,7 +225,7 @@ public class MOS6502
                 case 0x7E: opcode_ROR_absolute_X(); break;
                 case 0x40: opcode_RTI(); break;
                 case 0x60: opcode_RTS(); break;
-                case 0xE9: opcode_SBC(); break;
+                case 0xE9: opcode_SBC_immediate(); break;
                 case 0xE5: opcode_SBC_zero_page(); break;
                 case 0xF5: opcode_SBC_zero_page_X(); break;
                 case 0xED: opcode_SBC_absolute(); break;
@@ -336,7 +337,7 @@ public class MOS6502
 // Opcodes
 //-------------------------------------------------------------    
     
-    private void opcode_ADC()
+    private void opcode_ADC_immediate()
     {
         // Add with Carry
         int _value = Addressing.immediate(pc++);
@@ -459,7 +460,7 @@ public class MOS6502
         a = _temp & 0xFF;
     }
 
-    private void opcode_AND()
+    private void opcode_AND_immediate()
     {
         // Logical AND
         a &= Addressing.immediate(pc++);
@@ -784,7 +785,7 @@ public class MOS6502
         overflow = 0;
     }
 
-    private void opcode_CMP()
+    private void opcode_CMP_immediate()
     {
         // Compare
         int _temp = a - Addressing.immediate(pc++);
@@ -877,7 +878,7 @@ public class MOS6502
         negative = (_temp >> 7) & 1;
     }
 
-    private void opcode_CPX()
+    private void opcode_CPX_immediate()
     {
         // Compare X Register
         int _temp = x - Addressing.immediate(pc++);
@@ -911,7 +912,7 @@ public class MOS6502
         negative = (_temp >> 7) & 1;
     }
 
-    private void opcode_CPY()
+    private void opcode_CPY_immediate()
     {
         // Compare Y Register
         int _temp = y - Addressing.immediate(pc++);
@@ -1019,7 +1020,7 @@ public class MOS6502
         negative = (y >> 7) & 1;
     }
 
-    private void opcode_EOR()
+    private void opcode_EOR_immediate()
     {
         // Exclusive OR
         a ^=  Addressing.immediate(pc++);
@@ -1200,7 +1201,7 @@ public class MOS6502
         pc = _address;
     }
 
-    private void opcode_LDA()
+    private void opcode_LDA_immediate()
     {
         // Load Accumulator
         a = Addressing.immediate(pc++);
@@ -1285,7 +1286,7 @@ public class MOS6502
         not_zero = a;
     }
 
-    private void opcode_LDX()
+    private void opcode_LDX_immediate()
     {
         // Load X with memory
         x = Addressing.immediate(pc++);
@@ -1338,7 +1339,7 @@ public class MOS6502
         pc++;
     }
 
-    private void opcode_LDY()
+    private void opcode_LDY_immediate()
     {
         // Load Y Register
         y = Addressing.immediate(pc++);
@@ -1470,6 +1471,12 @@ public class MOS6502
         // No operation
     }
     
+    private void opcode_NOP_immediate()
+    {
+        // No operation
+        pc++;
+    }
+    
     private void opcode_NOP_zero_page()
     {
        // No operation
@@ -1487,7 +1494,7 @@ public class MOS6502
         pc++;
     }
     
-    private void opcode_ORA()
+    private void opcode_ORA_immediate()
     {
         // Logical Inclusive OR
         a |=  Addressing.immediate(pc++);
@@ -1820,7 +1827,7 @@ public class MOS6502
         pc = popWord() + 1;        
     }
 
-    private void opcode_SBC()
+    private void opcode_SBC_immediate()
     {
         // Subtract with Carry
         int _value = Addressing.immediate(pc++);

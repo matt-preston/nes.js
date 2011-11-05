@@ -8,21 +8,21 @@ public class OpcodeMethods
 {
     static int[] ADDRESSING_MODE = new int[]
     {
-        /*0x00*/ 0,1,0,0,2,2,2,0,0,0,0,0,3,3,3,0,
+        /*0x00*/ 0,1,0,0,2,2,2,0,0,10,0,0,3,3,3,0,
         /*0x10*/ 0,4,0,0,5,5,5,0,0,6,0,0,0,7,7,0,
-        /*0x20*/ 0,1,0,0,2,2,2,0,0,0,0,0,3,3,3,0,
+        /*0x20*/ 0,1,0,0,2,2,2,0,0,10,0,0,3,3,3,0,
         /*0x30*/ 0,4,0,0,5,5,5,0,0,6,0,0,0,7,7,0,
-        /*0x40*/ 0,1,0,0,2,2,2,0,0,0,0,0,3,3,3,0,
+        /*0x40*/ 0,1,0,0,2,2,2,0,0,10,0,0,3,3,3,0,
         /*0x50*/ 0,4,0,0,5,5,5,0,0,6,0,0,0,7,7,0,
-        /*0x60*/ 0,1,0,0,2,2,2,0,0,0,0,0,9,3,3,0,
+        /*0x60*/ 0,1,0,0,2,2,2,0,0,10,0,0,9,3,3,0,
         /*0x70*/ 0,4,0,0,5,5,5,0,0,6,0,0,0,7,7,0,
-        /*0x80*/ 0,1,0,0,2,2,2,0,0,0,0,0,3,3,3,0,
+        /*0x80*/ 10,1,0,0,2,2,2,0,0,0,0,0,3,3,3,0,
         /*0x90*/ 0,4,0,0,5,5,8,0,0,6,0,0,0,7,0,0,
-        /*0xA0*/ 0,1,0,0,2,2,2,0,0,0,0,0,3,3,3,0,
+        /*0xA0*/ 10,1,10,0,2,2,2,0,0,10,0,0,3,3,3,0,
         /*0xB0*/ 0,4,0,0,5,5,8,0,0,6,0,0,7,7,6,0,
-        /*0xC0*/ 0,1,0,0,2,2,2,0,0,0,0,0,3,3,3,0,
+        /*0xC0*/ 10,1,0,0,2,2,2,0,0,10,0,0,3,3,3,0,
         /*0xD0*/ 0,4,0,0,5,5,5,0,0,6,0,0,0,7,7,0,
-        /*0xE0*/ 0,1,0,0,2,2,2,0,0,0,0,0,3,3,3,0,
+        /*0xE0*/ 10,1,0,0,2,2,2,0,0,10,0,0,3,3,3,0,
         /*0xF0*/ 0,4,0,0,5,5,5,0,0,6,0,0,0,7,7,0
     };
             
@@ -93,15 +93,16 @@ public class OpcodeMethods
                 
                 switch(_addressingMode)
                 {
-                    case 1:  _functionSuffix = "_indirect_X";   break;
-                    case 2:  _functionSuffix = "_zero_page";    break;
-                    case 3:  _functionSuffix = "_absolute";     break;
-                    case 4:  _functionSuffix = "_indirect_Y";   break;
-                    case 5:  _functionSuffix = "_zero_page_X";  break;
-                    case 6:  _functionSuffix = "_absolute_Y";   break;
-                    case 7:  _functionSuffix = "_absolute_X";   break;
-                    case 8:  _functionSuffix = "_zero_page_Y";  break;
-                    case 9:  _functionSuffix = "_indirect";     break;
+                    case 1:   _functionSuffix = "_indirect_X";   break;
+                    case 2:   _functionSuffix = "_zero_page";    break;
+                    case 3:   _functionSuffix = "_absolute";     break;
+                    case 4:   _functionSuffix = "_indirect_Y";   break;
+                    case 5:   _functionSuffix = "_zero_page_X";  break;
+                    case 6:   _functionSuffix = "_absolute_Y";   break;
+                    case 7:   _functionSuffix = "_absolute_X";   break;
+                    case 8:   _functionSuffix = "_zero_page_Y";  break;
+                    case 9:   _functionSuffix = "_indirect";     break;
+                    case 10:  _functionSuffix = "_immediate";     break;
                 }
                 
                 _opcodes.add(new Opcode(_mnemonic, _opcode, "opcode_" + _mnemonic + _functionSuffix));

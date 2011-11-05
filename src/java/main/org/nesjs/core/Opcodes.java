@@ -7,7 +7,7 @@ public class Opcodes
     {
         switch(anOpcode)
         {     
-            case 0x69: return "opcode_ADC";
+            case 0x69: return "opcode_ADC_immediate";
             case 0x65: return "opcode_ADC_zero_page";
             case 0x75: return "opcode_ADC_zero_page_X";
             case 0x6D: return "opcode_ADC_absolute";
@@ -15,7 +15,7 @@ public class Opcodes
             case 0x79: return "opcode_ADC_absolute_Y";
             case 0x61: return "opcode_ADC_indirect_X";
             case 0x71: return "opcode_ADC_indirect_Y";
-            case 0x29: return "opcode_AND";
+            case 0x29: return "opcode_AND_immediate";
             case 0x25: return "opcode_AND_zero_page";
             case 0x35: return "opcode_AND_zero_page_X";
             case 0x2D: return "opcode_AND_absolute";
@@ -43,7 +43,7 @@ public class Opcodes
             case 0xD8: return "opcode_CLD";
             case 0x58: return "opcode_CLI";
             case 0xB8: return "opcode_CLV";
-            case 0xC9: return "opcode_CMP";
+            case 0xC9: return "opcode_CMP_immediate";
             case 0xC5: return "opcode_CMP_zero_page";
             case 0xD5: return "opcode_CMP_zero_page_X";
             case 0xCD: return "opcode_CMP_absolute";
@@ -51,10 +51,10 @@ public class Opcodes
             case 0xD9: return "opcode_CMP_absolute_Y";
             case 0xC1: return "opcode_CMP_indirect_X";
             case 0xD1: return "opcode_CMP_indirect_Y";
-            case 0xE0: return "opcode_CPX";
+            case 0xE0: return "opcode_CPX_immediate";
             case 0xE4: return "opcode_CPX_zero_page";
             case 0xEC: return "opcode_CPX_absolute";
-            case 0xC0: return "opcode_CPY";
+            case 0xC0: return "opcode_CPY_immediate";
             case 0xC4: return "opcode_CPY_zero_page";
             case 0xCC: return "opcode_CPY_absolute";
             case 0xC6: return "opcode_DEC_zero_page";
@@ -63,7 +63,7 @@ public class Opcodes
             case 0xDE: return "opcode_DEC_absolute_X";
             case 0xCA: return "opcode_DEX";
             case 0x88: return "opcode_DEY";
-            case 0x49: return "opcode_EOR";
+            case 0x49: return "opcode_EOR_immediate";
             case 0x45: return "opcode_EOR_zero_page";
             case 0x55: return "opcode_EOR_zero_page_X";
             case 0x4D: return "opcode_EOR_absolute";
@@ -80,7 +80,7 @@ public class Opcodes
             case 0x4C: return "opcode_JMP_absolute";
             case 0x6C: return "opcode_JMP_indirect";
             case 0x20: return "opcode_JSR";
-            case 0xA9: return "opcode_LDA";
+            case 0xA9: return "opcode_LDA_immediate";
             case 0xA5: return "opcode_LDA_zero_page";
             case 0xB5: return "opcode_LDA_zero_page_X";
             case 0xAD: return "opcode_LDA_absolute";
@@ -88,12 +88,12 @@ public class Opcodes
             case 0xB9: return "opcode_LDA_absolute_Y";
             case 0xA1: return "opcode_LDA_indirect_X";
             case 0xB1: return "opcode_LDA_indirect_Y";
-            case 0xA2: return "opcode_LDX";
+            case 0xA2: return "opcode_LDX_immediate";
             case 0xA6: return "opcode_LDX_zero_page";
             case 0xB6: return "opcode_LDX_zero_page_Y";
             case 0xAE: return "opcode_LDX_absolute";
             case 0xBE: return "opcode_LDX_absolute_Y";
-            case 0xA0: return "opcode_LDY";
+            case 0xA0: return "opcode_LDY_immediate";
             case 0xA4: return "opcode_LDY_zero_page";
             case 0xB4: return "opcode_LDY_zero_page_X";
             case 0xAC: return "opcode_LDY_absolute";
@@ -110,6 +110,7 @@ public class Opcodes
             case 0x7A: return "opcode_NOP";
             case 0xDA: return "opcode_NOP";
             case 0xFA: return "opcode_NOP";
+            case 0x80: return "opcode_NOP_immediate";
             case 0x04: return "opcode_NOP_zero_page";
             case 0x44: return "opcode_NOP_zero_page";
             case 0x64: return "opcode_NOP_zero_page";
@@ -120,7 +121,7 @@ public class Opcodes
             case 0x74: return "opcode_NOP_zero_page_X";
             case 0xD4: return "opcode_NOP_zero_page_X";
             case 0xF4: return "opcode_NOP_zero_page_X";
-            case 0x09: return "opcode_ORA";
+            case 0x09: return "opcode_ORA_immediate";
             case 0x05: return "opcode_ORA_zero_page";
             case 0x15: return "opcode_ORA_zero_page_X";
             case 0x0D: return "opcode_ORA_absolute";
@@ -144,7 +145,7 @@ public class Opcodes
             case 0x7E: return "opcode_ROR_absolute_X";
             case 0x40: return "opcode_RTI";
             case 0x60: return "opcode_RTS";
-            case 0xE9: return "opcode_SBC";
+            case 0xE9: return "opcode_SBC_immediate";
             case 0xE5: return "opcode_SBC_zero_page";
             case 0xF5: return "opcode_SBC_zero_page_X";
             case 0xED: return "opcode_SBC_absolute";
