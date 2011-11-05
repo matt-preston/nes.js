@@ -334,7 +334,17 @@ public class MOS6502
 
     private void opcode_ADC_zero_page()
     {
-        throw new RuntimeException("opcode not implemented [opcode_ADC_zero_page]");
+        // Add with Carry
+        int _address = Addressing.zeroPage(pc++);
+        int _value = Memory.readByte(_address);
+        int _temp = a + _value + carry;
+        
+        carry = _temp > 0xFF ? 1 : 0;
+        not_zero = _temp & 0xFF;
+        overflow = ((!(((a ^ _value) & 0x80) != 0) && (((a ^ _temp) & 0x80)) != 0) ? 1 : 0);
+        negative = (_temp >> 7) & 1;
+        
+        a = _temp & 0xFF;
     }
 
     private void opcode_ADC_zero_page_X()
@@ -387,7 +397,12 @@ public class MOS6502
 
     private void opcode_AND_zero_page()
     {
-        throw new RuntimeException("opcode not implemented [opcode_AND_zero_page]");
+        // Logical AND
+        int _address = Addressing.zeroPage(pc++);
+        a &= Memory.readByte(_address);
+        
+        negative = (a >> 7) & 1;
+        not_zero = a;
     }
 
     private void opcode_AND_zero_page_X()
@@ -624,7 +639,13 @@ public class MOS6502
 
     private void opcode_CMP_zero_page()
     {
-        throw new RuntimeException("opcode not implemented [opcode_CMP_zero_page]");
+        // Compare
+        int _address = Addressing.zeroPage(pc++);
+        int _temp = a - Memory.readByte(_address);
+        
+        carry = (_temp >= 0 ? 1:0);
+        not_zero = _temp & 0xFF;;
+        negative = (_temp >> 7) & 1;
     }
 
     private void opcode_CMP_zero_page_X()
@@ -675,7 +696,13 @@ public class MOS6502
 
     private void opcode_CPX_zero_page()
     {
-        throw new RuntimeException("opcode not implemented [opcode_CPX_zero_page]");
+        // Compare X Register
+        int _address = Addressing.zeroPage(pc++);
+        int _temp = x - Memory.readByte(_address);
+        
+        carry = (_temp >= 0 ? 1:0);
+        not_zero = _temp & 0xFF;;
+        negative = (_temp >> 7) & 1;
     }
 
     private void opcode_CPX_absolute()
@@ -695,7 +722,13 @@ public class MOS6502
 
     private void opcode_CPY_zero_page()
     {
-        throw new RuntimeException("opcode not implemented [opcode_CPY_zero_page]");
+        // Compare Y Register
+        int _address = Addressing.zeroPage(pc++);
+        int _temp = y - Memory.readByte(_address);
+        
+        carry = (_temp >= 0 ? 1:0);
+        not_zero = _temp & 0xFF;;
+        negative = (_temp >> 7) & 1;
     }
 
     private void opcode_CPY_absolute()
@@ -752,7 +785,12 @@ public class MOS6502
 
     private void opcode_EOR_zero_page()
     {
-        throw new RuntimeException("opcode not implemented [opcode_EOR_zero_page]");
+        // Exclusive OR
+        int _address = Addressing.zeroPage(pc++);
+        a ^=  Memory.readByte(_address);
+        
+        not_zero = a & 0xFF;;
+        negative = (a >> 7) & 1;
     }
 
     private void opcode_EOR_zero_page_X()
@@ -861,7 +899,8 @@ public class MOS6502
     private void opcode_LDA_zero_page()
     {
     	// Load Accumulator
-    	a = Addressing.zeroPage(pc++);
+        int _address = Addressing.zeroPage(pc++);
+    	a = Memory.readByte(_address);
     	
     	negative = (a >> 7) & 1;
         not_zero = a;
@@ -912,7 +951,7 @@ public class MOS6502
     private void opcode_LDX()
     {
         // Load X with memory
-        this.x = Addressing.immediate(pc++);
+        x = Addressing.immediate(pc++);
         
         negative = (x >> 7) & 1;
         not_zero = x;
@@ -920,7 +959,12 @@ public class MOS6502
 
     private void opcode_LDX_zero_page()
     {
-        throw new RuntimeException("opcode not implemented [opcode_LDX_zero_page]");
+        // Load X with memory
+        int _address = Addressing.zeroPage(pc++);
+        x = Memory.readByte(_address);
+        
+        negative = (x >> 7) & 1;
+        not_zero = x;
     }
 
     private void opcode_LDX_zero_page_Y()
@@ -956,7 +1000,12 @@ public class MOS6502
 
     private void opcode_LDY_zero_page()
     {
-        throw new RuntimeException("opcode not implemented [opcode_LDY_zero_page]");
+        // Load Y Register
+        int _address = Addressing.zeroPage(pc++);
+        y = Memory.readByte(_address);
+        
+        negative = (y >> 7) & 1;
+        not_zero = y;
     }
 
     private void opcode_LDY_zero_page_X()
@@ -1014,13 +1063,18 @@ public class MOS6502
         // Logical Inclusive OR
         a |=  Addressing.immediate(pc++);
         
-        not_zero = a & 0xFF;;
+        not_zero = a & 0xFF;
         negative = (a >> 7) & 1; 
     }
 
     private void opcode_ORA_zero_page()
     {
-        throw new RuntimeException("opcode not implemented [opcode_ORA_zero_page]");
+        // Logical Inclusive OR
+        int _address = Addressing.zeroPage(pc++);
+        a |=  Memory.readByte(_address);
+        
+        not_zero = a & 0xFF;
+        negative = (a >> 7) & 1;
     }
 
     private void opcode_ORA_zero_page_X()
@@ -1210,7 +1264,17 @@ public class MOS6502
 
     private void opcode_SBC_zero_page()
     {
-        throw new RuntimeException("opcode not implemented [opcode_SBC_zero_page]");
+        // Subtract with Carry
+        int _address = Addressing.zeroPage(pc++);
+        int _value = Memory.readByte(_address);
+        int _temp = a - _value - (1 - carry);
+        
+        carry = _temp < 0 ? 0 : 1;
+        not_zero = _temp & 0xFF;
+        overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
+        negative = (_temp >> 7) & 1;
+        
+        a = _temp & 0xFF;
     }
 
     private void opcode_SBC_zero_page_X()
@@ -1330,7 +1394,9 @@ public class MOS6502
 
     private void opcode_STY_zero_page()
     {
-        throw new RuntimeException("opcode not implemented [opcode_STY_zero_page]");
+        // Store Y Register
+        int _address = Addressing.zeroPage(pc++);
+        Memory.writeByte(y, _address);        
     }
 
     private void opcode_STY_zero_page_X()

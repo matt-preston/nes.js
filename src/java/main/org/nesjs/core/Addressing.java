@@ -1,5 +1,11 @@
 package org.nesjs.core;
 
+/**
+ * TODO, sort out the semantics.  Some methods return the address, others, like absolute, 
+ *       return the value at the address.  All should return an address - not the value.
+ *       
+ * @author Matt
+ */
 public class Addressing
 {
     /**
@@ -42,7 +48,7 @@ public class Addressing
      * @param anAddress
      */
     public static final int zeroPage(int anAddress)
-    {
+    {        
         return Memory.readByte(anAddress);
     }
     
