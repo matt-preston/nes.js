@@ -71,27 +71,9 @@ public class Addressing
      */
     public static final int indirectX(int anAddress, int anX)
     {
-    	int _address = (Memory.readByte(anAddress) + anX) & 0xFF;
+        int _address = (Memory.readByte(anAddress) + anX) & 0xFF;
     	
-    	int _address2 = readWord(_address);
-    	
-    	System.out.printf("      arg: [%s]\n", Utils.toHexString(Memory.readByte(anAddress)));
-    	System.out.printf("        x: [%s]\n", Utils.toHexString(anX));
-    	System.out.printf("address 1: [%s]\n", Utils.toHexString(_address));
-    	System.out.printf("address 2: [%s]\n", Utils.toHexString(_address2)); // Wrong for last LDA_indirect_X in test
-    	                                                                      // Should be 0x0400
-    	int _byte1 = Memory.readByte(_address);            // byte from 0xFF seems ok, should be 0x00
-        int _byte2 = (Memory.readByte(_address + 1) << 8); //  <----- The value in _address + 1 (0x0100) is 0xFF, it should be 0x04.   Why is it not?
-    	
-        System.out.printf(">   byte1: [%s]\n", Utils.toHexString(_byte1)); // should be 0x00
-        System.out.printf(">   byte2: [%s]\n", Utils.toHexString(_byte2)); // should be 0x0400
-        
-        System.out.printf("susp addr: [%s]\n",   Utils.toHexString(_address + 1));  // The suspect address
-        
-        System.out.printf("exp value: [%s]\n",   Utils.toHexString(Memory.readByte(0x0400)));    // Is 0x5D
-    	System.out.printf("act value: [%s]\n\n", Utils.toHexString(Memory.readByte(_address2))); // Should be 0x5D  	
-    	
-		return _address2;
+        return readWordZeroPageWrap(_address);
     }
     
 //--------------------------------------
@@ -100,11 +82,20 @@ public class Addressing
     
     private static final int readWord(int anAddress)
     {
-        int _byte1 = Memory.readByte(anAddress);
-        int _byte2 = (Memory.readByte(anAddress + 1) << 8);
+        return readWord(anAddress, anAddress + 1);
+    }
+    
+    private static final int readWordZeroPageWrap(int anAddress)
+    {
+        int _secondAddress = (anAddress + 1) & 0xFF;
         
-        //System.out.printf("byte 1: %s\n", Utils.toHexString(_byte1));
-        //System.out.printf("byte 2: %s\n", Utils.toHexString(_byte2));
+        return readWord(anAddress, _secondAddress);
+    }
+    
+    private static final int readWord(int anAddress, int aSecondAddress)
+    {
+        int _byte1 = Memory.readByte(anAddress);
+        int _byte2 = (Memory.readByte(aSecondAddress) << 8);
         
         return _byte1 | _byte2;
     }

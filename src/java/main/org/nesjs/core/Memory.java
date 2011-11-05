@@ -43,9 +43,6 @@ public class Memory
     
     public static final void writeByte(int aByte, int anAddress)
     {
-        if(aByte == 0x04)
-            System.out.printf("Write to memory [%s] => [%s]\n", Utils.toHexString(anAddress), Utils.toHexString(aByte));
-        
         if (anAddress < 0x2000)
         {
             // Low memory 2KB (mirrored 3 times)
