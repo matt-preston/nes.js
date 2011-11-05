@@ -184,6 +184,7 @@ public class MOS6502
                 case 0x4E: opcode_LSR_absolute(); break;
                 case 0x5E: opcode_LSR_absolute_X(); break;
                 case 0xEA: opcode_NOP(); break;
+                case 0x04: opcode_NOP_zero_page(); break;
                 case 0x09: opcode_ORA(); break;
                 case 0x05: opcode_ORA_zero_page(); break;
                 case 0x15: opcode_ORA_zero_page_X(); break;
@@ -1452,6 +1453,12 @@ public class MOS6502
     private void opcode_NOP()
     {
         // No operation
+    }
+    
+    private void opcode_NOP_zero_page()
+    {
+       // No operation
+       pc++;
     }
 
     private void opcode_ORA()

@@ -104,6 +104,7 @@ public class Opcodes
             case 0x4E: return "opcode_LSR_absolute";
             case 0x5E: return "opcode_LSR_absolute_X";
             case 0xEA: return "opcode_NOP";
+            case 0x04: return "opcode_NOP_zero_page";
             case 0x09: return "opcode_ORA";
             case 0x05: return "opcode_ORA_zero_page";
             case 0x15: return "opcode_ORA_zero_page_X";

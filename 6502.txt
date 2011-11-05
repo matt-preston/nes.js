@@ -534,6 +534,9 @@ N.B. CMP, CPX, and CPY all set flags according to:
       ---------------------------------------
 
       NOP                              EA
+      
+      // undocumented actually zero page, but doesn't matter really      
+      NOP                              04
 
 ======================================================================
 
