@@ -73,6 +73,7 @@ public class Addressing
      * wrap around) to give the location of the least significant byte of the target address.
      * 
      * @param anAddress
+     * @param anY
      * @return
      */
     public static final int indirectX(int anAddress, int anX)
@@ -80,6 +81,25 @@ public class Addressing
         int _address = (Memory.readByte(anAddress) + anX) & 0xFF;
     	
         return readWordZeroPageWrap(_address);
+    }
+    
+    /**
+     * Indirect indirect addressing is the most common indirection mode used on the 6502. In instruction contains 
+     * the zero page location of the least significant byte of 16 bit address. The Y register is dynamically added 
+     * to this value to generated the actual target address for operation.
+     * 
+     * @param anAddress
+     * @param anY
+     * @return
+     */
+    public static final int indirectY(int anAddress, int anY)
+    {
+        int _zeroPageAddress = Memory.readByte(anAddress);
+        
+        // Should use zero page wrap or not?
+        int _address = readWordZeroPageWrap(_zeroPageAddress);
+        
+        return _address + anY;
     }
     
 //--------------------------------------

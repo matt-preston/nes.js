@@ -396,7 +396,16 @@ public class MOS6502
 
     private void opcode_ADC_indirect_Y()
     {
-        throw new RuntimeException("opcode not implemented [opcode_ADC_indirect_Y]");
+        // Add with Carry
+        int _value = Memory.readByte(Addressing.indirectY(pc++, y));
+        int _temp = a + _value + carry;
+        
+        carry = _temp > 0xFF ? 1 : 0;
+        not_zero = _temp & 0xFF;
+        overflow = ((!(((a ^ _value) & 0x80) != 0) && (((a ^ _temp) & 0x80)) != 0) ? 1 : 0);
+        negative = (_temp >> 7) & 1;
+        
+        a = _temp & 0xFF;
     }
 
     private void opcode_AND()
@@ -457,7 +466,12 @@ public class MOS6502
 
     private void opcode_AND_indirect_Y()
     {
-        throw new RuntimeException("opcode not implemented [opcode_AND_indirect_Y]");
+        // Logical AND
+        int _value = Addressing.indirectY(pc++, y);
+        a &= Memory.readByte(_value);
+        
+        negative = (a >> 7) & 1;
+        not_zero = a;
     }
 
     private void opcode_ASL()
@@ -740,7 +754,13 @@ public class MOS6502
 
     private void opcode_CMP_indirect_Y()
     {
-        throw new RuntimeException("opcode not implemented [opcode_CMP_indirect_Y]");
+        // Compare
+        int _address = Addressing.indirectY(pc++, y);
+        int _temp = a - Memory.readByte(_address);
+        
+        carry = (_temp >= 0 ? 1:0);
+        not_zero = _temp & 0xFF;;
+        negative = (_temp >> 7) & 1;
     }
 
     private void opcode_CPX()
@@ -925,7 +945,12 @@ public class MOS6502
 
     private void opcode_EOR_indirect_Y()
     {
-        throw new RuntimeException("opcode not implemented [opcode_EOR_indirect_Y]");
+        // Exclusive OR
+        int _value = Addressing.indirectY(pc++, y);
+        a ^=  Memory.readByte(_value);
+        
+        not_zero = a & 0xFF;
+        negative = (a >> 7) & 1;
     }
 
     private void opcode_INC_zero_page()
@@ -1063,7 +1088,12 @@ public class MOS6502
 
     private void opcode_LDA_indirect_Y()
     {
-        throw new RuntimeException("opcode not implemented [opcode_LDA_indirect_Y]");
+        // Load Accumulator
+        int _address = Addressing.indirectY(pc++, y);
+        a = Memory.readByte(_address);
+        
+        negative = (a >> 7) & 1;
+        not_zero = a;
     }
 
     private void opcode_LDX()
@@ -1263,7 +1293,12 @@ public class MOS6502
 
     private void opcode_ORA_indirect_Y()
     {
-        throw new RuntimeException("opcode not implemented [opcode_ORA_indirect_Y]");
+        // Logical Inclusive OR
+        int _value = Memory.readByte(Addressing.indirectY(pc++, y));
+        a |=  _value;
+        
+        not_zero = a & 0xFF;
+        negative = (a >> 7) & 1;
     }
 
     private void opcode_PHA()
@@ -1536,7 +1571,17 @@ public class MOS6502
 
     private void opcode_SBC_indirect_Y()
     {
-        throw new RuntimeException("opcode not implemented [opcode_SBC_indirect_Y]");
+        // Subtract with Carry
+        int _address = Addressing.indirectY(pc++, y);
+        int _value = Memory.readByte(_address);
+        int _temp = a - _value - (1 - carry);
+        
+        carry = _temp < 0 ? 0 : 1;
+        not_zero = _temp & 0xFF;
+        overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
+        negative = (_temp >> 7) & 1;
+        
+        a = _temp & 0xFF;
     }
 
     private void opcode_SEC()
@@ -1593,7 +1638,8 @@ public class MOS6502
 
     private void opcode_STA_indirect_Y()
     {
-        throw new RuntimeException("opcode not implemented [opcode_STA_indirect_Y]");
+        // Store Accumulator
+        Memory.writeByte(a, Addressing.indirectY(pc++, y));
     }
 
     private void opcode_STX_zero_page()
