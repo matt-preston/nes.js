@@ -134,6 +134,35 @@ public class Addressing
             return readWord(_address);    
         }
     }
+    
+    /**
+     * The address to be accessed by an instruction using X register indexed absolute addressing is computed by 
+     * taking the 16 bit address from the instruction and added the contents of the X register. For example if 
+     * X contains $92 then an STA $2000,X instruction will store the accumulator at $2092 (e.g. $2000 + $92).
+     * 
+     * @param anAddress
+     * @param anX
+     * @return
+     */
+    public static final int absoluteX(int anAddress, int anX)
+    {
+        return readWord(anAddress) + anX;
+    }
+    
+    /**
+     * The Y register indexed absolute addressing mode is the same as the previous mode only with the contents 
+     * of the Y register added to the 16 bit address from the instruction.
+     * 
+     * @param anAddress
+     * @param anY
+     * @return
+     */
+    public static final int absoluteY(int anAddress, int anY)
+    {
+        return readWord(anAddress) + anY;
+    }
+    
+    
 //--------------------------------------
 // Addressing utilities   
 //--------------------------------------    
