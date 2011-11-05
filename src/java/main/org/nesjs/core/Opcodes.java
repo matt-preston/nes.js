@@ -115,6 +115,12 @@ public class Opcodes
             case 0x44: return "opcode_NOP_zero_page";
             case 0x64: return "opcode_NOP_zero_page";
             case 0x0C: return "opcode_NOP_absolute";
+            case 0x1C: return "opcode_NOP_absolute_X";
+            case 0x3C: return "opcode_NOP_absolute_X";
+            case 0x5C: return "opcode_NOP_absolute_X";
+            case 0x7C: return "opcode_NOP_absolute_X";
+            case 0xDC: return "opcode_NOP_absolute_X";
+            case 0xFC: return "opcode_NOP_absolute_X";
             case 0x14: return "opcode_NOP_zero_page_X";
             case 0x34: return "opcode_NOP_zero_page_X";
             case 0x54: return "opcode_NOP_zero_page_X";

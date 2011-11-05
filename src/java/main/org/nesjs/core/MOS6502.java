@@ -195,6 +195,12 @@ public class MOS6502
                 case 0x44: opcode_NOP_zero_page(); break;
                 case 0x64: opcode_NOP_zero_page(); break;
                 case 0x0C: opcode_NOP_absolute(); break;
+                case 0x1C: opcode_NOP_absolute_X(); break;
+                case 0x3C: opcode_NOP_absolute_X(); break;
+                case 0x5C: opcode_NOP_absolute_X(); break;
+                case 0x7C: opcode_NOP_absolute_X(); break;
+                case 0xDC: opcode_NOP_absolute_X(); break;
+                case 0xFC: opcode_NOP_absolute_X(); break;
                 case 0x14: opcode_NOP_zero_page_X(); break;
                 case 0x34: opcode_NOP_zero_page_X(); break;
                 case 0x54: opcode_NOP_zero_page_X(); break;
@@ -1484,6 +1490,12 @@ public class MOS6502
     }
 
     private void opcode_NOP_absolute()
+    {
+        // No operation
+        pc = pc + 2;
+    }
+    
+    private void opcode_NOP_absolute_X()
     {
         // No operation
         pc = pc + 2;

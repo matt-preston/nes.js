@@ -553,6 +553,14 @@ N.B. CMP, CPX, and CPY all set flags according to:
       
       // Undocumented, absolute mode
       NOP                              0C
+      
+      // Undocumented, absolute mode X
+      NOP                              1C
+      NOP                              3C
+      NOP                              5C
+      NOP                              7C
+      NOP                              DC
+      NOP                              FC
 
       // Undocumented, zero page X
       NOP                              14
