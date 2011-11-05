@@ -184,7 +184,22 @@ public class MOS6502
                 case 0x4E: opcode_LSR_absolute(); break;
                 case 0x5E: opcode_LSR_absolute_X(); break;
                 case 0xEA: opcode_NOP(); break;
+                case 0x1A: opcode_NOP(); break;
+                case 0x3A: opcode_NOP(); break;
+                case 0x5A: opcode_NOP(); break;
+                case 0x7A: opcode_NOP(); break;
+                case 0xDA: opcode_NOP(); break;
+                case 0xFA: opcode_NOP(); break;
                 case 0x04: opcode_NOP_zero_page(); break;
+                case 0x44: opcode_NOP_zero_page(); break;
+                case 0x64: opcode_NOP_zero_page(); break;
+                case 0x0C: opcode_NOP_absolute(); break;
+                case 0x14: opcode_NOP_zero_page_X(); break;
+                case 0x34: opcode_NOP_zero_page_X(); break;
+                case 0x54: opcode_NOP_zero_page_X(); break;
+                case 0x74: opcode_NOP_zero_page_X(); break;
+                case 0xD4: opcode_NOP_zero_page_X(); break;
+                case 0xF4: opcode_NOP_zero_page_X(); break;
                 case 0x09: opcode_ORA(); break;
                 case 0x05: opcode_ORA_zero_page(); break;
                 case 0x15: opcode_ORA_zero_page_X(); break;
@@ -240,7 +255,7 @@ public class MOS6502
                 case 0x9A: opcode_TXS(); break;
                 case 0x98: opcode_TYA(); break;
                 
-                default: throw new RuntimeException("Unhandled opcode [" + _opcode + "]");
+                default: throw new RuntimeException("Unhandled opcode [" + Utils.toHexString(_opcode) + "]");
             }
             
             // Mask to 16 bit
@@ -1461,6 +1476,17 @@ public class MOS6502
        pc++;
     }
 
+    private void opcode_NOP_absolute()
+    {
+        // No operation
+        pc = pc + 2;
+    }
+    
+    private void opcode_NOP_zero_page_X()
+    {
+        pc++;
+    }
+    
     private void opcode_ORA()
     {
         // Logical Inclusive OR

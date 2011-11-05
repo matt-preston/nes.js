@@ -535,8 +535,32 @@ N.B. CMP, CPX, and CPY all set flags according to:
 
       NOP                              EA
       
-      // undocumented actually zero page, but doesn't matter really      
+      // Undocumented implied
+      NOP                              1A
+      NOP                              3A
+      NOP                              5A
+      NOP                              7A
+      NOP                              DA
+      NOP                              FA
+      
+      // Undocumented immediate
+      NOP                              80
+      
+      // Undocumented zero page      
       NOP                              04
+      NOP                              44
+      NOP                              64
+      
+      // Undocumented, absolute mode
+      NOP                              0C
+
+      // Undocumented, zero page X
+      NOP                              14
+      NOP                              34
+      NOP                              54
+      NOP                              74
+      NOP                              D4
+      NOP                              F4
 
 ======================================================================
 
