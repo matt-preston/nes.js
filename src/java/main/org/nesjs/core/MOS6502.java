@@ -267,6 +267,13 @@ public class MOS6502
                 case 0x38: opcode_SEC(); break;
                 case 0xF8: opcode_SED(); break;
                 case 0x78: opcode_SEI(); break;
+                case 0x07: opcode_SLO_zero_page(); break;
+                case 0x17: opcode_SLO_zero_page_X(); break;
+                case 0x0F: opcode_SLO_absolute(); break;
+                case 0x1F: opcode_SLO_absolute_X(); break;
+                case 0x1B: opcode_SLO_absolute_Y(); break;
+                case 0x03: opcode_SLO_indirect_X(); break;
+                case 0x13: opcode_SLO_indirect_Y(); break;
                 case 0x85: opcode_STA_zero_page(); break;
                 case 0x95: opcode_STA_zero_page_X(); break;
                 case 0x8D: opcode_STA_absolute(); break;
@@ -1331,7 +1338,7 @@ public class MOS6502
         
         int _temp = a - _value - (1 - carry);
         
-        carry = _temp + 1 < 0 ? 0 : 1; // TODO hacked + 1 to make test pass
+        //carry = _temp + 1 < 0 ? 0 : 1; // TODO hacked + 1 to make test pass
         not_zero = _temp & 0xFF;
         overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
         negative = (_temp >> 7) & 1;
@@ -1349,7 +1356,7 @@ public class MOS6502
         
         int _temp = a - _value - (1 - carry);
         
-        carry = _temp + 1 < 0 ? 0 : 1; // TODO hacked + 1 to make test pass
+        //carry = _temp + 1 < 0 ? 0 : 1; // TODO hacked + 1 to make test pass
         not_zero = _temp & 0xFF;
         overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
         negative = (_temp >> 7) & 1;
@@ -1369,7 +1376,7 @@ public class MOS6502
         
         int _temp = a - _value - (1 - carry);
         
-        carry = _temp + 1 < 0 ? 0 : 1; // TODO hacked + 1 to make test pass
+        //carry = _temp + 1 < 0 ? 0 : 1; // TODO hacked + 1 to make test pass
         not_zero = _temp & 0xFF;
         overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
         negative = (_temp >> 7) & 1;
@@ -1389,7 +1396,7 @@ public class MOS6502
         
         int _temp = a - _value - (1 - carry);
         
-        carry = _temp + 1 < 0 ? 0 : 1; // TODO hacked + 1 to make test pass
+        //carry = _temp + 1 < 0 ? 0 : 1; // TODO hacked + 1 to make test pass
         not_zero = _temp & 0xFF;
         overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
         negative = (_temp >> 7) & 1;
@@ -1409,7 +1416,7 @@ public class MOS6502
         
         int _temp = a - _value - (1 - carry);
         
-        carry = _temp + 1 < 0 ? 0 : 1; // TODO hacked + 1 to make test pass
+        //carry = _temp + 1 < 0 ? 0 : 1; // TODO hacked + 1 to make test pass
         not_zero = _temp & 0xFF;
         overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
         negative = (_temp >> 7) & 1;
@@ -1427,7 +1434,7 @@ public class MOS6502
         
         int _temp = a - _value - (1 - carry);
         
-        carry = _temp + 1 < 0 ? 0 : 1; // TODO hacked + 1 to make test pass
+        //carry = _temp + 1 < 0 ? 0 : 1; // TODO hacked + 1 to make test pass
         not_zero = _temp & 0xFF;
         overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
         negative = (_temp >> 7) & 1;
@@ -1437,7 +1444,7 @@ public class MOS6502
 
     private void opcode_ISB_indirect_Y()
     {
-     // INC value then SBC value        
+        // INC value then SBC value        
         int _address = Addressing.indirectY(pc++, y);
         int _value = Memory.readByte(_address) + 1;
         
@@ -1445,7 +1452,7 @@ public class MOS6502
         
         int _temp = a - _value - (1 - carry);
         
-        carry = _temp + 1 < 0 ? 0 : 1; // TODO hacked + 1 to make test pass
+        //carry = _temp + 1 < 0 ? 0 : 1; // TODO hacked + 1 to make test pass
         not_zero = _temp & 0xFF;
         overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
         negative = (_temp >> 7) & 1;
@@ -2345,6 +2352,131 @@ public class MOS6502
         interruptDisable = 1;
     }
 
+    private void opcode_SLO_zero_page()
+    {
+        // ASL value then ORA value
+        int _address = Addressing.zeroPage(pc++);
+        int _value = Memory.readByte(_address);
+        
+        carry = (_value >> 7) & 1;
+        _value = (_value << 1) & 0xFF;
+        
+        Memory.writeByte(_value, _address);
+        
+        a |=  _value;
+        
+        not_zero = a & 0xFF;
+        negative = (a >> 7) & 1;
+    }
+
+    private void opcode_SLO_zero_page_X()
+    {
+        // ASL value then ORA value
+        int _address = Addressing.zeroPageX(pc++, x);
+        int _value = Memory.readByte(_address);
+        
+        carry = (_value >> 7) & 1;
+        _value = (_value << 1) & 0xFF;
+        
+        Memory.writeByte(_value, _address);
+        
+        a |=  _value;
+        
+        not_zero = a & 0xFF;
+        negative = (a >> 7) & 1;
+    }
+
+    private void opcode_SLO_absolute()
+    {
+        // ASL value then ORA value
+        int _address = Addressing.absolute(pc++);
+        int _value = Memory.readByte(_address);
+        
+        pc++;
+        
+        carry = (_value >> 7) & 1;
+        _value = (_value << 1) & 0xFF;
+        
+        Memory.writeByte(_value, _address);
+        
+        a |=  _value;
+        
+        not_zero = a & 0xFF;
+        negative = (a >> 7) & 1;
+    }
+
+    private void opcode_SLO_absolute_X()
+    {
+        // ASL value then ORA value
+        int _address = Addressing.absoluteX(pc++, x);
+        int _value = Memory.readByte(_address);
+        
+        pc++;
+        
+        carry = (_value >> 7) & 1;
+        _value = (_value << 1) & 0xFF;
+        
+        Memory.writeByte(_value, _address);
+        
+        a |=  _value;
+        
+        not_zero = a & 0xFF;
+        negative = (a >> 7) & 1;
+    }
+
+    private void opcode_SLO_absolute_Y()
+    {
+        // ASL value then ORA value
+        int _address = Addressing.absoluteY(pc++, y);
+        int _value = Memory.readByte(_address);
+        
+        pc++;
+        
+        carry = (_value >> 7) & 1;
+        _value = (_value << 1) & 0xFF;
+        
+        Memory.writeByte(_value, _address);
+        
+        a |=  _value;
+        
+        not_zero = a & 0xFF;
+        negative = (a >> 7) & 1;
+    }
+
+    private void opcode_SLO_indirect_X()
+    {
+        // ASL value then ORA value
+        int _address = Addressing.indirectX(pc++, x);
+        int _value = Memory.readByte(_address);
+        
+        carry = (_value >> 7) & 1;
+        _value = (_value << 1) & 0xFF;
+        
+        Memory.writeByte(_value, _address);
+        
+        a |=  _value;
+        
+        not_zero = a & 0xFF;
+        negative = (a >> 7) & 1;
+    }
+
+    private void opcode_SLO_indirect_Y()
+    {
+        // ASL value then ORA value
+        int _address = Addressing.indirectY(pc++, y);
+        int _value = Memory.readByte(_address);
+        
+        carry = (_value >> 7) & 1;
+        _value = (_value << 1) & 0xFF;
+        
+        Memory.writeByte(_value, _address);
+        
+        a |=  _value;
+        
+        not_zero = a & 0xFF;
+        negative = (a >> 7) & 1;
+    }
+    
     private void opcode_STA_zero_page()
     {
         // Store Accumulator

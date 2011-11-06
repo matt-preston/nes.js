@@ -187,6 +187,13 @@ public class Opcodes
             case 0x38: return "opcode_SEC";
             case 0xF8: return "opcode_SED";
             case 0x78: return "opcode_SEI";
+            case 0x07: return "opcode_SLO_zero_page";
+            case 0x17: return "opcode_SLO_zero_page_X";
+            case 0x0F: return "opcode_SLO_absolute";
+            case 0x1F: return "opcode_SLO_absolute_X";
+            case 0x1B: return "opcode_SLO_absolute_Y";
+            case 0x03: return "opcode_SLO_indirect_X";
+            case 0x13: return "opcode_SLO_indirect_Y";
             case 0x85: return "opcode_STA_zero_page";
             case 0x95: return "opcode_STA_zero_page_X";
             case 0x8D: return "opcode_STA_absolute";

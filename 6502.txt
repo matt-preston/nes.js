@@ -846,6 +846,29 @@ N.B. CMP, CPX, and CPY all set flags according to:
 
 ======================================================================
 
+   SLO  -  Equivalent to ASL value then ORA value (Undocumented)
+   
+						Flags Affected:
+						---------------
+       +-+-+-+-+-+-+-+-+                    N, C, Z
+      C <- |7|6|5|4|3|2|1|0| <- 0   
+	   +-+-+-+-+-+-+-+-+
+	  
+	  A or M -> A                               N, Z 
+	         						
+      Mnemonic   Addressing Mode       Opcode
+      ---------------------------------------
+
+      SLO        aa                    07
+      SLO        aa,X                  17
+      SLO        aaaa                  0F
+      SLO        aaaa,X                1F
+      SLO        aaaa,Y                1B
+      SLO        (aa,X)                03
+      SLO        (aa),Y                13
+      
+======================================================================
+
    STA  -  Store Accumulator in Memory
    
 						Flags Affected:
