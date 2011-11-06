@@ -79,11 +79,11 @@ public class MOS6502
         {
             _clocksRemain--;
 
-            System.out.print("PC now at: " + Utils.toHexString(pc));
+            System.out.print(Utils.toHexString(pc));
 
             int _opcode = Memory.readByte(pc++);
 
-            System.out.printf(", opcode is: %s [%s]\n", Utils.toHexString(_opcode), Opcodes.name(_opcode));
+            System.out.printf(": %s [%s]\n", Utils.toHexString(_opcode), Opcodes.name(_opcode));
             
             switch(_opcode)
             {
