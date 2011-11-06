@@ -707,6 +707,25 @@ N.B. CMP, CPX, and CPY all set flags according to:
 
 ======================================================================
 
+   RLA  -  Equivalent to ROL value then AND value (Undocumented)
+   
+						Flags Affected:
+						---------------
+      
+
+      Mnemonic   Addressing Mode       Opcode
+      ---------------------------------------
+
+      RLA        $aa                   27
+      RLA        $aa,X                 37
+      RLA        $aaaa                 2F
+      RLA        $aaaa,X               3F
+      RLA        $aaaa,Y               3B
+      RLA        ($aa,X)               23
+      RLA        ($aa),X               33
+      
+======================================================================
+
    ROL  -  Rotate Left
    
 						Flags Affected:

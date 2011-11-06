@@ -159,6 +159,13 @@ public class Opcodes
             case 0x08: return "opcode_PHP";
             case 0x68: return "opcode_PLA";
             case 0x28: return "opcode_PLP";
+            case 0x27: return "opcode_RLA_zero_page";
+            case 0x37: return "opcode_RLA_zero_page_X";
+            case 0x2F: return "opcode_RLA_absolute";
+            case 0x3F: return "opcode_RLA_absolute_X";
+            case 0x3B: return "opcode_RLA_absolute_Y";
+            case 0x23: return "opcode_RLA_indirect_X";
+            case 0x33: return "opcode_RLA_indirect_Y";
             case 0x2A: return "opcode_ROL";
             case 0x26: return "opcode_ROL_zero_page";
             case 0x36: return "opcode_ROL_zero_page_X";

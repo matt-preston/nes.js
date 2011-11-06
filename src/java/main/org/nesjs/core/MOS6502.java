@@ -239,6 +239,13 @@ public class MOS6502
                 case 0x08: opcode_PHP(); break;
                 case 0x68: opcode_PLA(); break;
                 case 0x28: opcode_PLP(); break;
+                case 0x27: opcode_RLA_zero_page(); break;
+                case 0x37: opcode_RLA_zero_page_X(); break;
+                case 0x2F: opcode_RLA_absolute(); break;
+                case 0x3F: opcode_RLA_absolute_X(); break;
+                case 0x3B: opcode_RLA_absolute_Y(); break;
+                case 0x23: opcode_RLA_indirect_X(); break;
+                case 0x33: opcode_RLA_indirect_Y(); break;
                 case 0x2A: opcode_ROL(); break;
                 case 0x26: opcode_ROL_zero_page(); break;
                 case 0x36: opcode_ROL_zero_page_X(); break;
@@ -1984,6 +1991,159 @@ public class MOS6502
         negative         = (_temp >> 7) & 1;        
     }
 
+    private void opcode_RLA_zero_page()
+    {
+        // ROL value then AND value
+        int _address = Addressing.zeroPage(pc++);
+        int _value = Memory.readByte(_address);
+        
+        int _temp = _value;
+        int _add = carry;
+        
+        carry = (_temp >> 7) &1;
+        
+        _value = ((_temp << 1) & 0xFF) + _add;
+        
+        Memory.writeByte(_value, _address);
+        
+        a &= _value;
+        
+        negative = (a >> 7) & 1;
+        not_zero = a;
+    }
+
+    private void opcode_RLA_zero_page_X()
+    {
+        // ROL value then AND value
+        int _address = Addressing.zeroPageX(pc++, x);
+        int _value = Memory.readByte(_address);
+        
+        int _temp = _value;
+        int _add = carry;
+        
+        carry = (_temp >> 7) &1;
+        
+        _value = ((_temp << 1) & 0xFF) + _add;
+        
+        Memory.writeByte(_value, _address);
+        
+        a &= _value;
+        
+        negative = (a >> 7) & 1;
+        not_zero = a;
+    }
+
+    private void opcode_RLA_absolute()
+    {
+        // ROL value then AND value
+        int _address = Addressing.absolute(pc++);
+        int _value = Memory.readByte(_address);
+        
+        pc++;
+        
+        int _temp = _value;
+        int _add = carry;
+        
+        carry = (_temp >> 7) &1;
+        
+        _value = ((_temp << 1) & 0xFF) + _add;
+        
+        Memory.writeByte(_value, _address);
+        
+        a &= _value;
+        
+        negative = (a >> 7) & 1;
+        not_zero = a;
+    }
+
+    private void opcode_RLA_absolute_X()
+    {
+        // ROL value then AND value
+        int _address = Addressing.absoluteX(pc++, x);
+        int _value = Memory.readByte(_address);
+        
+        pc++;
+        
+        int _temp = _value;
+        int _add = carry;
+        
+        carry = (_temp >> 7) &1;
+        
+        _value = ((_temp << 1) & 0xFF) + _add;
+        
+        Memory.writeByte(_value, _address);
+        
+        a &= _value;
+        
+        negative = (a >> 7) & 1;
+        not_zero = a;
+    }
+
+    private void opcode_RLA_absolute_Y()
+    {
+        // ROL value then AND value
+        int _address = Addressing.absoluteY(pc++, y);
+        int _value = Memory.readByte(_address);
+        
+        pc++;
+        
+        int _temp = _value;
+        int _add = carry;
+        
+        carry = (_temp >> 7) &1;
+        
+        _value = ((_temp << 1) & 0xFF) + _add;
+        
+        Memory.writeByte(_value, _address);
+        
+        a &= _value;
+        
+        negative = (a >> 7) & 1;
+        not_zero = a;
+    }
+
+    private void opcode_RLA_indirect_X()
+    {
+        // ROL value then AND value
+        int _address = Addressing.indirectX(pc++, x);
+        int _value = Memory.readByte(_address);
+        
+        int _temp = _value;
+        int _add = carry;
+        
+        carry = (_temp >> 7) &1;
+        
+        _value = ((_temp << 1) & 0xFF) + _add;
+        
+        Memory.writeByte(_value, _address);
+        
+        a &= _value;
+        
+        negative = (a >> 7) & 1;
+        not_zero = a;
+    }
+
+    private void opcode_RLA_indirect_Y()
+    {
+        // ROL value then AND value
+        int _address = Addressing.indirectY(pc++, y);
+        int _value = Memory.readByte(_address);
+        
+        int _temp = _value;
+        int _add = carry;
+        
+        carry = (_temp >> 7) &1;
+        
+        _value = ((_temp << 1) & 0xFF) + _add;
+        
+        Memory.writeByte(_value, _address);
+        
+        a &= _value;
+        
+        negative = (a >> 7) & 1;
+        not_zero = a;
+    }
+    
     private void opcode_ROL()
     {
         // Rotate Left
