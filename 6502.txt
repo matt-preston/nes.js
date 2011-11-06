@@ -462,9 +462,12 @@ N.B. CMP, CPX, and CPY all set flags according to:
       ---------------------------------------
       
       LAX        $aa                   A7
+      LAX        $aa,Y                 B7
       LAX        $aaaa                 AF
+      LAX        $aaaa,Y               BF
       LAX        ($aa,X)               A3      
       LAX        ($aa),Y               B3
+      
 
 ======================================================================
 

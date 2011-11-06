@@ -161,7 +161,9 @@ public class MOS6502
                 case 0x6C: opcode_JMP_indirect(); break;
                 case 0x20: opcode_JSR(); break;
                 case 0xA7: opcode_LAX_zero_page(); break;
+                case 0xB7: opcode_LAX_zero_page_Y(); break;
                 case 0xAF: opcode_LAX_absolute(); break;
+                case 0xBF: opcode_LAX_absolute_Y(); break;
                 case 0xA3: opcode_LAX_indirect_X(); break;
                 case 0xB3: opcode_LAX_indirect_Y(); break;
                 case 0xA9: opcode_LDA_immediate(); break;
@@ -1221,11 +1223,35 @@ public class MOS6502
         negative = (a >> 7) & 1;
         not_zero = a;
     }
+    
+    private void opcode_LAX_zero_page_Y()
+    {
+        // Load Accumulator and X with memory
+        int _address = Addressing.zeroPageY(pc++, y);
+        a = Memory.readByte(_address);
+        x = a;
+        
+        negative = (a >> 7) & 1;
+        not_zero = a;
+    }
 
     private void opcode_LAX_absolute()
     {
         // Load Accumulator and X with memory
         int _address = Addressing.absolute(pc++);
+        a = Memory.readByte(_address);
+        x = a;
+        
+        pc++;
+        
+        negative = (a >> 7) & 1;
+        not_zero = a;
+    }
+    
+    private void opcode_LAX_absolute_Y()
+    {
+        // Load Accumulator and X with memory
+        int _address = Addressing.absoluteY(pc++, y);
         a = Memory.readByte(_address);
         x = a;
         
