@@ -137,6 +137,13 @@ public class MOS6502
                 case 0xC0: opcode_CPY_immediate(); break;
                 case 0xC4: opcode_CPY_zero_page(); break;
                 case 0xCC: opcode_CPY_absolute(); break;
+                case 0xC7: opcode_DCP_zero_page(); break;
+                case 0xD7: opcode_DCP_zero_page_X(); break;
+                case 0xCF: opcode_DCP_absolute(); break;
+                case 0xDf: opcode_DCP_absolute_X(); break;
+                case 0xDB: opcode_DCP_absolute_Y(); break;
+                case 0xC3: opcode_DCP_indirect_X(); break;
+                case 0xD3: opcode_DCP_indirect_Y(); break;
                 case 0xC6: opcode_DEC_zero_page(); break;
                 case 0xD6: opcode_DEC_zero_page_X(); break;
                 case 0xCE: opcode_DEC_absolute(); break;
@@ -961,6 +968,41 @@ public class MOS6502
         carry = (_temp >= 0 ? 1:0);
         not_zero = _temp & 0xFF;;
         negative = (_temp >> 7) & 1;
+    }
+    
+    private void opcode_DCP_zero_page()
+    {
+        throw new RuntimeException("opcode not implemented [opcode_DCP_zero_page]");
+    }
+
+    private void opcode_DCP_zero_page_X()
+    {
+        throw new RuntimeException("opcode not implemented [opcode_DCP_zero_page_X]");
+    }
+
+    private void opcode_DCP_absolute()
+    {
+        throw new RuntimeException("opcode not implemented [opcode_DCP_absolute]");
+    }
+
+    private void opcode_DCP_absolute_X()
+    {
+        throw new RuntimeException("opcode not implemented [opcode_DCP_absolute_X]");
+    }
+
+    private void opcode_DCP_absolute_Y()
+    {
+        throw new RuntimeException("opcode not implemented [opcode_DCP_absolute_Y]");
+    }
+
+    private void opcode_DCP_indirect_X()
+    {
+        throw new RuntimeException("opcode not implemented [opcode_DCP_indirect_X]");
+    }
+
+    private void opcode_DCP_indirect_Y()
+    {
+        throw new RuntimeException("opcode not implemented [opcode_DCP_indirect_Y]");
     }
 
     private void opcode_DEC_zero_page()

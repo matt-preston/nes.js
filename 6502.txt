@@ -322,6 +322,27 @@ N.B. CMP, CPX, and CPY all set flags according to:
 
 ======================================================================
 
+   DCP  - Equivalent to DEC value then CMP value, except supporting more addressing modes.
+          (undocumented) 
+   
+						Flags Affected:
+						---------------
+      M - 1 -> M                                N, Z
+      A compared with M                         N, Z, C
+
+      Mnemonic   Addressing Mode       Opcode
+      ---------------------------------------
+
+      DCP        aa                    C7
+      DCP        aa,X                  D7
+      DCP        aaaa                  CF
+      DCP        aaaa,X                Df
+      DCP        aaaa,Y                DB
+      DCP        (aa,X)                C3
+      DCP        (aa),Y                D3
+      
+======================================================================
+
    DEC  -  Decrement Memory by One
    
 						Flags Affected:

@@ -57,6 +57,13 @@ public class Opcodes
             case 0xC0: return "opcode_CPY_immediate";
             case 0xC4: return "opcode_CPY_zero_page";
             case 0xCC: return "opcode_CPY_absolute";
+            case 0xC7: return "opcode_DCP_zero_page";
+            case 0xD7: return "opcode_DCP_zero_page_X";
+            case 0xCF: return "opcode_DCP_absolute";
+            case 0xDf: return "opcode_DCP_absolute_X";
+            case 0xDB: return "opcode_DCP_absolute_Y";
+            case 0xC3: return "opcode_DCP_indirect_X";
+            case 0xD3: return "opcode_DCP_indirect_Y";
             case 0xC6: return "opcode_DEC_zero_page";
             case 0xD6: return "opcode_DEC_zero_page_X";
             case 0xCE: return "opcode_DEC_absolute";
