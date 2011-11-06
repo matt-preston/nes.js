@@ -36,7 +36,7 @@ public class Memory
             return byteAtIndex(prom, _address);
         }
 
-        System.out.println("Don't know how to read from memory address [" + _address + "]");
+        System.out.println("Don't know how to read from memory address [" + Utils.toHexString(_address) + "]");
 
         return 0;  // TODO
     }
@@ -55,7 +55,7 @@ public class Memory
         }
         else
         {
-            System.out.println("Don't know how to write to memory at address [" + anAddress + "]");
+            System.out.println("Don't know how to write to memory at address [" + Utils.toHexString(anAddress) + "]");
         }
     }
     

@@ -59,13 +59,6 @@ public class TestNestest
         }
     }
     
-    private List<CPUState> getExpectedCpuStates(int aLimit) throws Exception
-    {
-        List<CPUState> _all = getExpectedCpuStates();
-        
-        return _all.subList(0, aLimit);
-    }
-    
     private List<CPUState> getExpectedCpuStates() throws Exception
     {
         Scanner _scanner = new Scanner(new File("nestest-simple.log"), "UTF-8");
