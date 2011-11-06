@@ -10,3 +10,14 @@ Testing:
 http://wiki.nesdev.com/w/index.php/Emulator_tests
 http://visual6502.org/wiki/index.php?title=6502TestPrograms
 http://nesdev.parodius.com/bbs/viewtopic.php?t=3621&highlight=sax
+
+TODOs
+
+* Use 6502.txt as source for addressing modes of opcodes.
+* Remove duplicate methods, dispatch & names from the code generation step.
+* Pretty up the opcode names from Opcodes.name(int)
+* Processor status register cleanup
+* Opcode implementation refactor to remove duplication
+* Memory singleton -> instance
+* Add "unofficial" to unofficial opcode names & methods
+* Try first GWT compile with custom ROM loading
