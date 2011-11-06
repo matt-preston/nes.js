@@ -764,6 +764,26 @@ N.B. CMP, CPX, and CPY all set flags according to:
 
 ======================================================================
 
+   RRA  -  Equivalent to ROR value then ADC value (Undocumented)
+           Essentially this computes A + value / 2, where value 
+           is 9-bit and the division is rounded up.
+   
+						Flags Affected:
+						---------------
+
+      Mnemonic   Addressing Mode       Opcode
+      ---------------------------------------
+
+      RRA        $aa                   67
+      RRA        $aa,X                 77
+      RRA        $aaaa                 6F
+      RRA        $aaaa,X               7F
+      RRA        $aaaa,Y               7B
+      RRA        ($aa,X)               63
+      RRA        ($aa),Y               73
+      
+======================================================================
+
    RTI  -  Return from Interrupt
    
 						Flags Affected:

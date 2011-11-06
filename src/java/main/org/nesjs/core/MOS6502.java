@@ -256,6 +256,13 @@ public class MOS6502
                 case 0x76: opcode_ROR_zero_page_X(); break;
                 case 0x6E: opcode_ROR_absolute(); break;
                 case 0x7E: opcode_ROR_absolute_X(); break;
+                case 0x67: opcode_RRA_zero_page(); break;
+                case 0x77: opcode_RRA_zero_page_X(); break;
+                case 0x6F: opcode_RRA_absolute(); break;
+                case 0x7F: opcode_RRA_absolute_X(); break;
+                case 0x7B: opcode_RRA_absolute_Y(); break;
+                case 0x63: opcode_RRA_indirect_X(); break;
+                case 0x73: opcode_RRA_indirect_Y(); break;
                 case 0x40: opcode_RTI(); break;
                 case 0x60: opcode_RTS(); break;
                 case 0x87: opcode_SAX_zero_page(); break;
@@ -2327,6 +2334,173 @@ public class MOS6502
         
         negative = (_value >> 7) & 1;
         not_zero = _value & 0xFF;
+    }
+    
+    private void opcode_RRA_zero_page()
+    {
+        // ROR value then ADC value
+        int _address = Addressing.zeroPage(pc++);
+        int _value = Memory.readByte(_address);
+        
+        int _add = carry << 7;
+        
+        carry = _value & 1;
+        _value = (_value >> 1) + _add;
+        
+        Memory.writeByte(_value, _address);
+        
+        int _temp = a + _value + carry;
+        
+        carry = _temp > 0xFF ? 1 : 0;
+        not_zero = _temp & 0xFF;
+        overflow = ((!(((a ^ _value) & 0x80) != 0) && (((a ^ _temp) & 0x80)) != 0) ? 1 : 0);
+        negative = (_temp >> 7) & 1;
+        
+        a = _temp & 0xFF;
+    }
+
+    private void opcode_RRA_zero_page_X()
+    {
+        // ROR value then ADC value
+        int _address = Addressing.zeroPageX(pc++, x);
+        int _value = Memory.readByte(_address);
+        
+        int _add = carry << 7;
+        
+        carry = _value & 1;
+        _value = (_value >> 1) + _add;
+        
+        Memory.writeByte(_value, _address);
+        
+        int _temp = a + _value + carry;
+        
+        carry = _temp > 0xFF ? 1 : 0;
+        not_zero = _temp & 0xFF;
+        overflow = ((!(((a ^ _value) & 0x80) != 0) && (((a ^ _temp) & 0x80)) != 0) ? 1 : 0);
+        negative = (_temp >> 7) & 1;
+        
+        a = _temp & 0xFF;
+    }
+
+    private void opcode_RRA_absolute()
+    {
+        // ROR value then ADC value
+        int _address = Addressing.absolute(pc++);
+        int _value = Memory.readByte(_address);
+        
+        pc++;
+        
+        int _add = carry << 7;
+        
+        carry = _value & 1;
+        _value = (_value >> 1) + _add;
+        
+        Memory.writeByte(_value, _address);
+        
+        int _temp = a + _value + carry;
+        
+        carry = _temp > 0xFF ? 1 : 0;
+        not_zero = _temp & 0xFF;
+        overflow = ((!(((a ^ _value) & 0x80) != 0) && (((a ^ _temp) & 0x80)) != 0) ? 1 : 0);
+        negative = (_temp >> 7) & 1;
+        
+        a = _temp & 0xFF;
+    }
+
+    private void opcode_RRA_absolute_X()
+    {
+        // ROR value then ADC value
+        int _address = Addressing.absoluteX(pc++, x);
+        int _value = Memory.readByte(_address);
+        
+        pc++;
+        
+        int _add = carry << 7;
+        
+        carry = _value & 1;
+        _value = (_value >> 1) + _add;
+        
+        Memory.writeByte(_value, _address);
+        
+        int _temp = a + _value + carry;
+        
+        carry = _temp > 0xFF ? 1 : 0;
+        not_zero = _temp & 0xFF;
+        overflow = ((!(((a ^ _value) & 0x80) != 0) && (((a ^ _temp) & 0x80)) != 0) ? 1 : 0);
+        negative = (_temp >> 7) & 1;
+        
+        a = _temp & 0xFF;
+    }
+
+    private void opcode_RRA_absolute_Y()
+    {
+        // ROR value then ADC value
+        int _address = Addressing.absoluteY(pc++, y);
+        int _value = Memory.readByte(_address);
+        
+        pc++;
+        
+        int _add = carry << 7;
+        
+        carry = _value & 1;
+        _value = (_value >> 1) + _add;
+        
+        Memory.writeByte(_value, _address);
+        
+        int _temp = a + _value + carry;
+        
+        carry = _temp > 0xFF ? 1 : 0;
+        not_zero = _temp & 0xFF;
+        overflow = ((!(((a ^ _value) & 0x80) != 0) && (((a ^ _temp) & 0x80)) != 0) ? 1 : 0);
+        negative = (_temp >> 7) & 1;
+        
+        a = _temp & 0xFF;
+    }
+
+    private void opcode_RRA_indirect_X()
+    {
+        // ROR value then ADC value
+        int _address = Addressing.indirectX(pc++, x);
+        int _value = Memory.readByte(_address);
+        
+        int _add = carry << 7;
+        
+        carry = _value & 1;
+        _value = (_value >> 1) + _add;
+        
+        Memory.writeByte(_value, _address);
+        
+        int _temp = a + _value + carry;
+        
+        carry = _temp > 0xFF ? 1 : 0;
+        not_zero = _temp & 0xFF;
+        overflow = ((!(((a ^ _value) & 0x80) != 0) && (((a ^ _temp) & 0x80)) != 0) ? 1 : 0);
+        negative = (_temp >> 7) & 1;
+        
+        a = _temp & 0xFF;
+    }
+
+    private void opcode_RRA_indirect_Y()
+    {
+        // ROR value then ADC value
+        int _address = Addressing.indirectY(pc++, y);
+        int _value = Memory.readByte(_address);
+        
+        int _add = carry << 7;
+        
+        carry = _value & 1;
+        _value = (_value >> 1) + _add;
+        
+        Memory.writeByte(_value, _address);
+        
+        int _temp = a + _value + carry;
+        
+        carry = _temp > 0xFF ? 1 : 0;
+        not_zero = _temp & 0xFF;
+        overflow = ((!(((a ^ _value) & 0x80) != 0) && (((a ^ _temp) & 0x80)) != 0) ? 1 : 0);
+        negative = (_temp >> 7) & 1;
+        
+        a = _temp & 0xFF;
     }
 
     private void opcode_RTI()

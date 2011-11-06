@@ -176,6 +176,13 @@ public class Opcodes
             case 0x76: return "opcode_ROR_zero_page_X";
             case 0x6E: return "opcode_ROR_absolute";
             case 0x7E: return "opcode_ROR_absolute_X";
+            case 0x67: return "opcode_RRA_zero_page";
+            case 0x77: return "opcode_RRA_zero_page_X";
+            case 0x6F: return "opcode_RRA_absolute";
+            case 0x7F: return "opcode_RRA_absolute_X";
+            case 0x7B: return "opcode_RRA_absolute_Y";
+            case 0x63: return "opcode_RRA_indirect_X";
+            case 0x73: return "opcode_RRA_indirect_Y";
             case 0x40: return "opcode_RTI";
             case 0x60: return "opcode_RTS";
             case 0x87: return "opcode_SAX_zero_page";
