@@ -448,6 +448,29 @@ N.B. CMP, CPX, and CPY all set flags according to:
 
 ======================================================================
 
+   ISB  -  Equivalent to INC value then SBC value, except supporting more addressing modes.
+           (undocumented)
+   
+						Flags Affected:
+						---------------
+						N, Z, C, V						
+      M + 1 -> M                                N, Z
+      A - M - ~C -> A  (~C is NOT C)
+      
+
+      Mnemonic   Addressing Mode       Opcode
+      ---------------------------------------
+
+      ISB        $aa                   E7
+      ISB        $aa,X                 F7
+      ISB        $aaaa                 EF
+      ISB        $aaaa,X               FF
+      ISB        $aaaa,Y               FB
+      ISB        ($aa,X)               E3
+      ISB        ($aa),Y               F3
+      
+======================================================================
+
    JMP  -  Jump
    
 						Flags Affected:

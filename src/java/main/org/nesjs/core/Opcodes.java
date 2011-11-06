@@ -84,6 +84,13 @@ public class Opcodes
             case 0xFE: return "opcode_INC_absolute_X";
             case 0xE8: return "opcode_INX";
             case 0xC8: return "opcode_INY";
+            case 0xE7: return "opcode_ISB_zero_page";
+            case 0xF7: return "opcode_ISB_zero_page_X";
+            case 0xEF: return "opcode_ISB_absolute";
+            case 0xFF: return "opcode_ISB_absolute_X";
+            case 0xFB: return "opcode_ISB_absolute_Y";
+            case 0xE3: return "opcode_ISB_indirect_X";
+            case 0xF3: return "opcode_ISB_indirect_Y";
             case 0x4C: return "opcode_JMP_absolute";
             case 0x6C: return "opcode_JMP_indirect";
             case 0x20: return "opcode_JSR";

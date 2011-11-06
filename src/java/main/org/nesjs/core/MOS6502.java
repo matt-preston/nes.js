@@ -164,6 +164,13 @@ public class MOS6502
                 case 0xFE: opcode_INC_absolute_X(); break;
                 case 0xE8: opcode_INX(); break;
                 case 0xC8: opcode_INY(); break;
+                case 0xE7: opcode_ISB_zero_page(); break;
+                case 0xF7: opcode_ISB_zero_page_X(); break;
+                case 0xEF: opcode_ISB_absolute(); break;
+                case 0xFF: opcode_ISB_absolute_X(); break;
+                case 0xFB: opcode_ISB_absolute_Y(); break;
+                case 0xE3: opcode_ISB_indirect_X(); break;
+                case 0xF3: opcode_ISB_indirect_Y(); break;
                 case 0x4C: opcode_JMP_absolute(); break;
                 case 0x6C: opcode_JMP_indirect(); break;
                 case 0x20: opcode_JSR(); break;
@@ -1314,6 +1321,41 @@ public class MOS6502
         negative = (y >> 7) & 1;        
     }
 
+    private void opcode_ISB_zero_page()
+    {
+        throw new RuntimeException("opcode not implemented [opcode_ISB_zero_page]");
+    }
+
+    private void opcode_ISB_zero_page_X()
+    {
+        throw new RuntimeException("opcode not implemented [opcode_ISB_zero_page_X]");
+    }
+
+    private void opcode_ISB_absolute()
+    {
+        throw new RuntimeException("opcode not implemented [opcode_ISB_absolute]");
+    }
+
+    private void opcode_ISB_absolute_X()
+    {
+        throw new RuntimeException("opcode not implemented [opcode_ISB_absolute_X]");
+    }
+
+    private void opcode_ISB_absolute_Y()
+    {
+        throw new RuntimeException("opcode not implemented [opcode_ISB_absolute_Y]");
+    }
+
+    private void opcode_ISB_indirect_X()
+    {
+        throw new RuntimeException("opcode not implemented [opcode_ISB_indirect_X]");
+    }
+
+    private void opcode_ISB_indirect_Y()
+    {
+        throw new RuntimeException("opcode not implemented [opcode_ISB_indirect_Y]");
+    }
+    
     private void opcode_JMP_absolute()
     {
         // Jump to target address
