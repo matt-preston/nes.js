@@ -972,37 +972,113 @@ public class MOS6502
     
     private void opcode_DCP_zero_page()
     {
-        throw new RuntimeException("opcode not implemented [opcode_DCP_zero_page]");
+        // DEC value then CMP value
+        int _address = Addressing.zeroPage(pc++);
+        int _value = Memory.readByte(_address) - 1;
+        
+        Memory.writeByte(_value, _address);
+        
+        int _temp = a - _value;
+        
+        carry = (_temp >= 0 ? 1:0);
+        not_zero = _temp & 0xFF;;
+        negative = (_temp >> 7) & 1;
     }
 
     private void opcode_DCP_zero_page_X()
     {
-        throw new RuntimeException("opcode not implemented [opcode_DCP_zero_page_X]");
+        // DEC value then CMP value
+        int _address = Addressing.zeroPageX(pc++, x);
+        int _value = Memory.readByte(_address) - 1;
+        
+        Memory.writeByte(_value, _address);
+        
+        int _temp = a - _value;
+        
+        carry = (_temp >= 0 ? 1:0);
+        not_zero = _temp & 0xFF;;
+        negative = (_temp >> 7) & 1;
     }
 
     private void opcode_DCP_absolute()
     {
-        throw new RuntimeException("opcode not implemented [opcode_DCP_absolute]");
+        // DEC value then CMP value
+        int _address = Addressing.absolute(pc++);
+        int _value = Memory.readByte(_address) - 1;
+        
+        Memory.writeByte(_value, _address);
+        
+        pc++;
+        
+        int _temp = a - _value;
+        
+        carry = (_temp >= 0 ? 1:0);
+        not_zero = _temp & 0xFF;;
+        negative = (_temp >> 7) & 1;
     }
 
     private void opcode_DCP_absolute_X()
     {
-        throw new RuntimeException("opcode not implemented [opcode_DCP_absolute_X]");
+        // DEC value then CMP value
+        int _address = Addressing.absoluteX(pc++, x);
+        int _value = Memory.readByte(_address) - 1;
+        
+        Memory.writeByte(_value, _address);
+        
+        pc++;
+        
+        int _temp = a - _value;
+        
+        carry = (_temp >= 0 ? 1:0);
+        not_zero = _temp & 0xFF;;
+        negative = (_temp >> 7) & 1;
     }
 
     private void opcode_DCP_absolute_Y()
     {
-        throw new RuntimeException("opcode not implemented [opcode_DCP_absolute_Y]");
+        // DEC value then CMP value
+        int _address = Addressing.absoluteY(pc++, y);
+        int _value = Memory.readByte(_address) - 1;
+        
+        Memory.writeByte(_value, _address);
+        
+        pc++;
+        
+        int _temp = a - _value;
+        
+        carry = (_temp >= 0 ? 1:0);
+        not_zero = _temp & 0xFF;;
+        negative = (_temp >> 7) & 1;
     }
 
     private void opcode_DCP_indirect_X()
     {
-        throw new RuntimeException("opcode not implemented [opcode_DCP_indirect_X]");
+        // DEC value then CMP value
+        int _address = Addressing.indirectX(pc++, x);
+        int _value = Memory.readByte(_address) - 1;
+        
+        Memory.writeByte(_value, _address);
+        
+        int _temp = a - _value;
+        
+        carry = (_temp >= 0 ? 1:0);
+        not_zero = _temp & 0xFF;;
+        negative = (_temp >> 7) & 1;
     }
 
     private void opcode_DCP_indirect_Y()
     {
-        throw new RuntimeException("opcode not implemented [opcode_DCP_indirect_Y]");
+        // DEC value then CMP value
+        int _address = Addressing.indirectY(pc++, y);
+        int _value = Memory.readByte(_address) - 1;
+        
+        Memory.writeByte(_value, _address);
+        
+        int _temp = a - _value;
+        
+        carry = (_temp >= 0 ? 1:0);
+        not_zero = _temp & 0xFF;;
+        negative = (_temp >> 7) & 1;
     }
 
     private void opcode_DEC_zero_page()
