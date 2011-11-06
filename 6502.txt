@@ -461,7 +461,10 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode
       ---------------------------------------
       
-      LAX        ($aa,X)               A3
+      LAX        $aa                   A7
+      LAX        $aaaa                 AF
+      LAX        ($aa,X)               A3      
+      LAX        ($aa),Y               B3
 
 ======================================================================
 
