@@ -1921,22 +1921,27 @@ public class MOS6502
 
     private void opcode_SAX_zero_page()
     {
-        throw new RuntimeException("opcode not implemented [opcode_SAX_zero_page]");
+        // Store A and X bitwise
+        Memory.writeByte(a & x, Addressing.zeroPage(pc++));
     }
 
     private void opcode_SAX_zero_page_Y()
     {
-        throw new RuntimeException("opcode not implemented [opcode_SAX_zero_page_Y]");
+     // Store A and X bitwise
+        Memory.writeByte(a & x, Addressing.zeroPageY(pc++, y));
     }
 
     private void opcode_SAX_absolute()
     {
-        throw new RuntimeException("opcode not implemented [opcode_SAX_absolute]");
+        // Store A and X bitwise
+        Memory.writeByte(a & x, Addressing.absolute(pc++));
+        pc++;
     }
 
     private void opcode_SAX_indirect_X()
     {
-        throw new RuntimeException("opcode not implemented [opcode_SAX_indirect_X]");
+        // Store A and X bitwise
+        Memory.writeByte(a & x, Addressing.indirectX(pc++, x));
     }
     
     private void opcode_SBC_immediate()
