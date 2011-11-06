@@ -201,6 +201,13 @@ public class Opcodes
             case 0x1B: return "opcode_SLO_absolute_Y";
             case 0x03: return "opcode_SLO_indirect_X";
             case 0x13: return "opcode_SLO_indirect_Y";
+            case 0x47: return "opcode_SRE_zero_page";
+            case 0x57: return "opcode_SRE_zero_page_X";
+            case 0x4F: return "opcode_SRE_absolute";
+            case 0x5F: return "opcode_SRE_absolute_X";
+            case 0x5B: return "opcode_SRE_absolute_Y";
+            case 0x43: return "opcode_SRE_indirect_X";
+            case 0x53: return "opcode_SRE_indirect_Y";
             case 0x85: return "opcode_STA_zero_page";
             case 0x95: return "opcode_STA_zero_page_X";
             case 0x8D: return "opcode_STA_absolute";

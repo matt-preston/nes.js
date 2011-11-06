@@ -281,6 +281,13 @@ public class MOS6502
                 case 0x1B: opcode_SLO_absolute_Y(); break;
                 case 0x03: opcode_SLO_indirect_X(); break;
                 case 0x13: opcode_SLO_indirect_Y(); break;
+                case 0x47: opcode_SRE_zero_page(); break;
+                case 0x57: opcode_SRE_zero_page_X(); break;
+                case 0x4F: opcode_SRE_absolute(); break;
+                case 0x5F: opcode_SRE_absolute_X(); break;
+                case 0x5B: opcode_SRE_absolute_Y(); break;
+                case 0x43: opcode_SRE_indirect_X(); break;
+                case 0x53: opcode_SRE_indirect_Y(); break;
                 case 0x85: opcode_STA_zero_page(); break;
                 case 0x95: opcode_STA_zero_page_X(); break;
                 case 0x8D: opcode_STA_absolute(); break;
@@ -2632,6 +2639,131 @@ public class MOS6502
         Memory.writeByte(_value, _address);
         
         a |=  _value;
+        
+        not_zero = a & 0xFF;
+        negative = (a >> 7) & 1;
+    }
+    
+    private void opcode_SRE_zero_page()
+    {
+        // Equivalent to LSR value then EOR value
+        int _address = Addressing.zeroPage(pc++);
+        int _value = Memory.readByte(_address);
+        
+        carry = _value & 1; // old bit 0       
+        _value >>= 1;
+        
+        Memory.writeByte(_value, _address);
+        
+        a ^=  _value;
+        
+        not_zero = a & 0xFF;
+        negative = (a >> 7) & 1;
+    }
+
+    private void opcode_SRE_zero_page_X()
+    {
+        // Equivalent to LSR value then EOR value
+        int _address = Addressing.zeroPageX(pc++, x);
+        int _value = Memory.readByte(_address);
+        
+        carry = _value & 1; // old bit 0       
+        _value >>= 1;
+        
+        Memory.writeByte(_value, _address);
+        
+        a ^=  _value;
+        
+        not_zero = a & 0xFF;
+        negative = (a >> 7) & 1;
+    }
+
+    private void opcode_SRE_absolute()
+    {
+        // Equivalent to LSR value then EOR value
+        int _address = Addressing.absolute(pc++);
+        int _value = Memory.readByte(_address);
+        
+        pc++;
+        
+        carry = _value & 1; // old bit 0       
+        _value >>= 1;
+        
+        Memory.writeByte(_value, _address);
+        
+        a ^=  _value;
+        
+        not_zero = a & 0xFF;
+        negative = (a >> 7) & 1;
+    }
+
+    private void opcode_SRE_absolute_X()
+    {
+        // Equivalent to LSR value then EOR value
+        int _address = Addressing.absoluteX(pc++, x);
+        int _value = Memory.readByte(_address);
+        
+        pc++;
+        
+        carry = _value & 1; // old bit 0       
+        _value >>= 1;
+        
+        Memory.writeByte(_value, _address);
+        
+        a ^=  _value;
+        
+        not_zero = a & 0xFF;
+        negative = (a >> 7) & 1;
+    }
+
+    private void opcode_SRE_absolute_Y()
+    {
+        // Equivalent to LSR value then EOR value
+        int _address = Addressing.absoluteY(pc++, y);
+        int _value = Memory.readByte(_address);
+        
+        pc++;
+        
+        carry = _value & 1; // old bit 0       
+        _value >>= 1;
+        
+        Memory.writeByte(_value, _address);
+        
+        a ^=  _value;
+        
+        not_zero = a & 0xFF;
+        negative = (a >> 7) & 1;
+    }
+
+    private void opcode_SRE_indirect_X()
+    {
+        // Equivalent to LSR value then EOR value
+        int _address = Addressing.indirectX(pc++, x);
+        int _value = Memory.readByte(_address);
+        
+        carry = _value & 1; // old bit 0       
+        _value >>= 1;
+        
+        Memory.writeByte(_value, _address);
+        
+        a ^=  _value;
+        
+        not_zero = a & 0xFF;
+        negative = (a >> 7) & 1;
+    }
+
+    private void opcode_SRE_indirect_Y()
+    {
+        // Equivalent to LSR value then EOR value
+        int _address = Addressing.indirectY(pc++, y);
+        int _value = Memory.readByte(_address);
+        
+        carry = _value & 1; // old bit 0       
+        _value >>= 1;
+        
+        Memory.writeByte(_value, _address);
+        
+        a ^=  _value;
         
         not_zero = a & 0xFF;
         negative = (a >> 7) & 1;

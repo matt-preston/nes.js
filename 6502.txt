@@ -888,6 +888,24 @@ N.B. CMP, CPX, and CPY all set flags according to:
       
 ======================================================================
 
+   SRE  -  Equivalent to LSR value then EOR value (Undocumented)
+   
+						Flags Affected:
+						---------------
+	         						
+      Mnemonic   Addressing Mode       Opcode
+      ---------------------------------------
+
+      SRE        $aa                   47
+      SRE        $aa,X                 57
+      SRE        $aaaa                 4F
+      SRE        $aaaa,X               5F
+      SRE        $aaaa,Y               5B
+      SRE        ($aa,X)               43
+      SRE        ($aa),Y               53
+      
+======================================================================
+
    STA  -  Store Accumulator in Memory
    
 						Flags Affected:
