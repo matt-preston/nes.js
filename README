@@ -2,8 +2,11 @@ Simple NES emulator implemented in JavaScript
 
 http://www.obelisk.demon.co.uk/6502/registers.html
 
+http://wiki.nesdev.com/w/index.php/Programming_with_unofficial_opcodes
+
 Testing:
 
 
 http://wiki.nesdev.com/w/index.php/Emulator_tests
 http://visual6502.org/wiki/index.php?title=6502TestPrograms
+http://nesdev.parodius.com/bbs/viewtopic.php?t=3621&highlight=sax

@@ -237,6 +237,10 @@ public class MOS6502
                 case 0x7E: opcode_ROR_absolute_X(); break;
                 case 0x40: opcode_RTI(); break;
                 case 0x60: opcode_RTS(); break;
+                case 0x87: opcode_SAX_zero_page(); break;
+                case 0x97: opcode_SAX_zero_page_Y(); break;
+                case 0x8F: opcode_SAX_absolute(); break;
+                case 0x83: opcode_SAX_indirect_X(); break;
                 case 0xE9: opcode_SBC_immediate(); break;
                 case 0xE5: opcode_SBC_zero_page(); break;
                 case 0xF5: opcode_SBC_zero_page_X(); break;
@@ -1915,6 +1919,26 @@ public class MOS6502
         pc = popWord() + 1;        
     }
 
+    private void opcode_SAX_zero_page()
+    {
+        throw new RuntimeException("opcode not implemented [opcode_SAX_zero_page]");
+    }
+
+    private void opcode_SAX_zero_page_Y()
+    {
+        throw new RuntimeException("opcode not implemented [opcode_SAX_zero_page_Y]");
+    }
+
+    private void opcode_SAX_absolute()
+    {
+        throw new RuntimeException("opcode not implemented [opcode_SAX_absolute]");
+    }
+
+    private void opcode_SAX_indirect_X()
+    {
+        throw new RuntimeException("opcode not implemented [opcode_SAX_indirect_X]");
+    }
+    
     private void opcode_SBC_immediate()
     {
         // Subtract with Carry

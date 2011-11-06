@@ -157,6 +157,10 @@ public class Opcodes
             case 0x7E: return "opcode_ROR_absolute_X";
             case 0x40: return "opcode_RTI";
             case 0x60: return "opcode_RTS";
+            case 0x87: return "opcode_SAX_zero_page";
+            case 0x97: return "opcode_SAX_zero_page_Y";
+            case 0x8F: return "opcode_SAX_absolute";
+            case 0x83: return "opcode_SAX_indirect_X";
             case 0xE9: return "opcode_SBC_immediate";
             case 0xE5: return "opcode_SBC_zero_page";
             case 0xF5: return "opcode_SBC_zero_page_X";

@@ -722,8 +722,25 @@ N.B. CMP, CPX, and CPY all set flags according to:
       ---------------------------------------
 
       RTS                              60
-
+      
 ======================================================================
+
+   SAX  -  Stores the bitwise AND of A and X (Undocumented)
+           As with STA and STX, no flags are affected
+   
+						Flags Affected:
+						---------------
+						No Flags
+      Mnemonic   Addressing Mode       Opcode
+      ---------------------------------------
+
+      SAX        $aa                   87
+      SAX        $aa,X                 97
+      SAX        $aaaa                 8F
+      SAX        ($aa,X)               83      
+      
+======================================================================
+
 
    SBC  -  Subtract from Accumulator with Carry
    
