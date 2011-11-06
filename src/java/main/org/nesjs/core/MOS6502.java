@@ -242,6 +242,7 @@ public class MOS6502
                 case 0x8F: opcode_SAX_absolute(); break;
                 case 0x83: opcode_SAX_indirect_X(); break;
                 case 0xE9: opcode_SBC_immediate(); break;
+                case 0xEB: opcode_SBC_immediate(); break;
                 case 0xE5: opcode_SBC_zero_page(); break;
                 case 0xF5: opcode_SBC_zero_page_X(); break;
                 case 0xED: opcode_SBC_absolute(); break;

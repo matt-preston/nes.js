@@ -753,6 +753,10 @@ N.B. CMP, CPX, and CPY all set flags according to:
       ---------------------------------------
 
       SBC        #aa                   E9
+      
+      // Undocumented bonus SBC
+      SBC        #aa                   EB
+      
       SBC        $aa                   E5
       SBC        $aa,X                 F5
       SBC        $aaaa                 ED
@@ -760,6 +764,8 @@ N.B. CMP, CPX, and CPY all set flags according to:
       SBC        $aaaa,Y               F9
       SBC        ($aa,X)               E1
       SBC        ($aa),Y               F1
+      
+      
 
 ======================================================================
 
