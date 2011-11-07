@@ -11,21 +11,6 @@ import org.nesjs.core.Utils;
 
 public class OpcodeDefinitionReader 
 {
-	// TEST
-	public static void main(String[] args) throws Exception 
-	{
-		OpcodeDefinitionReader _r = new OpcodeDefinitionReader();
-		
-		OpcodeDefinition _o;
-		
-		while((_o = _r.next()) != null)
-		{
-			System.out.println(_o);
-		}
-	}
-	
-	
-	
 	private BufferedReader reader;
 	
 	private Pattern pattern = Pattern.compile("^(\\w{3})\\s+.*\\s+(\\w{2})$", Pattern.DOTALL);
@@ -64,12 +49,44 @@ public class OpcodeDefinitionReader
         return null;
     }
     
+    public void close()
+    {
+        if(reader != null)
+        {
+            try
+            {
+                reader.close();
+            }
+            catch(IOException anExc)
+            {                
+            }
+            
+            reader = null;
+        }
+    }
+    
     private AddressingMode getAddressingMode(String aDefinitionString)
     {
     	if(aDefinitionString.contains("#"))
     	{
     		return AddressingMode.IMMEDIATE;
-    	}    	
+    	} 
+    	else if(aDefinitionString.contains("~"))
+        {
+            return AddressingMode.RELATIVE;
+        }
+    	else if(aDefinitionString.contains("aaaa)"))
+        {
+            return AddressingMode.INDIRECT;
+        }
+        else if(aDefinitionString.contains(",X)"))
+        {
+            return AddressingMode.INDIRECT_X;
+        }
+        else if(aDefinitionString.contains("),Y"))
+        {
+            return AddressingMode.INDIRECT_Y;
+        }
     	else if(aDefinitionString.contains("aaaa "))
     	{
     		return AddressingMode.ABSOLUTE;
@@ -94,24 +111,10 @@ public class OpcodeDefinitionReader
     	{
     		return AddressingMode.ZERO_PAGE_Y;
     	}
-    	else if(aDefinitionString.contains("aaaa)"))
-    	{
-    		return AddressingMode.INDIRECT;
-    	}
-    	else if(aDefinitionString.contains(",X)"))
-    	{
-    		return AddressingMode.INDIRECT_X;
-    	}
-    	else if(aDefinitionString.contains("),Y"))
-    	{
-    		return AddressingMode.INDIRECT_Y;
-    	}
     	else if(aDefinitionString.contains(" A "))
     	{
     		return AddressingMode.ACCUMULATOR;
     	}
-    	
-    	// TODO, extend document to support identifying RELATIVE
     	
     	return AddressingMode.IMPLIED;
     }

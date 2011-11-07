@@ -18,6 +18,7 @@ Just as a quick mental note:
 # means immediate addressing
 $ means a hexadecimal value
 () means some form of indirect addressing
+~ means relative
 
 Lets begin shall we?
 ======================================================================
@@ -94,7 +95,7 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode
       ---------------------------------------
 
-      BCC        aa                    90
+      BCC        ~aa                   90
 
 ======================================================================
 
@@ -107,7 +108,7 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode
       ---------------------------------------
 
-      BCS        aa                    B0
+      BCS        ~aa                   B0
 
 ======================================================================
 
@@ -120,7 +121,7 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode
       ---------------------------------------
 
-      BEQ        aa                    F0
+      BEQ        ~aa                   F0
 
 ======================================================================
 
@@ -147,7 +148,7 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode
       ---------------------------------------
 
-      BMI        aa                    30
+      BMI        ~aa                   30
 
 ======================================================================
 
@@ -160,7 +161,7 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode
       ---------------------------------------
 
-      BNE        aa                    D0
+      BNE        ~aa                   D0
 
 ======================================================================
 
@@ -173,7 +174,7 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode
       ---------------------------------------
 
-      BPL        aa                    10
+      BPL        ~aa                   10
 
 ======================================================================
 
@@ -199,7 +200,7 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode
       ---------------------------------------
 
-      BVC        aa                    50
+      BVC        ~aa                   50
 
 ======================================================================
 
@@ -212,7 +213,7 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode
       ---------------------------------------
 
-      BVS        aa                    70
+      BVS        ~a                    70
 
 ======================================================================
 
@@ -336,7 +337,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       DCP        aa                    C7
       DCP        aa,X                  D7
       DCP        aaaa                  CF
-      DCP        aaaa,X                Df
+      DCP        aaaa,X                DF
       DCP        aaaa,Y                DB
       DCP        (aa,X)                C3
       DCP        (aa),Y                D3
@@ -607,31 +608,31 @@ N.B. CMP, CPX, and CPY all set flags according to:
       NOP                              FA
       
       // Undocumented immediate
-      NOP                              80
+      NOP        #aa                   80
       
       // Undocumented zero page      
-      NOP                              04
-      NOP                              44
-      NOP                              64
+      NOP        $aa                   04
+      NOP        $aa                   44
+      NOP        $aa                   64
       
       // Undocumented, absolute mode
-      NOP                              0C
+      NOP        $aaaa                 0C
       
       // Undocumented, absolute mode X
-      NOP                              1C
-      NOP                              3C
-      NOP                              5C
-      NOP                              7C
-      NOP                              DC
-      NOP                              FC
+      NOP        $aaaa,X               1C
+      NOP        $aaaa,X               3C
+      NOP        $aaaa,X               5C
+      NOP        $aaaa,X               7C
+      NOP        $aaaa,X               DC
+      NOP        $aaaa,X               FC
 
       // Undocumented, zero page X
-      NOP                              14
-      NOP                              34
-      NOP                              54
-      NOP                              74
-      NOP                              D4
-      NOP                              F4
+      NOP        $aa,X                 14
+      NOP        $aa,X                 34
+      NOP        $aa,X                 54
+      NOP        $aa,X                 74
+      NOP        $aa,X                 D4
+      NOP        $aa,X                 F4
 
 ======================================================================
 
@@ -722,7 +723,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       RLA        $aaaa,X               3F
       RLA        $aaaa,Y               3B
       RLA        ($aa,X)               23
-      RLA        ($aa),X               33
+      RLA        ($aa),Y               33
       
 ======================================================================
 
@@ -818,7 +819,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       ---------------------------------------
 
       SAX        $aa                   87
-      SAX        $aa,X                 97
+      SAX        $aa,Y                 97
       SAX        $aaaa                 8F
       SAX        ($aa,X)               83      
       

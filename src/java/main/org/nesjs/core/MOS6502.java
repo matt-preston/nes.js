@@ -140,7 +140,7 @@ public class MOS6502
                 case 0xC7: opcode_DCP_zero_page(); break;
                 case 0xD7: opcode_DCP_zero_page_X(); break;
                 case 0xCF: opcode_DCP_absolute(); break;
-                case 0xDf: opcode_DCP_absolute_X(); break;
+                case 0xDF: opcode_DCP_absolute_X(); break;
                 case 0xDB: opcode_DCP_absolute_Y(); break;
                 case 0xC3: opcode_DCP_indirect_X(); break;
                 case 0xD3: opcode_DCP_indirect_Y(); break;
@@ -173,7 +173,7 @@ public class MOS6502
                 case 0xF3: opcode_ISB_indirect_Y(); break;
                 case 0x4C: opcode_JMP_absolute(); break;
                 case 0x6C: opcode_JMP_indirect(); break;
-                case 0x20: opcode_JSR(); break;
+                case 0x20: opcode_JSR_absolute(); break;
                 case 0xA7: opcode_LAX_zero_page(); break;
                 case 0xB7: opcode_LAX_zero_page_Y(); break;
                 case 0xAF: opcode_LAX_absolute(); break;
@@ -314,7 +314,7 @@ public class MOS6502
                 case 0x8A: opcode_TXA(); break;
                 case 0x9A: opcode_TXS(); break;
                 case 0x98: opcode_TYA(); break;
-                
+
                 default: throw new RuntimeException("Unhandled opcode [" + Utils.toHexString(_opcode) + "]");
             }
             
@@ -1493,7 +1493,7 @@ public class MOS6502
         pc = Addressing.indirect(pc);   
     }
     
-    private void opcode_JSR()
+    private void opcode_JSR_absolute()
     {
         // Jump to subroutine
         int _address = Addressing.absolute(pc);
@@ -2533,7 +2533,7 @@ public class MOS6502
 
     private void opcode_SAX_zero_page_Y()
     {
-     // Store A and X bitwise
+        // Store A and X bitwise
         Memory.writeByte(a & x, Addressing.zeroPageY(pc++, y));
     }
 
