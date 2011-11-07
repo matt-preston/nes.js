@@ -1,5 +1,7 @@
 package org.nesjs.codegen;
 
+import java.util.*;
+
 import org.nesjs.core.*;
 
 public class GenerateDispatch
@@ -7,11 +9,30 @@ public class GenerateDispatch
     public static void main(String[] anArgs) throws Exception 
     {
         OpcodeDefinitionReader _r = new OpcodeDefinitionReader();
-        OpcodeDefinition _o = null;
         
-        while((_o = _r.next()) != null)
+        List<OpcodeDefinition> _opcodes = _r.allOpcodeDefinitions();
+        
+        for(int _index = 0; _index < _opcodes.size(); _index++)
         {
-            System.out.printf("case %s: %s; break;\n", Utils.toHexString(_o.getOpcode()), getMethodName(_o));            
+            OpcodeDefinition _next = _opcodes.get(_index);
+            
+            if(_index < _opcodes.size() - 2)
+            {
+                OpcodeDefinition _following = _opcodes.get(_index + 1);
+                
+                if(_next.getMnemonic().equals(_following.getMnemonic()) && _next.getAddressingMode().equals(_following.getAddressingMode()))
+                {
+                    System.out.printf("case %s:\n", Utils.toHexString(_next.getOpcode()));
+                }
+                else
+                {
+                    System.out.printf("case %s: %s; break;\n", Utils.toHexString(_next.getOpcode()), getMethodName(_next));    
+                }
+            }
+            else
+            {
+                System.out.printf("case %s: %s; break;\n", Utils.toHexString(_next.getOpcode()), getMethodName(_next));
+            }
         }
         
         _r.close();
@@ -19,13 +40,13 @@ public class GenerateDispatch
         System.out.println("\n\n\n===========================================\n\n\n");
         
         _r = new OpcodeDefinitionReader();
-        _o = null;
+        OpcodeDefinition _next = null;
         
-        while((_o = _r.next()) != null)
+        while((_next = _r.next()) != null)
         {
-            System.out.printf("private final void %s\n", getMethodName(_o));
+            System.out.printf("private final void %s\n", getMethodName(_next));
             System.out.printf("{\n");
-            System.out.printf("    throw new RuntimeException(\"opcode not implemented [%s %s]);\n", _o.getMnemonic(), _o.getAddressingMode());
+            System.out.printf("    throw new RuntimeException(\"opcode not implemented [%s %s]);\n", _next.getMnemonic(), _next.getAddressingMode());
             System.out.printf("}\n");
             System.out.println("");
         }
