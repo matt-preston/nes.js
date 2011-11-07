@@ -1,8 +1,6 @@
 package org.nesjs.core;
 
 
-
-
 /**
  * MOS Technology 6502 core
  *
@@ -103,26 +101,26 @@ public class MOS6502
                 case 0x39: opcode_AND_absolute_Y(); break;
                 case 0x21: opcode_AND_indirect_X(); break;
                 case 0x31: opcode_AND_indirect_Y(); break;
-                case 0x0A: opcode_ASL(); break;
+                case 0x0A: opcode_ASL_accumulator(); break;
                 case 0x06: opcode_ASL_zero_page(); break;
                 case 0x16: opcode_ASL_zero_page_X(); break;
                 case 0x0E: opcode_ASL_absolute(); break;
                 case 0x1E: opcode_ASL_absolute_X(); break;
-                case 0x90: opcode_BCC(); break;
-                case 0xB0: opcode_BCS(); break;
-                case 0xF0: opcode_BEQ(); break;
+                case 0x90: opcode_BCC_relative(); break;
+                case 0xB0: opcode_BCS_relative(); break;
+                case 0xF0: opcode_BEQ_relative(); break;
                 case 0x24: opcode_BIT_zero_page(); break;
                 case 0x2C: opcode_BIT_absolute(); break;
-                case 0x30: opcode_BMI(); break;
-                case 0xD0: opcode_BNE(); break;
-                case 0x10: opcode_BPL(); break;
-                case 0x00: opcode_BRK(); break;
-                case 0x50: opcode_BVC(); break;
-                case 0x70: opcode_BVS(); break;
-                case 0x18: opcode_CLC(); break;
-                case 0xD8: opcode_CLD(); break;
-                case 0x58: opcode_CLI(); break;
-                case 0xB8: opcode_CLV(); break;
+                case 0x30: opcode_BMI_relative(); break;
+                case 0xD0: opcode_BNE_relative(); break;
+                case 0x10: opcode_BPL_relative(); break;
+                case 0x00: opcode_BRK_implied(); break;
+                case 0x50: opcode_BVC_relative(); break;
+                case 0x70: opcode_BVS_relative(); break;
+                case 0x18: opcode_CLC_implied(); break;
+                case 0xD8: opcode_CLD_implied(); break;
+                case 0x58: opcode_CLI_implied(); break;
+                case 0xB8: opcode_CLV_implied(); break;
                 case 0xC9: opcode_CMP_immediate(); break;
                 case 0xC5: opcode_CMP_zero_page(); break;
                 case 0xD5: opcode_CMP_zero_page_X(); break;
@@ -148,8 +146,8 @@ public class MOS6502
                 case 0xD6: opcode_DEC_zero_page_X(); break;
                 case 0xCE: opcode_DEC_absolute(); break;
                 case 0xDE: opcode_DEC_absolute_X(); break;
-                case 0xCA: opcode_DEX(); break;
-                case 0x88: opcode_DEY(); break;
+                case 0xCA: opcode_DEX_implied(); break;
+                case 0x88: opcode_DEY_implied(); break;
                 case 0x49: opcode_EOR_immediate(); break;
                 case 0x45: opcode_EOR_zero_page(); break;
                 case 0x55: opcode_EOR_zero_page_X(); break;
@@ -162,8 +160,8 @@ public class MOS6502
                 case 0xF6: opcode_INC_zero_page_X(); break;
                 case 0xEE: opcode_INC_absolute(); break;
                 case 0xFE: opcode_INC_absolute_X(); break;
-                case 0xE8: opcode_INX(); break;
-                case 0xC8: opcode_INY(); break;
+                case 0xE8: opcode_INX_implied(); break;
+                case 0xC8: opcode_INY_implied(); break;
                 case 0xE7: opcode_ISB_zero_page(); break;
                 case 0xF7: opcode_ISB_zero_page_X(); break;
                 case 0xEF: opcode_ISB_absolute(); break;
@@ -198,18 +196,18 @@ public class MOS6502
                 case 0xB4: opcode_LDY_zero_page_X(); break;
                 case 0xAC: opcode_LDY_absolute(); break;
                 case 0xBC: opcode_LDY_absolute_X(); break;
-                case 0x4A: opcode_LSR(); break;
+                case 0x4A: opcode_LSR_accumulator(); break;
                 case 0x46: opcode_LSR_zero_page(); break;
                 case 0x56: opcode_LSR_zero_page_X(); break;
                 case 0x4E: opcode_LSR_absolute(); break;
                 case 0x5E: opcode_LSR_absolute_X(); break;
-                case 0xEA: opcode_NOP(); break;
-                case 0x1A: opcode_NOP(); break;
-                case 0x3A: opcode_NOP(); break;
-                case 0x5A: opcode_NOP(); break;
-                case 0x7A: opcode_NOP(); break;
-                case 0xDA: opcode_NOP(); break;
-                case 0xFA: opcode_NOP(); break;
+                case 0xEA: opcode_NOP_implied(); break;
+                case 0x1A: opcode_NOP_implied(); break;
+                case 0x3A: opcode_NOP_implied(); break;
+                case 0x5A: opcode_NOP_implied(); break;
+                case 0x7A: opcode_NOP_implied(); break;
+                case 0xDA: opcode_NOP_implied(); break;
+                case 0xFA: opcode_NOP_implied(); break;
                 case 0x80: opcode_NOP_immediate(); break;
                 case 0x04: opcode_NOP_zero_page(); break;
                 case 0x44: opcode_NOP_zero_page(); break;
@@ -235,10 +233,10 @@ public class MOS6502
                 case 0x19: opcode_ORA_absolute_Y(); break;
                 case 0x01: opcode_ORA_indirect_X(); break;
                 case 0x11: opcode_ORA_indirect_Y(); break;
-                case 0x48: opcode_PHA(); break;
-                case 0x08: opcode_PHP(); break;
-                case 0x68: opcode_PLA(); break;
-                case 0x28: opcode_PLP(); break;
+                case 0x48: opcode_PHA_implied(); break;
+                case 0x08: opcode_PHP_implied(); break;
+                case 0x68: opcode_PLA_implied(); break;
+                case 0x28: opcode_PLP_implied(); break;
                 case 0x27: opcode_RLA_zero_page(); break;
                 case 0x37: opcode_RLA_zero_page_X(); break;
                 case 0x2F: opcode_RLA_absolute(); break;
@@ -246,12 +244,12 @@ public class MOS6502
                 case 0x3B: opcode_RLA_absolute_Y(); break;
                 case 0x23: opcode_RLA_indirect_X(); break;
                 case 0x33: opcode_RLA_indirect_Y(); break;
-                case 0x2A: opcode_ROL(); break;
+                case 0x2A: opcode_ROL_accumulator(); break;
                 case 0x26: opcode_ROL_zero_page(); break;
                 case 0x36: opcode_ROL_zero_page_X(); break;
                 case 0x2E: opcode_ROL_absolute(); break;
                 case 0x3E: opcode_ROL_absolute_X(); break;
-                case 0x6A: opcode_ROR(); break;
+                case 0x6A: opcode_ROR_accumulator(); break;
                 case 0x66: opcode_ROR_zero_page(); break;
                 case 0x76: opcode_ROR_zero_page_X(); break;
                 case 0x6E: opcode_ROR_absolute(); break;
@@ -263,8 +261,8 @@ public class MOS6502
                 case 0x7B: opcode_RRA_absolute_Y(); break;
                 case 0x63: opcode_RRA_indirect_X(); break;
                 case 0x73: opcode_RRA_indirect_Y(); break;
-                case 0x40: opcode_RTI(); break;
-                case 0x60: opcode_RTS(); break;
+                case 0x40: opcode_RTI_implied(); break;
+                case 0x60: opcode_RTS_implied(); break;
                 case 0x87: opcode_SAX_zero_page(); break;
                 case 0x97: opcode_SAX_zero_page_Y(); break;
                 case 0x8F: opcode_SAX_absolute(); break;
@@ -278,9 +276,9 @@ public class MOS6502
                 case 0xF9: opcode_SBC_absolute_Y(); break;
                 case 0xE1: opcode_SBC_indirect_X(); break;
                 case 0xF1: opcode_SBC_indirect_Y(); break;
-                case 0x38: opcode_SEC(); break;
-                case 0xF8: opcode_SED(); break;
-                case 0x78: opcode_SEI(); break;
+                case 0x38: opcode_SEC_implied(); break;
+                case 0xF8: opcode_SED_implied(); break;
+                case 0x78: opcode_SEI_implied(); break;
                 case 0x07: opcode_SLO_zero_page(); break;
                 case 0x17: opcode_SLO_zero_page_X(); break;
                 case 0x0F: opcode_SLO_absolute(); break;
@@ -308,12 +306,12 @@ public class MOS6502
                 case 0x84: opcode_STY_zero_page(); break;
                 case 0x94: opcode_STY_zero_page_X(); break;
                 case 0x8C: opcode_STY_absolute(); break;
-                case 0xAA: opcode_TAX(); break;
-                case 0xA8: opcode_TAY(); break;
-                case 0xBA: opcode_TSX(); break;
-                case 0x8A: opcode_TXA(); break;
-                case 0x9A: opcode_TXS(); break;
-                case 0x98: opcode_TYA(); break;
+                case 0xAA: opcode_TAX_implied(); break;
+                case 0xA8: opcode_TAY_implied(); break;
+                case 0xBA: opcode_TSX_implied(); break;
+                case 0x8A: opcode_TXA_implied(); break;
+                case 0x9A: opcode_TXS_implied(); break;
+                case 0x98: opcode_TYA_implied(); break;
 
                 default: throw new RuntimeException("Unhandled opcode [" + Utils.toHexString(_opcode) + "]");
             }
@@ -604,7 +602,7 @@ public class MOS6502
         not_zero = a;
     }
 
-    private void opcode_ASL()
+    private void opcode_ASL_accumulator()
     {
         // Arithmetic Shift Left
         carry = (a >> 7) & 1;
@@ -678,7 +676,7 @@ public class MOS6502
         not_zero = _value;
     }
 
-    private void opcode_BCC()
+    private void opcode_BCC_relative()
     {
         // Branch if Carry Clear
         if(carry == 0)
@@ -692,7 +690,7 @@ public class MOS6502
         }
     }
 
-    private void opcode_BCS()
+    private void opcode_BCS_relative()
     {
         // Branch if Carry Set
         if(carry > 0)
@@ -706,7 +704,7 @@ public class MOS6502
         }
     }
 
-    private void opcode_BEQ()
+    private void opcode_BEQ_relative()
     {
         // Branch if Equal
         if(isZeroFlagSet())
@@ -746,7 +744,7 @@ public class MOS6502
         not_zero = _value;        
     }
 
-    private void opcode_BMI()
+    private void opcode_BMI_relative()
     {
     	// Branch if Minus
     	if(negative != 0)
@@ -760,7 +758,7 @@ public class MOS6502
     	}
     }
 
-    private void opcode_BNE()
+    private void opcode_BNE_relative()
     {
         // Branch if Not Equal
         if(!isZeroFlagSet())
@@ -774,7 +772,7 @@ public class MOS6502
         }
     }
 
-    private void opcode_BPL()
+    private void opcode_BPL_relative()
     {
         // Branch if Positive
         if(negative == 0)
@@ -788,12 +786,12 @@ public class MOS6502
         }
     }
 
-    private void opcode_BRK()
+    private void opcode_BRK_implied()
     {
         throw new RuntimeException("opcode not implemented [opcode_BRK]");
     }
 
-    private void opcode_BVC()
+    private void opcode_BVC_relative()
     {
         // Branch if Overflow Clear
         if(overflow == 0)
@@ -807,7 +805,7 @@ public class MOS6502
         }
     }
 
-    private void opcode_BVS()
+    private void opcode_BVS_relative()
     {
         // Branch if Overflow Set
         if(overflow != 0)
@@ -821,24 +819,24 @@ public class MOS6502
         }
     }
 
-    private void opcode_CLC()
+    private void opcode_CLC_implied()
     {
         // Clear Carry Flag
         carry = 0;
     }
 
-    private void opcode_CLD()
+    private void opcode_CLD_implied()
     {
         // Clear Decimal Mode
         decimal = 0;
     }
 
-    private void opcode_CLI()
+    private void opcode_CLI_implied()
     {
         throw new RuntimeException("opcode not implemented [opcode_CLI]");
     }
 
-    private void opcode_CLV()
+    private void opcode_CLV_implied()
     {
         // Clear Overflow Flag
         overflow = 0;
@@ -850,7 +848,7 @@ public class MOS6502
         int _temp = a - Addressing.immediate(pc++);
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;;
+        not_zero = _temp & 0xFF;
         negative = (_temp >> 7) & 1;        
     }
 
@@ -861,7 +859,7 @@ public class MOS6502
         int _temp = a - Memory.readByte(_address);
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;;
+        not_zero = _temp & 0xFF;
         negative = (_temp >> 7) & 1;
     }
 
@@ -872,7 +870,7 @@ public class MOS6502
         int _temp = a - Memory.readByte(_address);
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;;
+        not_zero = _temp & 0xFF;
         negative = (_temp >> 7) & 1;
     }
 
@@ -885,7 +883,7 @@ public class MOS6502
         pc++;
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;;
+        not_zero = _temp & 0xFF;
         negative = (_temp >> 7) & 1;
     }
 
@@ -898,7 +896,7 @@ public class MOS6502
         pc++;
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;;
+        not_zero = _temp & 0xFF;
         negative = (_temp >> 7) & 1;
     }
 
@@ -911,7 +909,7 @@ public class MOS6502
         pc++;
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;;
+        not_zero = _temp & 0xFF;
         negative = (_temp >> 7) & 1;
     }
 
@@ -922,7 +920,7 @@ public class MOS6502
         int _temp = a - Memory.readByte(_address);
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;;
+        not_zero = _temp & 0xFF;
         negative = (_temp >> 7) & 1;
     }
 
@@ -933,7 +931,7 @@ public class MOS6502
         int _temp = a - Memory.readByte(_address);
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;;
+        not_zero = _temp & 0xFF;
         negative = (_temp >> 7) & 1;
     }
 
@@ -943,7 +941,7 @@ public class MOS6502
         int _temp = x - Addressing.immediate(pc++);
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;;
+        not_zero = _temp & 0xFF;
         negative = (_temp >> 7) & 1;
     }
 
@@ -954,7 +952,7 @@ public class MOS6502
         int _temp = x - Memory.readByte(_address);
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;;
+        not_zero = _temp & 0xFF;
         negative = (_temp >> 7) & 1;
     }
 
@@ -967,7 +965,7 @@ public class MOS6502
         pc++;
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;;
+        not_zero = _temp & 0xFF;
         negative = (_temp >> 7) & 1;
     }
 
@@ -977,7 +975,7 @@ public class MOS6502
         int _temp = y - Addressing.immediate(pc++);
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;;
+        not_zero = _temp & 0xFF;
         negative = (_temp >> 7) & 1;
     }
 
@@ -988,7 +986,7 @@ public class MOS6502
         int _temp = y - Memory.readByte(_address);
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;;
+        not_zero = _temp & 0xFF;
         negative = (_temp >> 7) & 1;
     }
 
@@ -1001,7 +999,7 @@ public class MOS6502
         pc++;
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;;
+        not_zero = _temp & 0xFF;
         negative = (_temp >> 7) & 1;
     }
     
@@ -1016,7 +1014,7 @@ public class MOS6502
         int _temp = a - _value;
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;;
+        not_zero = _temp & 0xFF;
         negative = (_temp >> 7) & 1;
     }
 
@@ -1031,7 +1029,7 @@ public class MOS6502
         int _temp = a - _value;
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;;
+        not_zero = _temp & 0xFF;
         negative = (_temp >> 7) & 1;
     }
 
@@ -1048,7 +1046,7 @@ public class MOS6502
         int _temp = a - _value;
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;;
+        not_zero = _temp & 0xFF;
         negative = (_temp >> 7) & 1;
     }
 
@@ -1065,7 +1063,7 @@ public class MOS6502
         int _temp = a - _value;
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;;
+        not_zero = _temp & 0xFF;
         negative = (_temp >> 7) & 1;
     }
 
@@ -1082,7 +1080,7 @@ public class MOS6502
         int _temp = a - _value;
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;;
+        not_zero = _temp & 0xFF;
         negative = (_temp >> 7) & 1;
     }
 
@@ -1097,7 +1095,7 @@ public class MOS6502
         int _temp = a - _value;
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;;
+        not_zero = _temp & 0xFF;
         negative = (_temp >> 7) & 1;
     }
 
@@ -1112,7 +1110,7 @@ public class MOS6502
         int _temp = a - _value;
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;;
+        not_zero = _temp & 0xFF;
         negative = (_temp >> 7) & 1;
     }
 
@@ -1172,7 +1170,7 @@ public class MOS6502
         negative = (_value >> 7) & 1;
     }
 
-    private void opcode_DEX()
+    private void opcode_DEX_implied()
     {
         // Decrement X Register
         x = (x - 1) & 0xFF;
@@ -1181,7 +1179,7 @@ public class MOS6502
         negative = (x >> 7) & 1;
     }
 
-    private void opcode_DEY()
+    private void opcode_DEY_implied()
     {
         // Decrement Y Register
         y = (y - 1) & 0xFF;
@@ -1195,7 +1193,7 @@ public class MOS6502
         // Exclusive OR
         a ^=  Addressing.immediate(pc++);
         
-        not_zero = a & 0xFF;;
+        not_zero = a & 0xFF;
         negative = (a >> 7) & 1;        
     }
 
@@ -1205,7 +1203,7 @@ public class MOS6502
         int _address = Addressing.zeroPage(pc++);
         a ^=  Memory.readByte(_address);
         
-        not_zero = a & 0xFF;;
+        not_zero = a & 0xFF;
         negative = (a >> 7) & 1;
     }
 
@@ -1215,7 +1213,7 @@ public class MOS6502
         int _address = Addressing.zeroPageX(pc++, x);
         a ^=  Memory.readByte(_address);
         
-        not_zero = a & 0xFF;;
+        not_zero = a & 0xFF;
         negative = (a >> 7) & 1;
     }
 
@@ -1227,7 +1225,7 @@ public class MOS6502
         
         pc++;
         
-        not_zero = a & 0xFF;;
+        not_zero = a & 0xFF;
         negative = (a >> 7) & 1;
     }
 
@@ -1239,7 +1237,7 @@ public class MOS6502
         
         pc++;
         
-        not_zero = a & 0xFF;;
+        not_zero = a & 0xFF;
         negative = (a >> 7) & 1;
     }
 
@@ -1251,7 +1249,7 @@ public class MOS6502
         
         pc++;
         
-        not_zero = a & 0xFF;;
+        not_zero = a & 0xFF;
         negative = (a >> 7) & 1;
     }
 
@@ -1331,7 +1329,7 @@ public class MOS6502
         negative = (_value >> 7) & 1;
     }
 
-    private void opcode_INX()
+    private void opcode_INX_implied()
     {
         // Increment X Register
         x = (x + 1) & 0xFF;
@@ -1340,7 +1338,7 @@ public class MOS6502
         negative = (x >> 7) & 1;
     }
 
-    private void opcode_INY()
+    private void opcode_INY_implied()
     {
         // Increment Y Register
         y = (y + 1) & 0xFF;
@@ -1764,7 +1762,7 @@ public class MOS6502
         not_zero = y;
     }
 
-    private void opcode_LSR()
+    private void opcode_LSR_accumulator()
     {
         // Logical Shift Right
         carry = a & 1; // old bit 0       
@@ -1838,7 +1836,7 @@ public class MOS6502
         negative = 0;
     }
 
-    private void opcode_NOP()
+    private void opcode_NOP_implied()
     {
         // No operation
     }
@@ -1957,13 +1955,13 @@ public class MOS6502
         negative = (a >> 7) & 1;
     }
 
-    private void opcode_PHA()
+    private void opcode_PHA_implied()
     {
         // Push Accumulator
     	push(a);
     }
 
-    private void opcode_PHP()
+    private void opcode_PHP_implied()
     {
         // Push Processor Status
         
@@ -1982,7 +1980,7 @@ public class MOS6502
         brk = _oldBrk;
     }
 
-    private void opcode_PLA()
+    private void opcode_PLA_implied()
     {
         // Pull Accumulator
         a = pop();
@@ -1991,7 +1989,7 @@ public class MOS6502
         negative = (a >> 7) & 1;        
     }
 
-    private void opcode_PLP()
+    private void opcode_PLP_implied()
     {
         // Pull Processor Status
     	int _temp = pop();
@@ -2158,7 +2156,7 @@ public class MOS6502
         not_zero = a;
     }
     
-    private void opcode_ROL()
+    private void opcode_ROL_accumulator()
     {
         // Rotate Left
         int _temp = a;
@@ -2252,7 +2250,7 @@ public class MOS6502
         not_zero = _value & 0xFF;
     }
 
-    private void opcode_ROR()
+    private void opcode_ROR_accumulator()
     {
         // Rotate Right
     	int _add = carry << 7;
@@ -2503,7 +2501,7 @@ public class MOS6502
         a = _temp & 0xFF;
     }
 
-    private void opcode_RTI()
+    private void opcode_RTI_implied()
     {
         // Return from Interrupt        
         int _temp = pop();
@@ -2519,7 +2517,7 @@ public class MOS6502
         pc = popWord();
     }
 
-    private void opcode_RTS()
+    private void opcode_RTS_implied()
     {
         // Return from Subroutine
         pc = popWord() + 1;        
@@ -2675,19 +2673,19 @@ public class MOS6502
         a = _temp & 0xFF;
     }
 
-    private void opcode_SEC()
+    private void opcode_SEC_implied()
     {
         // Set the carry flag
         carry = 1;
     }
 
-    private void opcode_SED()
+    private void opcode_SED_implied()
     {
         // Set Decimal Flag
         decimal = 1;  // TODO NOP??
     }
 
-    private void opcode_SEI()
+    private void opcode_SEI_implied()
     {
         // Set Interrupt Disable
         interruptDisable = 1;
@@ -3030,7 +3028,7 @@ public class MOS6502
         pc++;
     }
 
-    private void opcode_TAX()
+    private void opcode_TAX_implied()
     {
         // Transfer Accumulator to X
         x = a;
@@ -3039,7 +3037,7 @@ public class MOS6502
         negative = (x >> 7) & 1;
     }
 
-    private void opcode_TAY()
+    private void opcode_TAY_implied()
     {
         // Transfer Accumulator to Y
         y = a;
@@ -3048,7 +3046,7 @@ public class MOS6502
         negative = (y >> 7) & 1;
     }
 
-    private void opcode_TSX()
+    private void opcode_TSX_implied()
     {
         //  Transfer Stack Pointer to X
         x = sp & 0xFF; // Only transfer the lower 8 bits
@@ -3057,7 +3055,7 @@ public class MOS6502
         negative = (x >> 7) & 1;
     }
 
-    private void opcode_TXA()
+    private void opcode_TXA_implied()
     {
         // Transfer X to Accumulator
         a = x;
@@ -3066,13 +3064,13 @@ public class MOS6502
         negative = (a >> 7) & 1;
     }
 
-    private void opcode_TXS()
+    private void opcode_TXS_implied()
     {
         // Transfer X to Stack Pointer
         sp = x | 0x0100;
     }
 
-    private void opcode_TYA()
+    private void opcode_TYA_implied()
     {
         // Transfer Y to Accumulator
         a = y;

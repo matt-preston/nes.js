@@ -1,7 +1,5 @@
 package org.nesjs.codegen;
 
-import java.util.*;
-
 import org.nesjs.core.*;
 
 public class GenerateDispatch
@@ -42,20 +40,11 @@ public class GenerateDispatch
     
     private static String getMethodSuffix(AddressingMode anAddressingMode)
     {
-        EnumSet<AddressingMode> _ignore = EnumSet.of(AddressingMode.IMPLIED, AddressingMode.RELATIVE, AddressingMode.ACCUMULATOR);
+        String _result = "_" + anAddressingMode.name().toLowerCase(); 
         
-        if(_ignore.contains(anAddressingMode))
-        {
-            return "";
-        }
-        else
-        {
-            String _result = "_" + anAddressingMode.name().toLowerCase(); 
-            
-            _result = _result.replaceAll("x", "X");
-            _result = _result.replaceAll("y", "Y");
-            
-            return  _result;
-        }
+        _result = _result.replaceAll("x", "X");
+        _result = _result.replaceAll("y", "Y");
+        
+        return  _result;        
     }
 }
