@@ -85,233 +85,233 @@ public class MOS6502
             
             switch(_opcode)
             {
-                case 0x69: opcode_ADC_immediate(); break;
-                case 0x65: opcode_ADC_zero_page(); break;
-                case 0x75: opcode_ADC_zero_page_X(); break;
-                case 0x6D: opcode_ADC_absolute(); break;
-                case 0x7D: opcode_ADC_absolute_X(); break;
-                case 0x79: opcode_ADC_absolute_Y(); break;
-                case 0x61: opcode_ADC_indirect_X(); break;
-                case 0x71: opcode_ADC_indirect_Y(); break;
-                case 0x29: opcode_AND_immediate(); break;
-                case 0x25: opcode_AND_zero_page(); break;
-                case 0x35: opcode_AND_zero_page_X(); break;
-                case 0x2D: opcode_AND_absolute(); break;
-                case 0x3D: opcode_AND_absolute_X(); break;
-                case 0x39: opcode_AND_absolute_Y(); break;
-                case 0x21: opcode_AND_indirect_X(); break;
-                case 0x31: opcode_AND_indirect_Y(); break;
-                case 0x0A: opcode_ASL_accumulator(); break;
-                case 0x06: opcode_ASL_zero_page(); break;
-                case 0x16: opcode_ASL_zero_page_X(); break;
-                case 0x0E: opcode_ASL_absolute(); break;
-                case 0x1E: opcode_ASL_absolute_X(); break;
-                case 0x90: opcode_BCC_relative(); break;
-                case 0xB0: opcode_BCS_relative(); break;
-                case 0xF0: opcode_BEQ_relative(); break;
-                case 0x24: opcode_BIT_zero_page(); break;
-                case 0x2C: opcode_BIT_absolute(); break;
-                case 0x30: opcode_BMI_relative(); break;
-                case 0xD0: opcode_BNE_relative(); break;
-                case 0x10: opcode_BPL_relative(); break;
-                case 0x00: opcode_BRK_implied(); break;
-                case 0x50: opcode_BVC_relative(); break;
-                case 0x70: opcode_BVS_relative(); break;
-                case 0x18: opcode_CLC_implied(); break;
-                case 0xD8: opcode_CLD_implied(); break;
-                case 0x58: opcode_CLI_implied(); break;
-                case 0xB8: opcode_CLV_implied(); break;
-                case 0xC9: opcode_CMP_immediate(); break;
-                case 0xC5: opcode_CMP_zero_page(); break;
-                case 0xD5: opcode_CMP_zero_page_X(); break;
-                case 0xCD: opcode_CMP_absolute(); break;
-                case 0xDD: opcode_CMP_absolute_X(); break;
-                case 0xD9: opcode_CMP_absolute_Y(); break;
-                case 0xC1: opcode_CMP_indirect_X(); break;
-                case 0xD1: opcode_CMP_indirect_Y(); break;
-                case 0xE0: opcode_CPX_immediate(); break;
-                case 0xE4: opcode_CPX_zero_page(); break;
-                case 0xEC: opcode_CPX_absolute(); break;
-                case 0xC0: opcode_CPY_immediate(); break;
-                case 0xC4: opcode_CPY_zero_page(); break;
-                case 0xCC: opcode_CPY_absolute(); break;
-                case 0xC7: opcode_DCP_zero_page(); break;
-                case 0xD7: opcode_DCP_zero_page_X(); break;
-                case 0xCF: opcode_DCP_absolute(); break;
-                case 0xDF: opcode_DCP_absolute_X(); break;
-                case 0xDB: opcode_DCP_absolute_Y(); break;
-                case 0xC3: opcode_DCP_indirect_X(); break;
-                case 0xD3: opcode_DCP_indirect_Y(); break;
-                case 0xC6: opcode_DEC_zero_page(); break;
-                case 0xD6: opcode_DEC_zero_page_X(); break;
-                case 0xCE: opcode_DEC_absolute(); break;
-                case 0xDE: opcode_DEC_absolute_X(); break;
-                case 0xCA: opcode_DEX_implied(); break;
-                case 0x88: opcode_DEY_implied(); break;
-                case 0x49: opcode_EOR_immediate(); break;
-                case 0x45: opcode_EOR_zero_page(); break;
-                case 0x55: opcode_EOR_zero_page_X(); break;
-                case 0x4D: opcode_EOR_absolute(); break;
-                case 0x5D: opcode_EOR_absolute_X(); break;
-                case 0x59: opcode_EOR_absolute_Y(); break;
-                case 0x41: opcode_EOR_indirect_X(); break;
-                case 0x51: opcode_EOR_indirect_Y(); break;
-                case 0xE6: opcode_INC_zero_page(); break;
-                case 0xF6: opcode_INC_zero_page_X(); break;
-                case 0xEE: opcode_INC_absolute(); break;
-                case 0xFE: opcode_INC_absolute_X(); break;
-                case 0xE8: opcode_INX_implied(); break;
-                case 0xC8: opcode_INY_implied(); break;
-                case 0xE7: opcode_ISB_zero_page(); break;
-                case 0xF7: opcode_ISB_zero_page_X(); break;
-                case 0xEF: opcode_ISB_absolute(); break;
-                case 0xFF: opcode_ISB_absolute_X(); break;
-                case 0xFB: opcode_ISB_absolute_Y(); break;
-                case 0xE3: opcode_ISB_indirect_X(); break;
-                case 0xF3: opcode_ISB_indirect_Y(); break;
-                case 0x4C: opcode_JMP_absolute(); break;
-                case 0x6C: opcode_JMP_indirect(); break;
-                case 0x20: opcode_JSR_absolute(); break;
-                case 0xA7: opcode_LAX_zero_page(); break;
-                case 0xB7: opcode_LAX_zero_page_Y(); break;
-                case 0xAF: opcode_LAX_absolute(); break;
-                case 0xBF: opcode_LAX_absolute_Y(); break;
-                case 0xA3: opcode_LAX_indirect_X(); break;
-                case 0xB3: opcode_LAX_indirect_Y(); break;
-                case 0xA9: opcode_LDA_immediate(); break;
-                case 0xA5: opcode_LDA_zero_page(); break;
-                case 0xB5: opcode_LDA_zero_page_X(); break;
-                case 0xAD: opcode_LDA_absolute(); break;
-                case 0xBD: opcode_LDA_absolute_X(); break;
-                case 0xB9: opcode_LDA_absolute_Y(); break;
-                case 0xA1: opcode_LDA_indirect_X(); break;
-                case 0xB1: opcode_LDA_indirect_Y(); break;
-                case 0xA2: opcode_LDX_immediate(); break;
-                case 0xA6: opcode_LDX_zero_page(); break;
-                case 0xB6: opcode_LDX_zero_page_Y(); break;
-                case 0xAE: opcode_LDX_absolute(); break;
-                case 0xBE: opcode_LDX_absolute_Y(); break;
-                case 0xA0: opcode_LDY_immediate(); break;
-                case 0xA4: opcode_LDY_zero_page(); break;
-                case 0xB4: opcode_LDY_zero_page_X(); break;
-                case 0xAC: opcode_LDY_absolute(); break;
-                case 0xBC: opcode_LDY_absolute_X(); break;
-                case 0x4A: opcode_LSR_accumulator(); break;
-                case 0x46: opcode_LSR_zero_page(); break;
-                case 0x56: opcode_LSR_zero_page_X(); break;
-                case 0x4E: opcode_LSR_absolute(); break;
-                case 0x5E: opcode_LSR_absolute_X(); break;
-                case 0xEA: opcode_NOP_implied(); break;
-                case 0x1A: opcode_NOP_implied(); break;
-                case 0x3A: opcode_NOP_implied(); break;
-                case 0x5A: opcode_NOP_implied(); break;
-                case 0x7A: opcode_NOP_implied(); break;
-                case 0xDA: opcode_NOP_implied(); break;
-                case 0xFA: opcode_NOP_implied(); break;
-                case 0x80: opcode_NOP_immediate(); break;
-                case 0x04: opcode_NOP_zero_page(); break;
-                case 0x44: opcode_NOP_zero_page(); break;
-                case 0x64: opcode_NOP_zero_page(); break;
-                case 0x0C: opcode_NOP_absolute(); break;
-                case 0x1C: opcode_NOP_absolute_X(); break;
-                case 0x3C: opcode_NOP_absolute_X(); break;
-                case 0x5C: opcode_NOP_absolute_X(); break;
-                case 0x7C: opcode_NOP_absolute_X(); break;
-                case 0xDC: opcode_NOP_absolute_X(); break;
-                case 0xFC: opcode_NOP_absolute_X(); break;
-                case 0x14: opcode_NOP_zero_page_X(); break;
-                case 0x34: opcode_NOP_zero_page_X(); break;
-                case 0x54: opcode_NOP_zero_page_X(); break;
-                case 0x74: opcode_NOP_zero_page_X(); break;
-                case 0xD4: opcode_NOP_zero_page_X(); break;
-                case 0xF4: opcode_NOP_zero_page_X(); break;
-                case 0x09: opcode_ORA_immediate(); break;
-                case 0x05: opcode_ORA_zero_page(); break;
-                case 0x15: opcode_ORA_zero_page_X(); break;
-                case 0x0D: opcode_ORA_absolute(); break;
-                case 0x1D: opcode_ORA_absolute_X(); break;
-                case 0x19: opcode_ORA_absolute_Y(); break;
-                case 0x01: opcode_ORA_indirect_X(); break;
-                case 0x11: opcode_ORA_indirect_Y(); break;
-                case 0x48: opcode_PHA_implied(); break;
-                case 0x08: opcode_PHP_implied(); break;
-                case 0x68: opcode_PLA_implied(); break;
-                case 0x28: opcode_PLP_implied(); break;
-                case 0x27: opcode_RLA_zero_page(); break;
-                case 0x37: opcode_RLA_zero_page_X(); break;
-                case 0x2F: opcode_RLA_absolute(); break;
-                case 0x3F: opcode_RLA_absolute_X(); break;
-                case 0x3B: opcode_RLA_absolute_Y(); break;
-                case 0x23: opcode_RLA_indirect_X(); break;
-                case 0x33: opcode_RLA_indirect_Y(); break;
-                case 0x2A: opcode_ROL_accumulator(); break;
-                case 0x26: opcode_ROL_zero_page(); break;
-                case 0x36: opcode_ROL_zero_page_X(); break;
-                case 0x2E: opcode_ROL_absolute(); break;
-                case 0x3E: opcode_ROL_absolute_X(); break;
-                case 0x6A: opcode_ROR_accumulator(); break;
-                case 0x66: opcode_ROR_zero_page(); break;
-                case 0x76: opcode_ROR_zero_page_X(); break;
-                case 0x6E: opcode_ROR_absolute(); break;
-                case 0x7E: opcode_ROR_absolute_X(); break;
-                case 0x67: opcode_RRA_zero_page(); break;
-                case 0x77: opcode_RRA_zero_page_X(); break;
-                case 0x6F: opcode_RRA_absolute(); break;
-                case 0x7F: opcode_RRA_absolute_X(); break;
-                case 0x7B: opcode_RRA_absolute_Y(); break;
-                case 0x63: opcode_RRA_indirect_X(); break;
-                case 0x73: opcode_RRA_indirect_Y(); break;
-                case 0x40: opcode_RTI_implied(); break;
-                case 0x60: opcode_RTS_implied(); break;
-                case 0x87: opcode_SAX_zero_page(); break;
-                case 0x97: opcode_SAX_zero_page_Y(); break;
-                case 0x8F: opcode_SAX_absolute(); break;
-                case 0x83: opcode_SAX_indirect_X(); break;
-                case 0xE9: opcode_SBC_immediate(); break;
-                case 0xEB: opcode_SBC_immediate(); break;
-                case 0xE5: opcode_SBC_zero_page(); break;
-                case 0xF5: opcode_SBC_zero_page_X(); break;
-                case 0xED: opcode_SBC_absolute(); break;
-                case 0xFD: opcode_SBC_absolute_X(); break;
-                case 0xF9: opcode_SBC_absolute_Y(); break;
-                case 0xE1: opcode_SBC_indirect_X(); break;
-                case 0xF1: opcode_SBC_indirect_Y(); break;
-                case 0x38: opcode_SEC_implied(); break;
-                case 0xF8: opcode_SED_implied(); break;
-                case 0x78: opcode_SEI_implied(); break;
-                case 0x07: opcode_SLO_zero_page(); break;
-                case 0x17: opcode_SLO_zero_page_X(); break;
-                case 0x0F: opcode_SLO_absolute(); break;
-                case 0x1F: opcode_SLO_absolute_X(); break;
-                case 0x1B: opcode_SLO_absolute_Y(); break;
-                case 0x03: opcode_SLO_indirect_X(); break;
-                case 0x13: opcode_SLO_indirect_Y(); break;
-                case 0x47: opcode_SRE_zero_page(); break;
-                case 0x57: opcode_SRE_zero_page_X(); break;
-                case 0x4F: opcode_SRE_absolute(); break;
-                case 0x5F: opcode_SRE_absolute_X(); break;
-                case 0x5B: opcode_SRE_absolute_Y(); break;
-                case 0x43: opcode_SRE_indirect_X(); break;
-                case 0x53: opcode_SRE_indirect_Y(); break;
-                case 0x85: opcode_STA_zero_page(); break;
-                case 0x95: opcode_STA_zero_page_X(); break;
-                case 0x8D: opcode_STA_absolute(); break;
-                case 0x9D: opcode_STA_absolute_X(); break;
-                case 0x99: opcode_STA_absolute_Y(); break;
-                case 0x81: opcode_STA_indirect_X(); break;
-                case 0x91: opcode_STA_indirect_Y(); break;
-                case 0x86: opcode_STX_zero_page(); break;
-                case 0x96: opcode_STX_zero_page_Y(); break;
-                case 0x8E: opcode_STX_absolute(); break;
-                case 0x84: opcode_STY_zero_page(); break;
-                case 0x94: opcode_STY_zero_page_X(); break;
-                case 0x8C: opcode_STY_absolute(); break;
-                case 0xAA: opcode_TAX_implied(); break;
-                case 0xA8: opcode_TAY_implied(); break;
-                case 0xBA: opcode_TSX_implied(); break;
-                case 0x8A: opcode_TXA_implied(); break;
-                case 0x9A: opcode_TXS_implied(); break;
-                case 0x98: opcode_TYA_implied(); break;
+            case 0x69: opcode_ADC_immediate(); break;
+            case 0x65: opcode_ADC_zero_page(); break;
+            case 0x75: opcode_ADC_zero_page_x(); break;
+            case 0x6D: opcode_ADC_absolute(); break;
+            case 0x7D: opcode_ADC_absolute_x(); break;
+            case 0x79: opcode_ADC_absolute_y(); break;
+            case 0x61: opcode_ADC_indirect_x(); break;
+            case 0x71: opcode_ADC_indirect_y(); break;
+            case 0x29: opcode_AND_immediate(); break;
+            case 0x25: opcode_AND_zero_page(); break;
+            case 0x35: opcode_AND_zero_page_x(); break;
+            case 0x2D: opcode_AND_absolute(); break;
+            case 0x3D: opcode_AND_absolute_x(); break;
+            case 0x39: opcode_AND_absolute_y(); break;
+            case 0x21: opcode_AND_indirect_x(); break;
+            case 0x31: opcode_AND_indirect_y(); break;
+            case 0x0A: opcode_ASL_accumulator(); break;
+            case 0x06: opcode_ASL_zero_page(); break;
+            case 0x16: opcode_ASL_zero_page_x(); break;
+            case 0x0E: opcode_ASL_absolute(); break;
+            case 0x1E: opcode_ASL_absolute_x(); break;
+            case 0x90: opcode_BCC_relative(); break;
+            case 0xB0: opcode_BCS_relative(); break;
+            case 0xF0: opcode_BEQ_relative(); break;
+            case 0x24: opcode_BIT_zero_page(); break;
+            case 0x2C: opcode_BIT_absolute(); break;
+            case 0x30: opcode_BMI_relative(); break;
+            case 0xD0: opcode_BNE_relative(); break;
+            case 0x10: opcode_BPL_relative(); break;
+            case 0x00: opcode_BRK_implied(); break;
+            case 0x50: opcode_BVC_relative(); break;
+            case 0x70: opcode_BVS_relative(); break;
+            case 0x18: opcode_CLC_implied(); break;
+            case 0xD8: opcode_CLD_implied(); break;
+            case 0x58: opcode_CLI_implied(); break;
+            case 0xB8: opcode_CLV_implied(); break;
+            case 0xC9: opcode_CMP_immediate(); break;
+            case 0xC5: opcode_CMP_zero_page(); break;
+            case 0xD5: opcode_CMP_zero_page_x(); break;
+            case 0xCD: opcode_CMP_absolute(); break;
+            case 0xDD: opcode_CMP_absolute_x(); break;
+            case 0xD9: opcode_CMP_absolute_y(); break;
+            case 0xC1: opcode_CMP_indirect_x(); break;
+            case 0xD1: opcode_CMP_indirect_y(); break;
+            case 0xE0: opcode_CPX_immediate(); break;
+            case 0xE4: opcode_CPX_zero_page(); break;
+            case 0xEC: opcode_CPX_absolute(); break;
+            case 0xC0: opcode_CPY_immediate(); break;
+            case 0xC4: opcode_CPY_zero_page(); break;
+            case 0xCC: opcode_CPY_absolute(); break;
+            case 0xC7: opcode_DCP_zero_page(); break;
+            case 0xD7: opcode_DCP_zero_page_x(); break;
+            case 0xCF: opcode_DCP_absolute(); break;
+            case 0xDF: opcode_DCP_absolute_x(); break;
+            case 0xDB: opcode_DCP_absolute_y(); break;
+            case 0xC3: opcode_DCP_indirect_x(); break;
+            case 0xD3: opcode_DCP_indirect_y(); break;
+            case 0xC6: opcode_DEC_zero_page(); break;
+            case 0xD6: opcode_DEC_zero_page_x(); break;
+            case 0xCE: opcode_DEC_absolute(); break;
+            case 0xDE: opcode_DEC_absolute_x(); break;
+            case 0xCA: opcode_DEX_implied(); break;
+            case 0x88: opcode_DEY_implied(); break;
+            case 0x49: opcode_EOR_immediate(); break;
+            case 0x45: opcode_EOR_zero_page(); break;
+            case 0x55: opcode_EOR_zero_page_x(); break;
+            case 0x4D: opcode_EOR_absolute(); break;
+            case 0x5D: opcode_EOR_absolute_x(); break;
+            case 0x59: opcode_EOR_absolute_y(); break;
+            case 0x41: opcode_EOR_indirect_x(); break;
+            case 0x51: opcode_EOR_indirect_y(); break;
+            case 0xE6: opcode_INC_zero_page(); break;
+            case 0xF6: opcode_INC_zero_page_x(); break;
+            case 0xEE: opcode_INC_absolute(); break;
+            case 0xFE: opcode_INC_absolute_x(); break;
+            case 0xE8: opcode_INX_implied(); break;
+            case 0xC8: opcode_INY_implied(); break;
+            case 0xE7: opcode_ISB_zero_page(); break;
+            case 0xF7: opcode_ISB_zero_page_x(); break;
+            case 0xEF: opcode_ISB_absolute(); break;
+            case 0xFF: opcode_ISB_absolute_x(); break;
+            case 0xFB: opcode_ISB_absolute_y(); break;
+            case 0xE3: opcode_ISB_indirect_x(); break;
+            case 0xF3: opcode_ISB_indirect_y(); break;
+            case 0x4C: opcode_JMP_absolute(); break;
+            case 0x6C: opcode_JMP_indirect(); break;
+            case 0x20: opcode_JSR_absolute(); break;
+            case 0xA7: opcode_LAX_zero_page(); break;
+            case 0xB7: opcode_LAX_zero_page_y(); break;
+            case 0xAF: opcode_LAX_absolute(); break;
+            case 0xBF: opcode_LAX_absolute_y(); break;
+            case 0xA3: opcode_LAX_indirect_x(); break;
+            case 0xB3: opcode_LAX_indirect_y(); break;
+            case 0xA9: opcode_LDA_immediate(); break;
+            case 0xA5: opcode_LDA_zero_page(); break;
+            case 0xB5: opcode_LDA_zero_page_x(); break;
+            case 0xAD: opcode_LDA_absolute(); break;
+            case 0xBD: opcode_LDA_absolute_x(); break;
+            case 0xB9: opcode_LDA_absolute_y(); break;
+            case 0xA1: opcode_LDA_indirect_x(); break;
+            case 0xB1: opcode_LDA_indirect_y(); break;
+            case 0xA2: opcode_LDX_immediate(); break;
+            case 0xA6: opcode_LDX_zero_page(); break;
+            case 0xB6: opcode_LDX_zero_page_y(); break;
+            case 0xAE: opcode_LDX_absolute(); break;
+            case 0xBE: opcode_LDX_absolute_y(); break;
+            case 0xA0: opcode_LDY_immediate(); break;
+            case 0xA4: opcode_LDY_zero_page(); break;
+            case 0xB4: opcode_LDY_zero_page_x(); break;
+            case 0xAC: opcode_LDY_absolute(); break;
+            case 0xBC: opcode_LDY_absolute_x(); break;
+            case 0x4A: opcode_LSR_accumulator(); break;
+            case 0x46: opcode_LSR_zero_page(); break;
+            case 0x56: opcode_LSR_zero_page_x(); break;
+            case 0x4E: opcode_LSR_absolute(); break;
+            case 0x5E: opcode_LSR_absolute_x(); break;
+            case 0xEA: opcode_NOP_implied(); break;
+            case 0x1A: opcode_NOP_implied(); break;
+            case 0x3A: opcode_NOP_implied(); break;
+            case 0x5A: opcode_NOP_implied(); break;
+            case 0x7A: opcode_NOP_implied(); break;
+            case 0xDA: opcode_NOP_implied(); break;
+            case 0xFA: opcode_NOP_implied(); break;
+            case 0x80: opcode_NOP_immediate(); break;
+            case 0x04: opcode_NOP_zero_page(); break;
+            case 0x44: opcode_NOP_zero_page(); break;
+            case 0x64: opcode_NOP_zero_page(); break;
+            case 0x0C: opcode_NOP_absolute(); break;
+            case 0x1C: opcode_NOP_absolute_x(); break;
+            case 0x3C: opcode_NOP_absolute_x(); break;
+            case 0x5C: opcode_NOP_absolute_x(); break;
+            case 0x7C: opcode_NOP_absolute_x(); break;
+            case 0xDC: opcode_NOP_absolute_x(); break;
+            case 0xFC: opcode_NOP_absolute_x(); break;
+            case 0x14: opcode_NOP_zero_page_x(); break;
+            case 0x34: opcode_NOP_zero_page_x(); break;
+            case 0x54: opcode_NOP_zero_page_x(); break;
+            case 0x74: opcode_NOP_zero_page_x(); break;
+            case 0xD4: opcode_NOP_zero_page_x(); break;
+            case 0xF4: opcode_NOP_zero_page_x(); break;
+            case 0x09: opcode_ORA_immediate(); break;
+            case 0x05: opcode_ORA_zero_page(); break;
+            case 0x15: opcode_ORA_zero_page_x(); break;
+            case 0x0D: opcode_ORA_absolute(); break;
+            case 0x1D: opcode_ORA_absolute_x(); break;
+            case 0x19: opcode_ORA_absolute_y(); break;
+            case 0x01: opcode_ORA_indirect_x(); break;
+            case 0x11: opcode_ORA_indirect_y(); break;
+            case 0x48: opcode_PHA_implied(); break;
+            case 0x08: opcode_PHP_implied(); break;
+            case 0x68: opcode_PLA_implied(); break;
+            case 0x28: opcode_PLP_implied(); break;
+            case 0x27: opcode_RLA_zero_page(); break;
+            case 0x37: opcode_RLA_zero_page_x(); break;
+            case 0x2F: opcode_RLA_absolute(); break;
+            case 0x3F: opcode_RLA_absolute_x(); break;
+            case 0x3B: opcode_RLA_absolute_y(); break;
+            case 0x23: opcode_RLA_indirect_x(); break;
+            case 0x33: opcode_RLA_indirect_y(); break;
+            case 0x2A: opcode_ROL_accumulator(); break;
+            case 0x26: opcode_ROL_zero_page(); break;
+            case 0x36: opcode_ROL_zero_page_x(); break;
+            case 0x2E: opcode_ROL_absolute(); break;
+            case 0x3E: opcode_ROL_absolute_x(); break;
+            case 0x6A: opcode_ROR_accumulator(); break;
+            case 0x66: opcode_ROR_zero_page(); break;
+            case 0x76: opcode_ROR_zero_page_x(); break;
+            case 0x6E: opcode_ROR_absolute(); break;
+            case 0x7E: opcode_ROR_absolute_x(); break;
+            case 0x67: opcode_RRA_zero_page(); break;
+            case 0x77: opcode_RRA_zero_page_x(); break;
+            case 0x6F: opcode_RRA_absolute(); break;
+            case 0x7F: opcode_RRA_absolute_x(); break;
+            case 0x7B: opcode_RRA_absolute_y(); break;
+            case 0x63: opcode_RRA_indirect_x(); break;
+            case 0x73: opcode_RRA_indirect_y(); break;
+            case 0x40: opcode_RTI_implied(); break;
+            case 0x60: opcode_RTS_implied(); break;
+            case 0x87: opcode_SAX_zero_page(); break;
+            case 0x97: opcode_SAX_zero_page_y(); break;
+            case 0x8F: opcode_SAX_absolute(); break;
+            case 0x83: opcode_SAX_indirect_x(); break;
+            case 0xE9: opcode_SBC_immediate(); break;
+            case 0xEB: opcode_SBC_immediate(); break;
+            case 0xE5: opcode_SBC_zero_page(); break;
+            case 0xF5: opcode_SBC_zero_page_x(); break;
+            case 0xED: opcode_SBC_absolute(); break;
+            case 0xFD: opcode_SBC_absolute_x(); break;
+            case 0xF9: opcode_SBC_absolute_y(); break;
+            case 0xE1: opcode_SBC_indirect_x(); break;
+            case 0xF1: opcode_SBC_indirect_y(); break;
+            case 0x38: opcode_SEC_implied(); break;
+            case 0xF8: opcode_SED_implied(); break;
+            case 0x78: opcode_SEI_implied(); break;
+            case 0x07: opcode_SLO_zero_page(); break;
+            case 0x17: opcode_SLO_zero_page_x(); break;
+            case 0x0F: opcode_SLO_absolute(); break;
+            case 0x1F: opcode_SLO_absolute_x(); break;
+            case 0x1B: opcode_SLO_absolute_y(); break;
+            case 0x03: opcode_SLO_indirect_x(); break;
+            case 0x13: opcode_SLO_indirect_y(); break;
+            case 0x47: opcode_SRE_zero_page(); break;
+            case 0x57: opcode_SRE_zero_page_x(); break;
+            case 0x4F: opcode_SRE_absolute(); break;
+            case 0x5F: opcode_SRE_absolute_x(); break;
+            case 0x5B: opcode_SRE_absolute_y(); break;
+            case 0x43: opcode_SRE_indirect_x(); break;
+            case 0x53: opcode_SRE_indirect_y(); break;
+            case 0x85: opcode_STA_zero_page(); break;
+            case 0x95: opcode_STA_zero_page_x(); break;
+            case 0x8D: opcode_STA_absolute(); break;
+            case 0x9D: opcode_STA_absolute_x(); break;
+            case 0x99: opcode_STA_absolute_y(); break;
+            case 0x81: opcode_STA_indirect_x(); break;
+            case 0x91: opcode_STA_indirect_y(); break;
+            case 0x86: opcode_STX_zero_page(); break;
+            case 0x96: opcode_STX_zero_page_y(); break;
+            case 0x8E: opcode_STX_absolute(); break;
+            case 0x84: opcode_STY_zero_page(); break;
+            case 0x94: opcode_STY_zero_page_x(); break;
+            case 0x8C: opcode_STY_absolute(); break;
+            case 0xAA: opcode_TAX_implied(); break;
+            case 0xA8: opcode_TAY_implied(); break;
+            case 0xBA: opcode_TSX_implied(); break;
+            case 0x8A: opcode_TXA_implied(); break;
+            case 0x9A: opcode_TXS_implied(); break;
+            case 0x98: opcode_TYA_implied(); break;
 
                 default: throw new RuntimeException("Unhandled opcode [" + Utils.toHexString(_opcode) + "]");
             }
@@ -423,7 +423,7 @@ public class MOS6502
         a = _temp & 0xFF;
     }
 
-    private void opcode_ADC_zero_page_X()
+    private void opcode_ADC_zero_page_x()
     {
         // Add with Carry
         int _address = Addressing.zeroPageX(pc++, x);
@@ -455,7 +455,7 @@ public class MOS6502
         a = _temp & 0xFF;
     }
 
-    private void opcode_ADC_absolute_X()
+    private void opcode_ADC_absolute_x()
     {
         // Add with Carry
         int _address = Addressing.absoluteX(pc++, x);
@@ -472,7 +472,7 @@ public class MOS6502
         a = _temp & 0xFF;
     }
     
-    private void opcode_ADC_absolute_Y()
+    private void opcode_ADC_absolute_y()
     {
         // Add with Carry
         int _address = Addressing.absoluteY(pc++, y);
@@ -489,7 +489,7 @@ public class MOS6502
         a = _temp & 0xFF;
     }
 
-    private void opcode_ADC_indirect_X()
+    private void opcode_ADC_indirect_x()
     {
         // Add with Carry
         int _value = Memory.readByte(Addressing.indirectX(pc++, x));
@@ -503,7 +503,7 @@ public class MOS6502
         a = _temp & 0xFF;
     }
 
-    private void opcode_ADC_indirect_Y()
+    private void opcode_ADC_indirect_y()
     {
         // Add with Carry
         int _value = Memory.readByte(Addressing.indirectY(pc++, y));
@@ -536,7 +536,7 @@ public class MOS6502
         not_zero = a;
     }
 
-    private void opcode_AND_zero_page_X()
+    private void opcode_AND_zero_page_x()
     {
         // Logical AND
         int _address = Addressing.zeroPageX(pc++, x);
@@ -558,7 +558,7 @@ public class MOS6502
         not_zero = a;
     }
 
-    private void opcode_AND_absolute_X()
+    private void opcode_AND_absolute_x()
     {
         // Logical AND
         int _address = Addressing.absoluteX(pc++, x);
@@ -570,7 +570,7 @@ public class MOS6502
         not_zero = a;
     }
 
-    private void opcode_AND_absolute_Y()
+    private void opcode_AND_absolute_y()
     {
         // Logical AND
         int _address = Addressing.absoluteY(pc++, y);
@@ -582,7 +582,7 @@ public class MOS6502
         not_zero = a;
     }
 
-    private void opcode_AND_indirect_X()
+    private void opcode_AND_indirect_x()
     {
         // Logical AND
         int _value = Addressing.indirectX(pc++, x);
@@ -592,7 +592,7 @@ public class MOS6502
         not_zero = a;
     }
 
-    private void opcode_AND_indirect_Y()
+    private void opcode_AND_indirect_y()
     {
         // Logical AND
         int _value = Addressing.indirectY(pc++, y);
@@ -627,7 +627,7 @@ public class MOS6502
         not_zero = _value;
     }
 
-    private void opcode_ASL_zero_page_X()
+    private void opcode_ASL_zero_page_x()
     {
         // Arithmetic Shift Left
         int _address = Addressing.zeroPageX(pc++, x);
@@ -659,7 +659,7 @@ public class MOS6502
         not_zero = _value;
     }
 
-    private void opcode_ASL_absolute_X()
+    private void opcode_ASL_absolute_x()
     {
         // Arithmetic Shift Left
         int _address = Addressing.absoluteX(pc++, x);
@@ -863,7 +863,7 @@ public class MOS6502
         negative = (_temp >> 7) & 1;
     }
 
-    private void opcode_CMP_zero_page_X()
+    private void opcode_CMP_zero_page_x()
     {
         // Compare
         int _address = Addressing.zeroPageX(pc++, x);
@@ -887,7 +887,7 @@ public class MOS6502
         negative = (_temp >> 7) & 1;
     }
 
-    private void opcode_CMP_absolute_X()
+    private void opcode_CMP_absolute_x()
     {
         // Compare
         int _address = Addressing.absoluteX(pc++, x);
@@ -900,7 +900,7 @@ public class MOS6502
         negative = (_temp >> 7) & 1;
     }
 
-    private void opcode_CMP_absolute_Y()
+    private void opcode_CMP_absolute_y()
     {
         // Compare
         int _address = Addressing.absoluteY(pc++, y);
@@ -913,7 +913,7 @@ public class MOS6502
         negative = (_temp >> 7) & 1;
     }
 
-    private void opcode_CMP_indirect_X()
+    private void opcode_CMP_indirect_x()
     {
         // Compare
         int _address = Addressing.indirectX(pc++, x);
@@ -924,7 +924,7 @@ public class MOS6502
         negative = (_temp >> 7) & 1;
     }
 
-    private void opcode_CMP_indirect_Y()
+    private void opcode_CMP_indirect_y()
     {
         // Compare
         int _address = Addressing.indirectY(pc++, y);
@@ -1018,7 +1018,7 @@ public class MOS6502
         negative = (_temp >> 7) & 1;
     }
 
-    private void opcode_DCP_zero_page_X()
+    private void opcode_DCP_zero_page_x()
     {
         // DEC value then CMP value
         int _address = Addressing.zeroPageX(pc++, x);
@@ -1050,7 +1050,7 @@ public class MOS6502
         negative = (_temp >> 7) & 1;
     }
 
-    private void opcode_DCP_absolute_X()
+    private void opcode_DCP_absolute_x()
     {
         // DEC value then CMP value
         int _address = Addressing.absoluteX(pc++, x);
@@ -1067,7 +1067,7 @@ public class MOS6502
         negative = (_temp >> 7) & 1;
     }
 
-    private void opcode_DCP_absolute_Y()
+    private void opcode_DCP_absolute_y()
     {
         // DEC value then CMP value
         int _address = Addressing.absoluteY(pc++, y);
@@ -1084,7 +1084,7 @@ public class MOS6502
         negative = (_temp >> 7) & 1;
     }
 
-    private void opcode_DCP_indirect_X()
+    private void opcode_DCP_indirect_x()
     {
         // DEC value then CMP value
         int _address = Addressing.indirectX(pc++, x);
@@ -1099,7 +1099,7 @@ public class MOS6502
         negative = (_temp >> 7) & 1;
     }
 
-    private void opcode_DCP_indirect_Y()
+    private void opcode_DCP_indirect_y()
     {
         // DEC value then CMP value
         int _address = Addressing.indirectY(pc++, y);
@@ -1127,7 +1127,7 @@ public class MOS6502
         negative = (_value >> 7) & 1;
     }
 
-    private void opcode_DEC_zero_page_X()
+    private void opcode_DEC_zero_page_x()
     {
         // Decrement Memory
         int _address = Addressing.zeroPageX(pc++, x);
@@ -1155,7 +1155,7 @@ public class MOS6502
         negative = (_value >> 7) & 1;
     }
 
-    private void opcode_DEC_absolute_X()
+    private void opcode_DEC_absolute_x()
     {
         // Decrement Memory
         int _address = Addressing.absoluteX(pc++, x);
@@ -1207,7 +1207,7 @@ public class MOS6502
         negative = (a >> 7) & 1;
     }
 
-    private void opcode_EOR_zero_page_X()
+    private void opcode_EOR_zero_page_x()
     {
         // Exclusive OR
         int _address = Addressing.zeroPageX(pc++, x);
@@ -1229,7 +1229,7 @@ public class MOS6502
         negative = (a >> 7) & 1;
     }
 
-    private void opcode_EOR_absolute_X()
+    private void opcode_EOR_absolute_x()
     {
         // Exclusive OR
         int _address = Addressing.absoluteX(pc++, x);
@@ -1241,7 +1241,7 @@ public class MOS6502
         negative = (a >> 7) & 1;
     }
 
-    private void opcode_EOR_absolute_Y()
+    private void opcode_EOR_absolute_y()
     {
         // Exclusive OR
         int _address = Addressing.absoluteY(pc++, y);
@@ -1253,7 +1253,7 @@ public class MOS6502
         negative = (a >> 7) & 1;
     }
 
-    private void opcode_EOR_indirect_X()
+    private void opcode_EOR_indirect_x()
     {
         // Exclusive OR
         int _value = Addressing.indirectX(pc++, x);
@@ -1263,7 +1263,7 @@ public class MOS6502
         negative = (a >> 7) & 1;
     }
 
-    private void opcode_EOR_indirect_Y()
+    private void opcode_EOR_indirect_y()
     {
         // Exclusive OR
         int _value = Addressing.indirectY(pc++, y);
@@ -1286,7 +1286,7 @@ public class MOS6502
         negative = (_value >> 7) & 1;
     }
 
-    private void opcode_INC_zero_page_X()
+    private void opcode_INC_zero_page_x()
     {
         // Increment Memory
         int _address = Addressing.zeroPageX(pc++, x);
@@ -1314,7 +1314,7 @@ public class MOS6502
         negative = (_value >> 7) & 1;
     }
 
-    private void opcode_INC_absolute_X()
+    private void opcode_INC_absolute_x()
     {
         // Increment Memory
         int _address = Addressing.absoluteX(pc++, x);
@@ -1365,7 +1365,7 @@ public class MOS6502
         a = _temp & 0xFF;
     }
 
-    private void opcode_ISB_zero_page_X()
+    private void opcode_ISB_zero_page_x()
     {
         // INC value then SBC value        
         int _address = Addressing.zeroPageX(pc++, x);
@@ -1403,7 +1403,7 @@ public class MOS6502
         a = _temp & 0xFF;
     }
 
-    private void opcode_ISB_absolute_X()
+    private void opcode_ISB_absolute_x()
     {
         // INC value then SBC value        
         int _address = Addressing.absoluteX(pc++, x);
@@ -1423,7 +1423,7 @@ public class MOS6502
         a = _temp & 0xFF;
     }
 
-    private void opcode_ISB_absolute_Y()
+    private void opcode_ISB_absolute_y()
     {
         // INC value then SBC value        
         int _address = Addressing.absoluteY(pc++, y);
@@ -1443,7 +1443,7 @@ public class MOS6502
         a = _temp & 0xFF;
     }
 
-    private void opcode_ISB_indirect_X()
+    private void opcode_ISB_indirect_x()
     {
         // INC value then SBC value        
         int _address = Addressing.indirectX(pc++, x);
@@ -1461,7 +1461,7 @@ public class MOS6502
         a = _temp & 0xFF;    
     }
 
-    private void opcode_ISB_indirect_Y()
+    private void opcode_ISB_indirect_y()
     {
         // INC value then SBC value        
         int _address = Addressing.indirectY(pc++, y);
@@ -1512,7 +1512,7 @@ public class MOS6502
         not_zero = a;
     }
     
-    private void opcode_LAX_zero_page_Y()
+    private void opcode_LAX_zero_page_y()
     {
         // Load Accumulator and X with memory
         int _address = Addressing.zeroPageY(pc++, y);
@@ -1536,7 +1536,7 @@ public class MOS6502
         not_zero = a;
     }
     
-    private void opcode_LAX_absolute_Y()
+    private void opcode_LAX_absolute_y()
     {
         // Load Accumulator and X with memory
         int _address = Addressing.absoluteY(pc++, y);
@@ -1549,7 +1549,7 @@ public class MOS6502
         not_zero = a;
     }
 
-    private void opcode_LAX_indirect_X()
+    private void opcode_LAX_indirect_x()
     {
         // Load Accumulator and X with memory
         int _address = Addressing.indirectX(pc++, x);
@@ -1560,7 +1560,7 @@ public class MOS6502
         not_zero = a;
     }
 
-    private void opcode_LAX_indirect_Y()
+    private void opcode_LAX_indirect_y()
     {
         // Load Accumulator and X with memory
         int _address = Addressing.indirectY(pc++, y);
@@ -1590,7 +1590,7 @@ public class MOS6502
         not_zero = a;
     }
 
-    private void opcode_LDA_zero_page_X()
+    private void opcode_LDA_zero_page_x()
     {
         // Load Accumulator
         int _address = Addressing.zeroPageX(pc++, x);
@@ -1612,7 +1612,7 @@ public class MOS6502
         pc++;
     }
 
-    private void opcode_LDA_absolute_X()
+    private void opcode_LDA_absolute_x()
     {
         // Load Accumulator
         int _address = Addressing.absoluteX(pc++, x); 
@@ -1624,7 +1624,7 @@ public class MOS6502
         pc++;
     }
 
-    private void opcode_LDA_absolute_Y()
+    private void opcode_LDA_absolute_y()
     {
         // Load Accumulator
         int _address = Addressing.absoluteY(pc++, y); 
@@ -1636,7 +1636,7 @@ public class MOS6502
         pc++;
     }
 
-    private void opcode_LDA_indirect_X()
+    private void opcode_LDA_indirect_x()
     {
     	// Load Accumulator
         int _address = Addressing.indirectX(pc++, x);
@@ -1646,7 +1646,7 @@ public class MOS6502
         not_zero = a;
     }
 
-    private void opcode_LDA_indirect_Y()
+    private void opcode_LDA_indirect_y()
     {
         // Load Accumulator
         int _address = Addressing.indirectY(pc++, y);
@@ -1675,7 +1675,7 @@ public class MOS6502
         not_zero = x;
     }
 
-    private void opcode_LDX_zero_page_Y()
+    private void opcode_LDX_zero_page_y()
     {
         // Load X with memory
         int _address = Addressing.zeroPageY(pc++, y);
@@ -1697,7 +1697,7 @@ public class MOS6502
         pc++;
     }
 
-    private void opcode_LDX_absolute_Y()
+    private void opcode_LDX_absolute_y()
     {
         // Load X with memory
         int _address = Addressing.absoluteY(pc++, y);
@@ -1728,7 +1728,7 @@ public class MOS6502
         not_zero = y;
     }
 
-    private void opcode_LDY_zero_page_X()
+    private void opcode_LDY_zero_page_x()
     {
         // Load Y Register
         int _address = Addressing.zeroPageX(pc++, x);
@@ -1750,7 +1750,7 @@ public class MOS6502
         not_zero = y;
     }
 
-    private void opcode_LDY_absolute_X()
+    private void opcode_LDY_absolute_x()
     {
         // Load Y Register
         int _address = Addressing.absoluteX(pc++, x);
@@ -1787,7 +1787,7 @@ public class MOS6502
         negative = 0;
     }
 
-    private void opcode_LSR_zero_page_X()
+    private void opcode_LSR_zero_page_x()
     {
         // Logical Shift Right
         int _address = Addressing.zeroPageX(pc++, x);
@@ -1819,7 +1819,7 @@ public class MOS6502
         negative = 0;
     }
 
-    private void opcode_LSR_absolute_X()
+    private void opcode_LSR_absolute_x()
     {
         // Logical Shift Right
         int _address = Addressing.absoluteX(pc++, x);
@@ -1859,13 +1859,13 @@ public class MOS6502
         pc = pc + 2;
     }
     
-    private void opcode_NOP_absolute_X()
+    private void opcode_NOP_absolute_x()
     {
         // No operation
         pc = pc + 2;
     }
     
-    private void opcode_NOP_zero_page_X()
+    private void opcode_NOP_zero_page_x()
     {
         pc++;
     }
@@ -1889,7 +1889,7 @@ public class MOS6502
         negative = (a >> 7) & 1;
     }
 
-    private void opcode_ORA_zero_page_X()
+    private void opcode_ORA_zero_page_x()
     {
         // Logical Inclusive OR
         int _address = Addressing.zeroPageX(pc++, x);
@@ -1911,7 +1911,7 @@ public class MOS6502
         negative = (a >> 7) & 1;
     }
 
-    private void opcode_ORA_absolute_X()
+    private void opcode_ORA_absolute_x()
     {
         // Logical Inclusive OR
         int _address = Addressing.absoluteX(pc++, x);
@@ -1923,7 +1923,7 @@ public class MOS6502
         negative = (a >> 7) & 1;
     }
 
-    private void opcode_ORA_absolute_Y()
+    private void opcode_ORA_absolute_y()
     {
         // Logical Inclusive OR
         int _address = Addressing.absoluteY(pc++, y);
@@ -1935,7 +1935,7 @@ public class MOS6502
         negative = (a >> 7) & 1;
     }
 
-    private void opcode_ORA_indirect_X()
+    private void opcode_ORA_indirect_x()
     {
         // Logical Inclusive OR
         int _value = Memory.readByte(Addressing.indirectX(pc++, x));
@@ -1945,7 +1945,7 @@ public class MOS6502
         negative = (a >> 7) & 1;
     }
 
-    private void opcode_ORA_indirect_Y()
+    private void opcode_ORA_indirect_y()
     {
         // Logical Inclusive OR
         int _value = Memory.readByte(Addressing.indirectY(pc++, y));
@@ -2024,7 +2024,7 @@ public class MOS6502
         not_zero = a;
     }
 
-    private void opcode_RLA_zero_page_X()
+    private void opcode_RLA_zero_page_x()
     {
         // ROL value then AND value
         int _address = Addressing.zeroPageX(pc++, x);
@@ -2068,7 +2068,7 @@ public class MOS6502
         not_zero = a;
     }
 
-    private void opcode_RLA_absolute_X()
+    private void opcode_RLA_absolute_x()
     {
         // ROL value then AND value
         int _address = Addressing.absoluteX(pc++, x);
@@ -2091,7 +2091,7 @@ public class MOS6502
         not_zero = a;
     }
 
-    private void opcode_RLA_absolute_Y()
+    private void opcode_RLA_absolute_y()
     {
         // ROL value then AND value
         int _address = Addressing.absoluteY(pc++, y);
@@ -2114,7 +2114,7 @@ public class MOS6502
         not_zero = a;
     }
 
-    private void opcode_RLA_indirect_X()
+    private void opcode_RLA_indirect_x()
     {
         // ROL value then AND value
         int _address = Addressing.indirectX(pc++, x);
@@ -2135,7 +2135,7 @@ public class MOS6502
         not_zero = a;
     }
 
-    private void opcode_RLA_indirect_Y()
+    private void opcode_RLA_indirect_y()
     {
         // ROL value then AND value
         int _address = Addressing.indirectY(pc++, y);
@@ -2189,7 +2189,7 @@ public class MOS6502
         not_zero = _value & 0xFF;
     }
 
-    private void opcode_ROL_zero_page_X()
+    private void opcode_ROL_zero_page_x()
     {
         // Rotate Left
         int _address = Addressing.zeroPageX(pc++, x);
@@ -2229,7 +2229,7 @@ public class MOS6502
         not_zero = _value & 0xFF;
     }
 
-    private void opcode_ROL_absolute_X()
+    private void opcode_ROL_absolute_x()
     {
         // Rotate Left
         int _address = Addressing.absoluteX(pc++, x);
@@ -2279,7 +2279,7 @@ public class MOS6502
         not_zero = _value & 0xFF;
     }
 
-    private void opcode_ROR_zero_page_X()
+    private void opcode_ROR_zero_page_x()
     {
         // Rotate Right
         int _address = Addressing.zeroPageX(pc++, x);
@@ -2315,7 +2315,7 @@ public class MOS6502
         not_zero = _value & 0xFF;
     }
 
-    private void opcode_ROR_absolute_X()
+    private void opcode_ROR_absolute_x()
     {
         // Rotate Right
         int _address = Addressing.absoluteX(pc++, x);
@@ -2357,7 +2357,7 @@ public class MOS6502
         a = _temp & 0xFF;
     }
 
-    private void opcode_RRA_zero_page_X()
+    private void opcode_RRA_zero_page_x()
     {
         // ROR value then ADC value
         int _address = Addressing.zeroPageX(pc++, x);
@@ -2405,7 +2405,7 @@ public class MOS6502
         a = _temp & 0xFF;
     }
 
-    private void opcode_RRA_absolute_X()
+    private void opcode_RRA_absolute_x()
     {
         // ROR value then ADC value
         int _address = Addressing.absoluteX(pc++, x);
@@ -2430,7 +2430,7 @@ public class MOS6502
         a = _temp & 0xFF;
     }
 
-    private void opcode_RRA_absolute_Y()
+    private void opcode_RRA_absolute_y()
     {
         // ROR value then ADC value
         int _address = Addressing.absoluteY(pc++, y);
@@ -2455,7 +2455,7 @@ public class MOS6502
         a = _temp & 0xFF;
     }
 
-    private void opcode_RRA_indirect_X()
+    private void opcode_RRA_indirect_x()
     {
         // ROR value then ADC value
         int _address = Addressing.indirectX(pc++, x);
@@ -2478,7 +2478,7 @@ public class MOS6502
         a = _temp & 0xFF;
     }
 
-    private void opcode_RRA_indirect_Y()
+    private void opcode_RRA_indirect_y()
     {
         // ROR value then ADC value
         int _address = Addressing.indirectY(pc++, y);
@@ -2529,7 +2529,7 @@ public class MOS6502
         Memory.writeByte(a & x, Addressing.zeroPage(pc++));
     }
 
-    private void opcode_SAX_zero_page_Y()
+    private void opcode_SAX_zero_page_y()
     {
         // Store A and X bitwise
         Memory.writeByte(a & x, Addressing.zeroPageY(pc++, y));
@@ -2542,7 +2542,7 @@ public class MOS6502
         pc++;
     }
 
-    private void opcode_SAX_indirect_X()
+    private void opcode_SAX_indirect_x()
     {
         // Store A and X bitwise
         Memory.writeByte(a & x, Addressing.indirectX(pc++, x));
@@ -2577,7 +2577,7 @@ public class MOS6502
         a = _temp & 0xFF;
     }
 
-    private void opcode_SBC_zero_page_X()
+    private void opcode_SBC_zero_page_x()
     {
         // Subtract with Carry
         int _address = Addressing.zeroPageX(pc++, x);
@@ -2609,7 +2609,7 @@ public class MOS6502
         a = _temp & 0xFF;
     }
 
-    private void opcode_SBC_absolute_X()
+    private void opcode_SBC_absolute_x()
     {
         // Subtract with Carry
         int _address = Addressing.absoluteX(pc++, x);
@@ -2626,7 +2626,7 @@ public class MOS6502
         a = _temp & 0xFF;
     }
 
-    private void opcode_SBC_absolute_Y()
+    private void opcode_SBC_absolute_y()
     {
         // Subtract with Carry
         int _address = Addressing.absoluteY(pc++, y);
@@ -2643,7 +2643,7 @@ public class MOS6502
         a = _temp & 0xFF;
     }
 
-    private void opcode_SBC_indirect_X()
+    private void opcode_SBC_indirect_x()
     {
         // Subtract with Carry
         int _address = Addressing.indirectX(pc++, x);
@@ -2658,7 +2658,7 @@ public class MOS6502
         a = _temp & 0xFF;
     }
 
-    private void opcode_SBC_indirect_Y()
+    private void opcode_SBC_indirect_y()
     {
         // Subtract with Carry
         int _address = Addressing.indirectY(pc++, y);
@@ -2708,7 +2708,7 @@ public class MOS6502
         negative = (a >> 7) & 1;
     }
 
-    private void opcode_SLO_zero_page_X()
+    private void opcode_SLO_zero_page_x()
     {
         // ASL value then ORA value
         int _address = Addressing.zeroPageX(pc++, x);
@@ -2744,7 +2744,7 @@ public class MOS6502
         negative = (a >> 7) & 1;
     }
 
-    private void opcode_SLO_absolute_X()
+    private void opcode_SLO_absolute_x()
     {
         // ASL value then ORA value
         int _address = Addressing.absoluteX(pc++, x);
@@ -2763,7 +2763,7 @@ public class MOS6502
         negative = (a >> 7) & 1;
     }
 
-    private void opcode_SLO_absolute_Y()
+    private void opcode_SLO_absolute_y()
     {
         // ASL value then ORA value
         int _address = Addressing.absoluteY(pc++, y);
@@ -2782,7 +2782,7 @@ public class MOS6502
         negative = (a >> 7) & 1;
     }
 
-    private void opcode_SLO_indirect_X()
+    private void opcode_SLO_indirect_x()
     {
         // ASL value then ORA value
         int _address = Addressing.indirectX(pc++, x);
@@ -2799,7 +2799,7 @@ public class MOS6502
         negative = (a >> 7) & 1;
     }
 
-    private void opcode_SLO_indirect_Y()
+    private void opcode_SLO_indirect_y()
     {
         // ASL value then ORA value
         int _address = Addressing.indirectY(pc++, y);
@@ -2833,7 +2833,7 @@ public class MOS6502
         negative = (a >> 7) & 1;
     }
 
-    private void opcode_SRE_zero_page_X()
+    private void opcode_SRE_zero_page_x()
     {
         // Equivalent to LSR value then EOR value
         int _address = Addressing.zeroPageX(pc++, x);
@@ -2869,7 +2869,7 @@ public class MOS6502
         negative = (a >> 7) & 1;
     }
 
-    private void opcode_SRE_absolute_X()
+    private void opcode_SRE_absolute_x()
     {
         // Equivalent to LSR value then EOR value
         int _address = Addressing.absoluteX(pc++, x);
@@ -2888,7 +2888,7 @@ public class MOS6502
         negative = (a >> 7) & 1;
     }
 
-    private void opcode_SRE_absolute_Y()
+    private void opcode_SRE_absolute_y()
     {
         // Equivalent to LSR value then EOR value
         int _address = Addressing.absoluteY(pc++, y);
@@ -2907,7 +2907,7 @@ public class MOS6502
         negative = (a >> 7) & 1;
     }
 
-    private void opcode_SRE_indirect_X()
+    private void opcode_SRE_indirect_x()
     {
         // Equivalent to LSR value then EOR value
         int _address = Addressing.indirectX(pc++, x);
@@ -2924,7 +2924,7 @@ public class MOS6502
         negative = (a >> 7) & 1;
     }
 
-    private void opcode_SRE_indirect_Y()
+    private void opcode_SRE_indirect_y()
     {
         // Equivalent to LSR value then EOR value
         int _address = Addressing.indirectY(pc++, y);
@@ -2947,7 +2947,7 @@ public class MOS6502
         Memory.writeByte(a, Addressing.zeroPage(pc++));        
     }
 
-    private void opcode_STA_zero_page_X()
+    private void opcode_STA_zero_page_x()
     {
         // Store Accumulator
         Memory.writeByte(a, Addressing.zeroPageX(pc++, x));
@@ -2960,27 +2960,27 @@ public class MOS6502
     	pc++;
     }
 
-    private void opcode_STA_absolute_X()
+    private void opcode_STA_absolute_x()
     {
         // Store Accumulator        
         Memory.writeByte(a, Addressing.absoluteX(pc++, x));
         pc++;
     }
 
-    private void opcode_STA_absolute_Y()
+    private void opcode_STA_absolute_y()
     {
         // Store Accumulator        
         Memory.writeByte(a, Addressing.absoluteY(pc++, y));
         pc++;
     }
 
-    private void opcode_STA_indirect_X()
+    private void opcode_STA_indirect_x()
     {
         // Store Accumulator
         Memory.writeByte(a, Addressing.indirectX(pc++, x));        
     }
 
-    private void opcode_STA_indirect_Y()
+    private void opcode_STA_indirect_y()
     {
         // Store Accumulator
         Memory.writeByte(a, Addressing.indirectY(pc++, y));
@@ -2992,7 +2992,7 @@ public class MOS6502
         Memory.writeByte(x, Addressing.zeroPage(pc++));
     }
 
-    private void opcode_STX_zero_page_Y()
+    private void opcode_STX_zero_page_y()
     {
         // Store X register
         Memory.writeByte(x, Addressing.zeroPageY(pc++, y));
@@ -3012,7 +3012,7 @@ public class MOS6502
         Memory.writeByte(y, _address);        
     }
 
-    private void opcode_STY_zero_page_X()
+    private void opcode_STY_zero_page_x()
     {
         // Store Y Register
         int _address = Addressing.zeroPageX(pc++, x);

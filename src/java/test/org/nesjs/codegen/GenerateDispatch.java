@@ -40,11 +40,6 @@ public class GenerateDispatch
     
     private static String getMethodSuffix(AddressingMode anAddressingMode)
     {
-        String _result = "_" + anAddressingMode.name().toLowerCase(); 
-        
-        _result = _result.replaceAll("x", "X");
-        _result = _result.replaceAll("y", "Y");
-        
-        return  _result;        
+        return "_" + anAddressingMode.name().toLowerCase();
     }
 }
