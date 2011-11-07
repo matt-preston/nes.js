@@ -1,13 +1,10 @@
 package org.nesjs.codegen;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.*;
+import java.util.*;
+import java.util.regex.*;
 
-import org.nesjs.core.Utils;
+import org.nesjs.core.*;
 
 public class OpcodeDefinitionReader 
 {
@@ -47,6 +44,20 @@ public class OpcodeDefinitionReader
         }
         
         return null;
+    }
+    
+    public List<OpcodeDefinition> allOpcodeDefinitions() throws IOException
+    {
+        ArrayList<OpcodeDefinition> _results = new ArrayList<OpcodeDefinition>();
+        
+        OpcodeDefinition _next;
+        
+        while((_next = next()) != null)
+        {
+            _results.add(_next);
+        }
+        
+        return _results;
     }
     
     public void close()
