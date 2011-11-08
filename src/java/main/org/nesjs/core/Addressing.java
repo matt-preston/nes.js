@@ -1,9 +1,6 @@
 package org.nesjs.core;
 
 /**
- * TODO, sort out the semantics.  Some methods return the address, others, like absolute, 
- *       return the value at the address.  All should return an address or value?  Or should be named better?
- *       
  * @author Matt
  */
 public class Addressing
@@ -14,45 +11,23 @@ public class Addressing
 	{
 		memory = aMemory;
 	}
+
+    /**
+     * Immediate addressing allows the programmer to directly specify an 8 bit constant within the instruction. 
+     */
+	public final int immediate(int anAddress)
+    {
+        return anAddress;
+    }
 	
     /**
-     * Instructions using absolute addressing contain a full 16 bit address 
-     * to identify the target location.
+     * An instruction using zero page addressing mode has only an 8 bit address operand. This limits it to addressing 
+     * only the first 256 bytes of memory (e.g. $0000 to $00FF) where the most significant byte of the address is always 
+     * zero. In zero page mode only the least significant byte of the address is held in the instruction making it 
+     * shorter by one byte (important for space saving) and one less memory fetch during execution (important for speed).
      * 
-     * @param anAddress
-     * @return
-     */
-    public final int absolute(int anAddress)
-    {
-        return readWord(anAddress);
-    }
-    
-    /**
-     * Immediate addressing allows the programmer to directly specify an 
-     * 8 bit constant within the instruction. 
-     * 
-     * It is indicated by a '#' symbol followed by an numeric expression.
-     * 
-     * @param anAddress
-     * @return
-     */
-    public final int immediate(int anAddress)
-    {
-        return memory.readByte(anAddress);
-    }
-    
-    /**
-     * An instruction using zero page addressing mode has only an 8 bit address 
-     * operand. This limits it to addressing only the first 256 bytes of memory 
-     * (e.g. $0000 to $00FF) where the most significant byte of the address is 
-     * always zero. In zero page mode only the least significant byte of the address 
-     * is held in the instruction making it shorter by one byte (important for space saving) 
-     * and one less memory fetch during execution (important for speed).
-     * 
-     * An assembler will automatically select zero page addressing mode if the operand 
-     * evaluates to a zero page address and the instruction supports the mode (not all do).
-     * 
-     * @param anAddress
+     * An assembler will automatically select zero page addressing mode if the operand evaluates to a zero page address
+     * and the instruction supports the mode (not all do).
      */
     public final int zeroPage(int anAddress)
     {        
@@ -60,19 +35,15 @@ public class Addressing
     }
     
     /**
-     * The address to be accessed by an instruction using indexed zero page addressing is calculated 
-     * by taking the 8 bit zero page address from the instruction and adding the current value of the 
-     * X register to it. For example if the X register contains $0F and the instruction LDA $80,X is 
-     * executed then the accumulator will be loaded from $008F (e.g. $80 + $0F => $8F).
+     * The address to be accessed by an instruction using indexed zero page addressing is calculated by taking the 8 bit 
+     * zero page address from the instruction and adding the current value of the X register to it. For example if the X 
+     * register contains $0F and the instruction LDA $80,X is executed then the accumulator will be loaded from $008F 
+     * (e.g. $80 + $0F => $8F).
      * 
      * NB:
-     * The address calculation wraps around if the sum of the base address and the register exceed $FF. 
-     * If we repeat the last example but with $FF in the X register then the accumulator will be loaded 
-     * from $007F (e.g. $80 + $FF => $7F) and not $017F.
-     * 
-     * @param anAddress
-     * @param anX
-     * @return
+     * The address calculation wraps around if the sum of the base address and the register exceed $FF. If we repeat the 
+     * last example but with $FF in the X register then the accumulator will be loaded from $007F (e.g. $80 + $FF => $7F) 
+     * and not $017F.
      */
     public final int zeroPageX(int anAddress, int anX)
     {
@@ -80,13 +51,9 @@ public class Addressing
     }
     
     /**
-     * The address to be accessed by an instruction using indexed zero page addressing is calculated by 
-     * taking the 8 bit zero page address from the instruction and adding the current value of the Y register
-     * to it. This mode can only be used with the LDX and STX instructions.
-     * 
-     * @param anAddress
-     * @param anY
-     * @return
+     * The address to be accessed by an instruction using indexed zero page addressing is calculated by  taking the 8 bit 
+     * zero page address from the instruction and adding the current value of the Y register to it. This mode can only be 
+     * used with the LDX and STX instructions.
      */
     public final int zeroPageY(int anAddress, int anY)
     {
@@ -94,68 +61,55 @@ public class Addressing
     }
     
     /**
-     * Relative addressing mode is used by branch instructions (e.g. BEQ, BNE, etc.) which contain 
-     * a signed 8 bit relative offset (e.g. -128 to +127) which is added to program counter if the 
-     * condition is true. As the program counter itself is incremented during instruction execution 
-     * by two the effective address range for the target instruction must be with -126 to +129 bytes 
-     * of the branch.
-     * 
-     * @param anAddress
-     * @return
+     * Relative addressing mode is used by branch instructions (e.g. BEQ, BNE, etc.) which contain a signed 8 bit relative 
+     * offset (e.g. -128 to +127) which is added to program counter if the condition is true. As the program counter itself 
+     * is incremented during instruction execution by two the effective address range for the target instruction must be 
+     * with -126 to +129 bytes of the branch.
      */
     public final int relative(int anAddress)
     {
-        return readSignedByte(anAddress);
+        return anAddress; 
     }
     
     /**
-     * Indexed indirect addressing is normally used in conjunction with a table of address held on zero page. 
-     * The address of the table is taken from the instruction and the X register added to it (with zero page 
-     * wrap around) to give the location of the least significant byte of the target address.
-     * 
-     * @param anAddress
-     * @param anY
-     * @return
+     * Instructions using absolute addressing contain a full 16 bit address to identify the target location.
      */
-    public final int indirectX(int anAddress, int anX)
+    public final int absolute(int anAddress)
     {
-        int _address = (memory.readByte(anAddress) + anX) & 0xFF;
-    	
-        return readWordZeroPageWrap(_address);
+        return readWord(anAddress);
     }
     
     /**
-     * Indirect indirect addressing is the most common indirection mode used on the 6502. In instruction contains 
-     * the zero page location of the least significant byte of 16 bit address. The Y register is dynamically added 
-     * to this value to generated the actual target address for operation.
-     * 
-     * @param anAddress
-     * @param anY
-     * @return
+     * The address to be accessed by an instruction using X register indexed absolute addressing is computed by taking 
+     * the 16 bit address from the instruction and added the contents of the X register. For example if X contains $92 
+     * then an STA $2000,X instruction will store the accumulator at $2092 (e.g. $2000 + $92).
      */
-    public final int indirectY(int anAddress, int anY)
+    public final int absoluteX(int anAddress, int anX)
     {
-        int _address = memory.readByte(anAddress);
-        
-        return readWordZeroPageWrap(_address) + anY;        
+        return readWord(anAddress) + anX;
     }
     
     /**
-     * JMP is the only 6502 instruction to support indirection. The instruction contains a 16 bit address which 
-     * identifies the location of the least significant byte of another 16 bit memory address which is the real 
-     * target of the instruction.
+     * The Y register indexed absolute addressing mode is the same as the previous mode only with the contents of the Y 
+     * register added to the 16 bit address from the instruction.
+     */
+    public final int absoluteY(int anAddress, int anY)
+    {
+        return readWord(anAddress) + anY;
+    }
+    
+    /**
+     * JMP is the only 6502 instruction to support indirection. The instruction contains a 16 bit address which identifies 
+     * the location of the least significant byte of another 16 bit memory address which is the real target of the instruction.
      * 
-     * For example if location $0120 contains $FC and location $0121 contains $BA then the instruction JMP ($0120) 
-     * will cause the next instruction execution to occur at $BAFC (e.g. the contents of $0120 and $0121).
+     * For example if location $0120 contains $FC and location $0121 contains $BA then the instruction JMP ($0120) will cause 
+     * the next instruction execution to occur at $BAFC (e.g. the contents of $0120 and $0121).
      * 
      * N.B.
-     * An original 6502 has does not correctly fetch the target address if the indirect vector falls on a page 
-     * boundary (e.g. $xxFF where xx is and value from $00 to $FF). In this case fetches the LSB from $xxFF as expected 
-     * but takes the MSB from $xx00. This is fixed in some later chips like the 65SC02 so for compatibility always 
-     * ensure the indirect vector is not at the end of the page.
-     * 
-     * @param anAddress
-     * @return
+     * An original 6502 has does not correctly fetch the target address if the indirect vector falls on a page boundary 
+     * (e.g. $xxFF where xx is and value from $00 to $FF). In this case fetches the LSB from $xxFF as expected but takes 
+     * the MSB from $xx00. This is fixed in some later chips like the 65SC02 so for compatibility always ensure the indirect 
+     * vector is not at the end of the page.
      */
     public final int indirect(int anAddress)
     {
@@ -174,30 +128,25 @@ public class Addressing
     }
     
     /**
-     * The address to be accessed by an instruction using X register indexed absolute addressing is computed by 
-     * taking the 16 bit address from the instruction and added the contents of the X register. For example if 
-     * X contains $92 then an STA $2000,X instruction will store the accumulator at $2092 (e.g. $2000 + $92).
-     * 
-     * @param anAddress
-     * @param anX
-     * @return
+     * Indexed indirect addressing is normally used in conjunction with a table of address held on zero page. The address 
+     * of the table is taken from the instruction and the X register added to it (with zero page wrap around) to give the 
+     * location of the least significant byte of the target address.
      */
-    public final int absoluteX(int anAddress, int anX)
+    public final int indirectX(int anAddress, int anX)
     {
-        return readWord(anAddress) + anX;
+        int _address = (memory.readByte(anAddress) + anX) & 0xFF;    	
+        return readWordZeroPageWrap(_address);
     }
     
     /**
-     * The Y register indexed absolute addressing mode is the same as the previous mode only with the contents 
-     * of the Y register added to the 16 bit address from the instruction.
-     * 
-     * @param anAddress
-     * @param anY
-     * @return
+     * Indirect indirect addressing is the most common indirection mode used on the 6502. In instruction contains the zero 
+     * page location of the least significant byte of 16 bit address. The Y register is dynamically added to this value 
+     * to generated the actual target address for operation.
      */
-    public final int absoluteY(int anAddress, int anY)
+    public final int indirectY(int anAddress, int anY)
     {
-        return readWord(anAddress) + anY;
+        int _address = memory.readByte(anAddress);
+        return readWordZeroPageWrap(_address) + anY;        
     }
     
     
@@ -212,30 +161,11 @@ public class Addressing
     
     private final int readWordZeroPageWrap(int anAddress)
     {
-        int _secondAddress = (anAddress + 1) & 0xFF;
-        
-        return readWord(anAddress, _secondAddress);
+        return readWord(anAddress, (anAddress + 1) & 0xFF);
     }
     
     private final int readWord(int anAddress, int aSecondAddress)
     {
-        int _byte1 = memory.readByte(anAddress);
-        int _byte2 = (memory.readByte(aSecondAddress) << 8);
-        
-        return _byte1 | _byte2;
-    }
-    
-    private final int readSignedByte(int anAddress)
-    {
-        int _byte = memory.readByte(anAddress);
-
-        if (_byte < 0x80)
-        {
-            return _byte;
-        } 
-        else
-        {
-            return _byte - 256;
-        }
-    }
+        return memory.readByte(anAddress) | (memory.readByte(aSecondAddress) << 8);
+    }    
 }

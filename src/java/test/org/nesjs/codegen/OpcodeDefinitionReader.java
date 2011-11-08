@@ -6,6 +6,23 @@ import java.util.regex.*;
 
 import org.nesjs.core.*;
 
+enum AddressingMode
+{
+    IMPLIED,
+    ACCUMULATOR,
+    IMMEDIATE,
+    ZERO_PAGE,
+    ZERO_PAGE_X,
+    ZERO_PAGE_Y,
+    RELATIVE,
+    ABSOLUTE,
+    ABSOLUTE_X,
+    ABSOLUTE_Y,
+    INDIRECT,
+    INDIRECT_X,
+    INDIRECT_Y;
+}
+
 public class OpcodeDefinitionReader 
 {
 	private BufferedReader reader;
@@ -129,23 +146,6 @@ public class OpcodeDefinitionReader
     	
     	return AddressingMode.IMPLIED;
     }
-}
-
-enum AddressingMode
-{
-	IMPLIED,
-	ACCUMULATOR,
-	IMMEDIATE,
-	ZERO_PAGE,
-	ZERO_PAGE_X,
-	ZERO_PAGE_Y,
-	RELATIVE,
-	ABSOLUTE,
-	ABSOLUTE_X,
-	ABSOLUTE_Y,
-	INDIRECT,
-	INDIRECT_X,
-	INDIRECT_Y;
 }
 
 class OpcodeDefinition

@@ -385,6 +385,15 @@ public class MOS6502
         int _byte1 = pop();
         return (pop() << 8) | _byte1;
     }
+
+//-------------------------------------------------------------
+// Utils
+//-------------------------------------------------------------    
+    
+    private final int asSignedByte(int aByte)
+    {
+        return aByte < 0x80 ? aByte : aByte - 256;
+    }
     
 //-------------------------------------------------------------
 // Opcodes
@@ -393,7 +402,8 @@ public class MOS6502
     // Add with Carry
     private void opcode_ADC_immediate()
     {
-        int _value = addressing.immediate(pc++);
+        int _address = addressing.immediate(pc++);
+        int _value = memory.readByte(_address);
         int _temp = a + _value + carry;
         
         carry = _temp > 0xFF ? 1 : 0;
@@ -518,7 +528,8 @@ public class MOS6502
     // Logical AND
     private void opcode_AND_immediate()
     {
-        a &= addressing.immediate(pc++);
+        int _address = addressing.immediate(pc++);
+        a &= memory.readByte(_address);        
         
         negative = (a >> 7) & 1;
         not_zero = a;        
@@ -679,7 +690,10 @@ public class MOS6502
     {
         if(carry == 0)
         {
-            int _relative = addressing.relative(pc++);
+            int _address = addressing.relative(pc++);
+            int _value = memory.readByte(_address);
+            
+            int _relative = asSignedByte(_value);
             pc += _relative;
         }
         else
@@ -693,7 +707,10 @@ public class MOS6502
     {
         if(carry > 0)
         {
-            int _relative = addressing.relative(pc++); 
+            int _address = addressing.relative(pc++);
+            int _value = memory.readByte(_address);
+            
+            int _relative = asSignedByte(_value); 
             pc += _relative;
         }
         else
@@ -707,7 +724,10 @@ public class MOS6502
     {
         if(isZeroFlagSet())
         {            
-            int _relative = addressing.relative(pc++);
+            int _address = addressing.relative(pc++);
+            int _value = memory.readByte(_address);
+            
+            int _relative = asSignedByte(_value);
             pc += _relative;
         }
         else
@@ -747,8 +767,11 @@ public class MOS6502
     {
     	if(negative != 0)
     	{
-    		int _address = addressing.relative(pc++);
-    		pc += _address;
+    	    int _address = addressing.relative(pc++);
+            int _value = memory.readByte(_address);
+            
+            int _relative = asSignedByte(_value);
+    		pc += _relative;
     	}
     	else
     	{
@@ -761,7 +784,10 @@ public class MOS6502
     {
         if(!isZeroFlagSet())
         {            
-            int _relative = addressing.relative(pc++);
+            int _address = addressing.relative(pc++);
+            int _value = memory.readByte(_address);
+            
+            int _relative = asSignedByte(_value);
             pc += _relative;
         }
         else
@@ -775,7 +801,10 @@ public class MOS6502
     {
         if(negative == 0)
         {
-            int _relative = addressing.relative(pc++);
+            int _address = addressing.relative(pc++);
+            int _value = memory.readByte(_address);
+            
+            int _relative = asSignedByte(_value);
             pc += _relative;
         }
         else
@@ -794,7 +823,10 @@ public class MOS6502
     {
         if(overflow == 0)
         {
-            int _relative = addressing.relative(pc++);
+            int _address = addressing.relative(pc++);
+            int _value = memory.readByte(_address);
+            
+            int _relative = asSignedByte(_value);
             pc += _relative;
         }
         else
@@ -808,7 +840,10 @@ public class MOS6502
     {
         if(overflow != 0)
         {
-            int _relative = addressing.relative(pc++);
+            int _address = addressing.relative(pc++);
+            int _value = memory.readByte(_address);
+            
+            int _relative = asSignedByte(_value);
             pc += _relative;
         }
         else
@@ -843,7 +878,8 @@ public class MOS6502
     // Compare
     private void opcode_CMP_immediate()
     {
-        int _temp = a - addressing.immediate(pc++);
+        int _address = addressing.immediate(pc++);
+        int _temp = a - memory.readByte(_address);
         
         carry = (_temp >= 0 ? 1:0);
         not_zero = _temp & 0xFF;
@@ -936,7 +972,8 @@ public class MOS6502
     // Compare X Register
     private void opcode_CPX_immediate()
     {
-        int _temp = x - addressing.immediate(pc++);
+        int _address = addressing.immediate(pc++);
+        int _temp = x - memory.readByte(_address);
         
         carry = (_temp >= 0 ? 1:0);
         not_zero = _temp & 0xFF;
@@ -970,7 +1007,8 @@ public class MOS6502
     // Compare Y Register
     private void opcode_CPY_immediate()
     {
-        int _temp = y - addressing.immediate(pc++);
+        int _address = addressing.immediate(pc++);
+        int _temp = y - memory.readByte(_address);
         
         carry = (_temp >= 0 ? 1:0);
         not_zero = _temp & 0xFF;
@@ -1185,7 +1223,8 @@ public class MOS6502
     // Exclusive OR
     private void opcode_EOR_immediate()
     {
-        a ^=  addressing.immediate(pc++);
+        int _address = addressing.immediate(pc++);
+        a ^=  memory.readByte(_address);
         
         not_zero = a & 0xFF;
         negative = (a >> 7) & 1;        
@@ -1564,7 +1603,8 @@ public class MOS6502
     // Load Accumulator
     private void opcode_LDA_immediate()
     {
-        a = addressing.immediate(pc++);
+        int _address = addressing.immediate(pc++);
+        a = memory.readByte(_address);
         
         negative = (a >> 7) & 1;
         not_zero = a;
@@ -1649,7 +1689,8 @@ public class MOS6502
     // Load X with memory
     private void opcode_LDX_immediate()
     {
-        x = addressing.immediate(pc++);
+        int _address = addressing.immediate(pc++);
+        x = memory.readByte(_address);
         
         negative = (x >> 7) & 1;
         not_zero = x;
@@ -1702,7 +1743,8 @@ public class MOS6502
     // Load Y Register
     private void opcode_LDY_immediate()
     {
-        y = addressing.immediate(pc++);
+        int _address = addressing.immediate(pc++);
+        y = memory.readByte(_address);
         
         negative = (y >> 7) & 1;
         not_zero = y;
@@ -1864,7 +1906,8 @@ public class MOS6502
     // Logical Inclusive OR
     private void opcode_ORA_immediate()
     {
-        a |=  addressing.immediate(pc++);
+        int _address = addressing.immediate(pc++);
+        a |=  memory.readByte(_address);
         
         not_zero = a & 0xFF;
         negative = (a >> 7) & 1; 
@@ -2541,7 +2584,8 @@ public class MOS6502
     // Subtract with Carry
     private void opcode_SBC_immediate()
     {
-        int _value = addressing.immediate(pc++);
+        int _address = addressing.immediate(pc++);
+        int _value = memory.readByte(_address);
         int _temp = a - _value - (1 - carry);
         
         carry = _temp < 0 ? 0 : 1;
