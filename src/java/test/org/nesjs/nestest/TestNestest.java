@@ -37,6 +37,12 @@ public class TestNestest
             _6502.step();            
             _stepCount++;
         }
+        
+        int _02h = _memory.readByte(0x02);
+        int _03h = _memory.readByte(0x03);
+        
+        System.out.println("0x02 => " + Utils.toHexString(_02h));
+        System.out.println("0x03 => " + Utils.toHexString(_03h));
     }
     
     private void assertHexEquals(String aMessage, int anExpected, int anActual)
