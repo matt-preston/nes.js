@@ -26,12 +26,12 @@ public class GenerateDispatch
                 }
                 else
                 {
-                    System.out.printf("case %s: %s; break;\n", Utils.toHexString(_next.getOpcode()), getMethodName(_next));    
+                    System.out.printf("case %s: %s; break;\n", Utils.toHexString(_next.getOpcode()), getCallMethodName(_next));    
                 }
             }
             else
             {
-                System.out.printf("case %s: %s; break;\n", Utils.toHexString(_next.getOpcode()), getMethodName(_next));
+                System.out.printf("case %s: %s; break;\n", Utils.toHexString(_next.getOpcode()), getCallMethodName(_next));
             }
         }
         
@@ -44,23 +44,71 @@ public class GenerateDispatch
         
         while((_next = _r.next()) != null)
         {
-            System.out.printf("private final void %s\n", getMethodName(_next));
+            System.out.printf("private final void %s\n", getDefinitionMethodName(_next));
             System.out.printf("{\n");
-            System.out.printf("    throw new RuntimeException(\"opcode not implemented [%s %s]);\n", _next.getMnemonic(), _next.getAddressingMode());
+            System.out.printf("    throw new RuntimeException(\"opcode not implemented [%s]);\n", _next.getMnemonic());
             System.out.printf("}\n");
             System.out.println("");
         }
         
         _r.close();
+    }    
+    
+    private static String getCallMethodName(OpcodeDefinition anOpcode)
+    {
+        AddressingMode _mode = anOpcode.getAddressingMode();
+        
+        if(isMethodRequiresAddressParameter(_mode))
+        {
+            return String.format("opcode_%s(%s())", anOpcode.getMnemonic(), getAddressingMethod(anOpcode.getAddressingMode()));
+        }
+        else
+        {
+            // no address to read
+            return String.format("opcode_%s_%s()", anOpcode.getMnemonic(), anOpcode.getAddressingMode().name().toLowerCase());
+        }
     }
     
-    private static String getMethodName(OpcodeDefinition anOpcode)
+    private static String getDefinitionMethodName(OpcodeDefinition anOpcode)
     {
-        return String.format("opcode_%s%s()", anOpcode.getMnemonic(), getMethodSuffix(anOpcode.getAddressingMode()));
+        AddressingMode _mode = anOpcode.getAddressingMode();
+        
+        if(isMethodRequiresAddressParameter(_mode))
+        {
+            return String.format("opcode_%s(int anAddress)", anOpcode.getMnemonic());
+        }
+        else
+        {
+            // no address to read
+            return String.format("opcode_%s_%s()", anOpcode.getMnemonic(), anOpcode.getAddressingMode().name().toLowerCase());            
+        }
     }
     
-    private static String getMethodSuffix(AddressingMode anAddressingMode)
+    private static boolean isMethodRequiresAddressParameter(AddressingMode anAddressingMode)
     {
-        return "_" + anAddressingMode.name().toLowerCase();
+        EnumSet<AddressingMode> _noParams = EnumSet.of(AddressingMode.IMPLIED, AddressingMode.ACCUMULATOR, AddressingMode.RELATIVE);
+        
+        return !_noParams.contains(anAddressingMode);
     }
+    
+    
+    private static String getAddressingMethod(AddressingMode anAddressingMode)
+    {
+        switch(anAddressingMode)
+        {
+            case IMMEDIATE:   return "immediate";
+            case ZERO_PAGE:   return "zeroPage";
+            case ZERO_PAGE_X: return "zeroPageX";
+            case ZERO_PAGE_Y: return "zeroPageY";
+            case RELATIVE:    return "relative";
+            case ABSOLUTE:    return "absolute";
+            case ABSOLUTE_X:  return "absoluteX";
+            case ABSOLUTE_Y:  return "absoluteY";
+            case INDIRECT:    return "indirect";
+            case INDIRECT_X:  return "indirectX";
+            case INDIRECT_Y:  return "indirectY";
+        }
+        
+        throw new RuntimeException("Unhandled mode: " + anAddressingMode);
+    }    
 }
