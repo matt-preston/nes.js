@@ -4,7 +4,7 @@ import java.io.*;
 
 public class ROM
 {
-    public static final void initMemoryWithFile(String aFile) throws Exception
+    public static final Memory memoryWithROMFile(String aFile) throws Exception
     {
         byte[] _bytes = toByteArray(aFile);
         
@@ -52,15 +52,19 @@ public class ROM
             _offset += 16384;
         }
 
+        Memory _memory = new Memory();
+        
         // Load prom into memory - the default mapper uses only a single bank, so
         // load it into both locations
-        loadRomBank(_prom[0], 0x8000);
-        loadRomBank(_prom[0], 0xC000);
+        loadRomBank(_prom[0], _memory.prom, 0x8000);
+        loadRomBank(_prom[0], _memory.prom, 0xC000);
+        
+        return _memory;
     }
     
-    private static void loadRomBank(int[] aBank, int anAddress)
+    private static void loadRomBank(int[] aBank, int[] aMemory, int anAddress)
     {
-        System.arraycopy(aBank, 0, Memory.prom, anAddress, 16384);
+        System.arraycopy(aBank, 0, aMemory, anAddress, 16384);
     }
     
     private static byte[] toByteArray(String aFilename) throws Exception

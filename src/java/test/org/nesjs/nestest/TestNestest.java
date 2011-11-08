@@ -15,9 +15,8 @@ public class TestNestest
     @Test
     public void testNestestRom() throws Exception
     {
-        ROM.initMemoryWithFile("nestest.nes");
-        
-        MOS6502 _6502 = new MOS6502();
+    	Memory _memory = ROM.memoryWithROMFile("nestest.nes");
+        MOS6502 _6502 = new MOS6502(_memory);
         
         _6502.init();
         _6502.reset();

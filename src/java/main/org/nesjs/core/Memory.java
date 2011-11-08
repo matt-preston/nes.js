@@ -3,10 +3,10 @@ package org.nesjs.core;
 
 public class Memory
 {
-    public static final int[] lowMem = new int[0x0800];
-    public static final int[] prom   = new int[0x10000];
+    public final int[] lowMem = new int[0x0800];
+    public final int[] prom   = new int[0x10000];
         
-    public static void resetLowMemory() 
+    public void resetLowMemory() 
     {
         for (int _index = 0; _index < lowMem.length; _index++) 
         {
@@ -20,7 +20,7 @@ public class Memory
     }
     
     
-    public static final int readByte(int anAddress)
+    public final int readByte(int anAddress)
     {
         // Mask to 16 bit
         int _address = anAddress & 0xFFFF;
@@ -41,7 +41,7 @@ public class Memory
         return 0;  // TODO
     }
     
-    public static final void writeByte(int aByte, int anAddress)
+    public final void writeByte(int aByte, int anAddress)
     {
         if (anAddress < 0x2000)
         {
@@ -59,7 +59,7 @@ public class Memory
         }
     }
     
-    private static final int byteAtIndex(int[] aMemory, int anIndex)
+    private final int byteAtIndex(int[] aMemory, int anIndex)
     {
         /**
          * Mask to the lowest byte

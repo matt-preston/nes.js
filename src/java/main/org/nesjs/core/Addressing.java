@@ -8,6 +8,13 @@ package org.nesjs.core;
  */
 public class Addressing
 {
+	private Memory memory;
+	
+	public Addressing(Memory aMemory)
+	{
+		memory = aMemory;
+	}
+	
     /**
      * Instructions using absolute addressing contain a full 16 bit address 
      * to identify the target location.
@@ -15,7 +22,7 @@ public class Addressing
      * @param anAddress
      * @return
      */
-    public static final int absolute(int anAddress)
+    public final int absolute(int anAddress)
     {
         return readWord(anAddress);
     }
@@ -29,9 +36,9 @@ public class Addressing
      * @param anAddress
      * @return
      */
-    public static final int immediate(int anAddress)
+    public final int immediate(int anAddress)
     {
-        return Memory.readByte(anAddress);
+        return memory.readByte(anAddress);
     }
     
     /**
@@ -47,9 +54,9 @@ public class Addressing
      * 
      * @param anAddress
      */
-    public static final int zeroPage(int anAddress)
+    public final int zeroPage(int anAddress)
     {        
-        return Memory.readByte(anAddress);
+        return memory.readByte(anAddress);
     }
     
     /**
@@ -67,9 +74,9 @@ public class Addressing
      * @param anX
      * @return
      */
-    public static final int zeroPageX(int anAddress, int anX)
+    public final int zeroPageX(int anAddress, int anX)
     {
-        return (Memory.readByte(anAddress) + anX) & 0xFF;        
+        return (memory.readByte(anAddress) + anX) & 0xFF;        
     }
     
     /**
@@ -81,9 +88,9 @@ public class Addressing
      * @param anY
      * @return
      */
-    public static final int zeroPageY(int anAddress, int anY)
+    public final int zeroPageY(int anAddress, int anY)
     {
-        return (Memory.readByte(anAddress) + anY) & 0xFF;        
+        return (memory.readByte(anAddress) + anY) & 0xFF;        
     }
     
     /**
@@ -96,7 +103,7 @@ public class Addressing
      * @param anAddress
      * @return
      */
-    public static final int relative(int anAddress)
+    public final int relative(int anAddress)
     {
         return readSignedByte(anAddress);
     }
@@ -110,9 +117,9 @@ public class Addressing
      * @param anY
      * @return
      */
-    public static final int indirectX(int anAddress, int anX)
+    public final int indirectX(int anAddress, int anX)
     {
-        int _address = (Memory.readByte(anAddress) + anX) & 0xFF;
+        int _address = (memory.readByte(anAddress) + anX) & 0xFF;
     	
         return readWordZeroPageWrap(_address);
     }
@@ -126,14 +133,11 @@ public class Addressing
      * @param anY
      * @return
      */
-    public static final int indirectY(int anAddress, int anY)
+    public final int indirectY(int anAddress, int anY)
     {
-        int _zeroPageAddress = Memory.readByte(anAddress);
+        int _address = memory.readByte(anAddress);
         
-        // Should use zero page wrap or not?
-        int _address = readWordZeroPageWrap(_zeroPageAddress);
-        
-        return _address + anY;
+        return readWordZeroPageWrap(_address) + anY;        
     }
     
     /**
@@ -153,7 +157,7 @@ public class Addressing
      * @param anAddress
      * @return
      */
-    public static final int indirect(int anAddress)
+    public final int indirect(int anAddress)
     {
         int _address = readWord(anAddress);
         
@@ -178,7 +182,7 @@ public class Addressing
      * @param anX
      * @return
      */
-    public static final int absoluteX(int anAddress, int anX)
+    public final int absoluteX(int anAddress, int anX)
     {
         return readWord(anAddress) + anX;
     }
@@ -191,7 +195,7 @@ public class Addressing
      * @param anY
      * @return
      */
-    public static final int absoluteY(int anAddress, int anY)
+    public final int absoluteY(int anAddress, int anY)
     {
         return readWord(anAddress) + anY;
     }
@@ -201,29 +205,29 @@ public class Addressing
 // Addressing utilities   
 //--------------------------------------    
     
-    private static final int readWord(int anAddress)
+    private final int readWord(int anAddress)
     {
         return readWord(anAddress, anAddress + 1);
     }
     
-    private static final int readWordZeroPageWrap(int anAddress)
+    private final int readWordZeroPageWrap(int anAddress)
     {
         int _secondAddress = (anAddress + 1) & 0xFF;
         
         return readWord(anAddress, _secondAddress);
     }
     
-    private static final int readWord(int anAddress, int aSecondAddress)
+    private final int readWord(int anAddress, int aSecondAddress)
     {
-        int _byte1 = Memory.readByte(anAddress);
-        int _byte2 = (Memory.readByte(aSecondAddress) << 8);
+        int _byte1 = memory.readByte(anAddress);
+        int _byte2 = (memory.readByte(aSecondAddress) << 8);
         
         return _byte1 | _byte2;
     }
     
-    private static final int readSignedByte(int anAddress)
+    private final int readSignedByte(int anAddress)
     {
-        int _byte = Memory.readByte(anAddress);
+        int _byte = memory.readByte(anAddress);
 
         if (_byte < 0x80)
         {
