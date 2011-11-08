@@ -362,9 +362,9 @@ public class MOS6502
     /**
      * Immediate addressing allows the programmer to directly specify an 8 bit constant within the instruction. 
      */
-    public final int immediate(int anAddress)
+    public final int immediate()
     {
-        return anAddress;
+        return pc++;
     }
     
     /**
@@ -376,9 +376,9 @@ public class MOS6502
      * An assembler will automatically select zero page addressing mode if the operand evaluates to a zero page address
      * and the instruction supports the mode (not all do).
      */
-    public final int zeroPage(int anAddress)
+    public final int zeroPage()
     {        
-        return memory.readByte(anAddress);
+        return memory.readByte(pc++);
     }
     
     /**
@@ -392,9 +392,9 @@ public class MOS6502
      * last example but with $FF in the X register then the accumulator will be loaded from $007F (e.g. $80 + $FF => $7F) 
      * and not $017F.
      */
-    public final int zeroPageX(int anAddress)
+    public final int zeroPageX()
     {
-        return (memory.readByte(anAddress) + x) & 0xFF;        
+        return (memory.readByte(pc++) + x) & 0xFF;        
     }
     
     /**
@@ -402,9 +402,9 @@ public class MOS6502
      * zero page address from the instruction and adding the current value of the Y register to it. This mode can only be 
      * used with the LDX and STX instructions.
      */
-    public final int zeroPageY(int anAddress)
+    public final int zeroPageY()
     {
-        return (memory.readByte(anAddress) + y) & 0xFF;        
+        return (memory.readByte(pc++) + y) & 0xFF;        
     }
     
     /**
@@ -413,17 +413,19 @@ public class MOS6502
      * is incremented during instruction execution by two the effective address range for the target instruction must be 
      * with -126 to +129 bytes of the branch.
      */
-    public final int relative(int anAddress)
+    public final int relative()
     {
-        return anAddress; 
+        return pc++; 
     }
     
     /**
      * Instructions using absolute addressing contain a full 16 bit address to identify the target location.
      */
-    public final int absolute(int anAddress)
+    public final int absolute()
     {
-        return readWord(anAddress);
+        int _result = readWord(pc);
+        pc += 2;
+        return _result;
     }
     
     /**
@@ -431,20 +433,24 @@ public class MOS6502
      * the 16 bit address from the instruction and added the contents of the X register. For example if X contains $92 
      * then an STA $2000,X instruction will store the accumulator at $2092 (e.g. $2000 + $92).
      */
-    public final int absoluteX(int anAddress)
+    public final int absoluteX()
     {
-        return readWord(anAddress) + x;
+        int _result = readWord(pc) + x;
+        pc += 2;
+        return _result;
     }
     
     /**
      * The Y register indexed absolute addressing mode is the same as the previous mode only with the contents of the Y 
      * register added to the 16 bit address from the instruction.
      */
-    public final int absoluteY(int anAddress)
+    public final int absoluteY()
     {
-        return readWord(anAddress) + y;
+        int _result = readWord(pc) + y;
+        pc += 2;
+        return _result;
     }
-    
+        
     /**
      * JMP is the only 6502 instruction to support indirection. The instruction contains a 16 bit address which identifies 
      * the location of the least significant byte of another 16 bit memory address which is the real target of the instruction.
@@ -458,9 +464,9 @@ public class MOS6502
      * the MSB from $xx00. This is fixed in some later chips like the 65SC02 so for compatibility always ensure the indirect 
      * vector is not at the end of the page.
      */
-    public final int indirect(int anAddress)
+    public final int indirect()
     {
-        int _address = readWord(anAddress);
+        int _address = readWord(pc++);
         
         if((_address & 0x00FF) == 0xFF)
         {
@@ -472,16 +478,16 @@ public class MOS6502
         {
             return readWord(_address);    
         }
-    }
+    }    
     
     /**
      * Indexed indirect addressing is normally used in conjunction with a table of address held on zero page. The address 
      * of the table is taken from the instruction and the X register added to it (with zero page wrap around) to give the 
      * location of the least significant byte of the target address.
      */
-    public final int indirectX(int anAddress)
+    public final int indirectX()
     {
-        int _address = (memory.readByte(anAddress) + x) & 0xFF;       
+        int _address = (memory.readByte(pc++) + x) & 0xFF;       
         return readWordZeroPageWrap(_address);
     }
     
@@ -490,11 +496,11 @@ public class MOS6502
      * page location of the least significant byte of 16 bit address. The Y register is dynamically added to this value 
      * to generated the actual target address for operation.
      */
-    public final int indirectY(int anAddress)
+    public final int indirectY()
     {
-        int _address = memory.readByte(anAddress);
+        int _address = memory.readByte(pc++);
         return readWordZeroPageWrap(_address) + y;        
-    }
+    }    
     
 //-------------------------------------------------------------
 // Stack
@@ -556,7 +562,7 @@ public class MOS6502
     // Add with Carry
     private void opcode_ADC_immediate()
     {
-        int _address = immediate(pc++);
+        int _address = immediate();
         int _value = memory.readByte(_address);
         int _temp = a + _value + carry;
         
@@ -571,7 +577,7 @@ public class MOS6502
     // Add with Carry
     private void opcode_ADC_zero_page()
     {
-        int _address = zeroPage(pc++);
+        int _address = zeroPage();
         int _value = memory.readByte(_address);
         int _temp = a + _value + carry;
         
@@ -586,7 +592,7 @@ public class MOS6502
     // Add with Carry
     private void opcode_ADC_zero_page_x()
     {
-        int _address = zeroPageX(pc++);
+        int _address = zeroPageX();
         int _value = memory.readByte(_address);
         int _temp = a + _value + carry;
         
@@ -601,11 +607,9 @@ public class MOS6502
     // Add with Carry
     private void opcode_ADC_absolute()
     {
-        int _address = absolute(pc++);
+        int _address = absolute();
         int _value = memory.readByte(_address);
         int _temp = a + _value + carry;
-        
-        pc++;
         
         carry = _temp > 0xFF ? 1 : 0;
         not_zero = _temp & 0xFF;
@@ -618,11 +622,9 @@ public class MOS6502
     // Add with Carry
     private void opcode_ADC_absolute_x()
     {
-        int _address = absoluteX(pc++);
+        int _address = absoluteX();
         int _value = memory.readByte(_address);
         int _temp = a + _value + carry;
-        
-        pc++;
         
         carry = _temp > 0xFF ? 1 : 0;
         not_zero = _temp & 0xFF;
@@ -635,11 +637,9 @@ public class MOS6502
     // Add with Carry
     private void opcode_ADC_absolute_y()
     {
-        int _address = absoluteY(pc++);
+        int _address = absoluteY();
         int _value = memory.readByte(_address);
         int _temp = a + _value + carry;
-        
-        pc++;
         
         carry = _temp > 0xFF ? 1 : 0;
         not_zero = _temp & 0xFF;
@@ -652,7 +652,7 @@ public class MOS6502
     // Add with Carry
     private void opcode_ADC_indirect_x()
     {
-        int _address = indirectX(pc++);
+        int _address = indirectX();
         int _value = memory.readByte(_address);
         int _temp = a + _value + carry;
         
@@ -667,7 +667,7 @@ public class MOS6502
     // Add with Carry
     private void opcode_ADC_indirect_y()
     {
-        int _address = indirectY(pc++);
+        int _address = indirectY();
         int _value = memory.readByte(_address);
         int _temp = a + _value + carry;
         
@@ -682,7 +682,7 @@ public class MOS6502
     // Logical AND
     private void opcode_AND_immediate()
     {
-        int _address = immediate(pc++);
+        int _address = immediate();
         a &= memory.readByte(_address);        
         
         negative = (a >> 7) & 1;
@@ -692,7 +692,7 @@ public class MOS6502
     // Logical AND
     private void opcode_AND_zero_page()
     {
-        int _address = zeroPage(pc++);
+        int _address = zeroPage();
         a &= memory.readByte(_address);
         
         negative = (a >> 7) & 1;
@@ -702,7 +702,7 @@ public class MOS6502
     // Logical AND
     private void opcode_AND_zero_page_x()
     {
-        int _address = zeroPageX(pc++);
+        int _address = zeroPageX();
         a &= memory.readByte(_address);
         
         negative = (a >> 7) & 1;
@@ -712,10 +712,8 @@ public class MOS6502
     // Logical AND
     private void opcode_AND_absolute()
     {
-        int _address = absolute(pc++);
+        int _address = absolute();
         a &= memory.readByte(_address);
-        
-        pc++;
         
         negative = (a >> 7) & 1;
         not_zero = a;
@@ -724,10 +722,8 @@ public class MOS6502
     // Logical AND
     private void opcode_AND_absolute_x()
     {
-        int _address = absoluteX(pc++);
+        int _address = absoluteX();
         a &= memory.readByte(_address);
-        
-        pc++;
         
         negative = (a >> 7) & 1;
         not_zero = a;
@@ -736,10 +732,8 @@ public class MOS6502
     // Logical AND
     private void opcode_AND_absolute_y()
     {
-        int _address = absoluteY(pc++);
+        int _address = absoluteY();
         a &= memory.readByte(_address);
-        
-        pc++;
         
         negative = (a >> 7) & 1;
         not_zero = a;
@@ -748,7 +742,7 @@ public class MOS6502
     // Logical AND
     private void opcode_AND_indirect_x()
     {
-        int _value = indirectX(pc++);
+        int _value = indirectX();
         a &= memory.readByte(_value);
         
         negative = (a >> 7) & 1;
@@ -758,7 +752,7 @@ public class MOS6502
     // Logical AND
     private void opcode_AND_indirect_y()
     {
-        int _value = indirectY(pc++);
+        int _value = indirectY();
         a &= memory.readByte(_value);
         
         negative = (a >> 7) & 1;
@@ -778,7 +772,7 @@ public class MOS6502
     // Arithmetic Shift Left
     private void opcode_ASL_zero_page()
     {
-        int _address = zeroPage(pc++);
+        int _address = zeroPage();
         int _value = memory.readByte(_address);
         
         carry = (_value >> 7) & 1;
@@ -793,7 +787,7 @@ public class MOS6502
     // Arithmetic Shift Left
     private void opcode_ASL_zero_page_x()
     {
-        int _address = zeroPageX(pc++);
+        int _address = zeroPageX();
         int _value = memory.readByte(_address);
         
         carry = (_value >> 7) & 1;
@@ -808,10 +802,8 @@ public class MOS6502
     // Arithmetic Shift Left
     private void opcode_ASL_absolute()
     {
-        int _address = absolute(pc++);
+        int _address = absolute();
         int _value = memory.readByte(_address);
-        
-        pc++;
         
         carry = (_value >> 7) & 1;
         _value = (_value << 1) & 0xFF;
@@ -825,10 +817,8 @@ public class MOS6502
     // Arithmetic Shift Left
     private void opcode_ASL_absolute_x()
     {
-        int _address = absoluteX(pc++);
+        int _address = absoluteX();
         int _value = memory.readByte(_address);
-        
-        pc++;
         
         carry = (_value >> 7) & 1;
         _value = (_value << 1) & 0xFF;
@@ -844,7 +834,7 @@ public class MOS6502
     {
         if(carry == 0)
         {
-            int _address = relative(pc++);
+            int _address = relative();
             int _value = memory.readByte(_address);
             
             int _relative = asSignedByte(_value);
@@ -861,7 +851,7 @@ public class MOS6502
     {
         if(carry > 0)
         {
-            int _address = relative(pc++);
+            int _address = relative();
             int _value = memory.readByte(_address);
             
             int _relative = asSignedByte(_value); 
@@ -878,7 +868,7 @@ public class MOS6502
     {
         if(isZeroFlagSet())
         {            
-            int _address = relative(pc++);
+            int _address = relative();
             int _value = memory.readByte(_address);
             
             int _relative = asSignedByte(_value);
@@ -893,7 +883,7 @@ public class MOS6502
     // Bit Test
     private void opcode_BIT_zero_page()
     {
-        int _address = zeroPage(pc++);        
+        int _address = zeroPage();        
         int _value = memory.readByte(_address);
         
         negative = (_value >> 7) & 1;
@@ -905,10 +895,8 @@ public class MOS6502
     // Bit Test
     private void opcode_BIT_absolute()
     {
-        int _address = absolute(pc++);        
+        int _address = absolute();        
         int _value = memory.readByte(_address);
-        
-        pc++;
         
         negative = (_value >> 7) & 1;
         overflow = (_value >> 6) & 1;
@@ -921,7 +909,7 @@ public class MOS6502
     {
     	if(negative != 0)
     	{
-    	    int _address = relative(pc++);
+    	    int _address = relative();
             int _value = memory.readByte(_address);
             
             int _relative = asSignedByte(_value);
@@ -938,7 +926,7 @@ public class MOS6502
     {
         if(!isZeroFlagSet())
         {            
-            int _address = relative(pc++);
+            int _address = relative();
             int _value = memory.readByte(_address);
             
             int _relative = asSignedByte(_value);
@@ -955,7 +943,7 @@ public class MOS6502
     {
         if(negative == 0)
         {
-            int _address = relative(pc++);
+            int _address = relative();
             int _value = memory.readByte(_address);
             
             int _relative = asSignedByte(_value);
@@ -977,7 +965,7 @@ public class MOS6502
     {
         if(overflow == 0)
         {
-            int _address = relative(pc++);
+            int _address = relative();
             int _value = memory.readByte(_address);
             
             int _relative = asSignedByte(_value);
@@ -994,7 +982,7 @@ public class MOS6502
     {
         if(overflow != 0)
         {
-            int _address = relative(pc++);
+            int _address = relative();
             int _value = memory.readByte(_address);
             
             int _relative = asSignedByte(_value);
@@ -1032,7 +1020,7 @@ public class MOS6502
     // Compare
     private void opcode_CMP_immediate()
     {
-        int _address = immediate(pc++);
+        int _address = immediate();
         int _temp = a - memory.readByte(_address);
         
         carry = (_temp >= 0 ? 1:0);
@@ -1043,7 +1031,7 @@ public class MOS6502
     // Compare
     private void opcode_CMP_zero_page()
     {
-        int _address = zeroPage(pc++);
+        int _address = zeroPage();
         int _temp = a - memory.readByte(_address);
         
         carry = (_temp >= 0 ? 1:0);
@@ -1054,7 +1042,7 @@ public class MOS6502
     // Compare
     private void opcode_CMP_zero_page_x()
     {
-        int _address = zeroPageX(pc++);
+        int _address = zeroPageX();
         int _temp = a - memory.readByte(_address);
         
         carry = (_temp >= 0 ? 1:0);
@@ -1065,10 +1053,8 @@ public class MOS6502
     // Compare
     private void opcode_CMP_absolute()
     {
-        int _address = absolute(pc++);
+        int _address = absolute();
         int _temp = a - memory.readByte(_address);
-        
-        pc++;
         
         carry = (_temp >= 0 ? 1:0);
         not_zero = _temp & 0xFF;
@@ -1078,10 +1064,8 @@ public class MOS6502
     // Compare
     private void opcode_CMP_absolute_x()
     {
-        int _address = absoluteX(pc++);
+        int _address = absoluteX();
         int _temp = a - memory.readByte(_address);
-        
-        pc++;
         
         carry = (_temp >= 0 ? 1:0);
         not_zero = _temp & 0xFF;
@@ -1091,10 +1075,8 @@ public class MOS6502
     // Compare
     private void opcode_CMP_absolute_y()
     {
-        int _address = absoluteY(pc++);
+        int _address = absoluteY();
         int _temp = a - memory.readByte(_address);
-        
-        pc++;
         
         carry = (_temp >= 0 ? 1:0);
         not_zero = _temp & 0xFF;
@@ -1104,7 +1086,7 @@ public class MOS6502
     // Compare
     private void opcode_CMP_indirect_x()
     {
-        int _address = indirectX(pc++);
+        int _address = indirectX();
         int _temp = a - memory.readByte(_address);
         
         carry = (_temp >= 0 ? 1:0);
@@ -1115,7 +1097,7 @@ public class MOS6502
     // Compare
     private void opcode_CMP_indirect_y()
     {
-        int _address = indirectY(pc++);
+        int _address = indirectY();
         int _temp = a - memory.readByte(_address);
         
         carry = (_temp >= 0 ? 1:0);
@@ -1126,7 +1108,7 @@ public class MOS6502
     // Compare X Register
     private void opcode_CPX_immediate()
     {
-        int _address = immediate(pc++);
+        int _address = immediate();
         int _temp = x - memory.readByte(_address);
         
         carry = (_temp >= 0 ? 1:0);
@@ -1137,7 +1119,7 @@ public class MOS6502
     // Compare X Register
     private void opcode_CPX_zero_page()
     {
-        int _address = zeroPage(pc++);
+        int _address = zeroPage();
         int _temp = x - memory.readByte(_address);
         
         carry = (_temp >= 0 ? 1:0);
@@ -1148,10 +1130,8 @@ public class MOS6502
     // Compare X Register
     private void opcode_CPX_absolute()
     {
-        int _address = absolute(pc++);
+        int _address = absolute();
         int _temp = x - memory.readByte(_address);
-        
-        pc++;
         
         carry = (_temp >= 0 ? 1:0);
         not_zero = _temp & 0xFF;
@@ -1161,7 +1141,7 @@ public class MOS6502
     // Compare Y Register
     private void opcode_CPY_immediate()
     {
-        int _address = immediate(pc++);
+        int _address = immediate();
         int _temp = y - memory.readByte(_address);
         
         carry = (_temp >= 0 ? 1:0);
@@ -1172,7 +1152,7 @@ public class MOS6502
     // Compare Y Register
     private void opcode_CPY_zero_page()
     {
-        int _address = zeroPage(pc++);
+        int _address = zeroPage();
         int _temp = y - memory.readByte(_address);
         
         carry = (_temp >= 0 ? 1:0);
@@ -1183,10 +1163,8 @@ public class MOS6502
     // Compare Y Register
     private void opcode_CPY_absolute()
     {
-        int _address = absolute(pc++);
+        int _address = absolute();
         int _temp = y - memory.readByte(_address);
-        
-        pc++;
         
         carry = (_temp >= 0 ? 1:0);
         not_zero = _temp & 0xFF;
@@ -1196,7 +1174,7 @@ public class MOS6502
     // DEC value then CMP value
     private void opcode_DCP_zero_page()
     {
-        int _address = zeroPage(pc++);
+        int _address = zeroPage();
         int _value = memory.readByte(_address) - 1;
         
         memory.writeByte(_value, _address);
@@ -1211,7 +1189,7 @@ public class MOS6502
     // DEC value then CMP value
     private void opcode_DCP_zero_page_x()
     {
-        int _address = zeroPageX(pc++);
+        int _address = zeroPageX();
         int _value = memory.readByte(_address) - 1;
         
         memory.writeByte(_value, _address);
@@ -1226,12 +1204,10 @@ public class MOS6502
     // DEC value then CMP value
     private void opcode_DCP_absolute()
     {
-        int _address = absolute(pc++);
+        int _address = absolute();
         int _value = memory.readByte(_address) - 1;
         
         memory.writeByte(_value, _address);
-        
-        pc++;
         
         int _temp = a - _value;
         
@@ -1243,12 +1219,10 @@ public class MOS6502
     // DEC value then CMP value
     private void opcode_DCP_absolute_x()
     {
-        int _address = absoluteX(pc++);
+        int _address = absoluteX();
         int _value = memory.readByte(_address) - 1;
         
         memory.writeByte(_value, _address);
-        
-        pc++;
         
         int _temp = a - _value;
         
@@ -1260,12 +1234,10 @@ public class MOS6502
     // DEC value then CMP value
     private void opcode_DCP_absolute_y()
     {
-        int _address = absoluteY(pc++);
+        int _address = absoluteY();
         int _value = memory.readByte(_address) - 1;
         
         memory.writeByte(_value, _address);
-        
-        pc++;
         
         int _temp = a - _value;
         
@@ -1277,7 +1249,7 @@ public class MOS6502
     // DEC value then CMP value
     private void opcode_DCP_indirect_x()
     {
-        int _address = indirectX(pc++);
+        int _address = indirectX();
         int _value = memory.readByte(_address) - 1;
         
         memory.writeByte(_value, _address);
@@ -1292,7 +1264,7 @@ public class MOS6502
     // DEC value then CMP value
     private void opcode_DCP_indirect_y()
     {
-        int _address = indirectY(pc++);
+        int _address = indirectY();
         int _value = memory.readByte(_address) - 1;
         
         memory.writeByte(_value, _address);
@@ -1307,7 +1279,7 @@ public class MOS6502
     // Decrement Memory
     private void opcode_DEC_zero_page()
     {
-        int _address = zeroPage(pc++);        
+        int _address = zeroPage();        
         int _value = memory.readByte(_address) - 1;
         
         memory.writeByte(_value, _address);
@@ -1319,7 +1291,7 @@ public class MOS6502
     // Decrement Memory
     private void opcode_DEC_zero_page_x()
     {
-        int _address = zeroPageX(pc++);        
+        int _address = zeroPageX();        
         int _value = memory.readByte(_address) - 1;
         
         memory.writeByte(_value, _address);
@@ -1331,10 +1303,8 @@ public class MOS6502
     // Decrement Memory
     private void opcode_DEC_absolute()
     {
-        int _address = absolute(pc++);
+        int _address = absolute();
         int _value = memory.readByte(_address) - 1;
-        
-        pc++;
         
         memory.writeByte(_value, _address);
         
@@ -1345,10 +1315,8 @@ public class MOS6502
     // Decrement Memory
     private void opcode_DEC_absolute_x()
     {
-        int _address = absoluteX(pc++);
+        int _address = absoluteX();
         int _value = memory.readByte(_address) - 1;
-        
-        pc++;
         
         memory.writeByte(_value, _address);
         
@@ -1377,7 +1345,7 @@ public class MOS6502
     // Exclusive OR
     private void opcode_EOR_immediate()
     {
-        int _address = immediate(pc++);
+        int _address = immediate();
         a ^=  memory.readByte(_address);
         
         not_zero = a & 0xFF;
@@ -1387,7 +1355,7 @@ public class MOS6502
     // Exclusive OR
     private void opcode_EOR_zero_page()
     {
-        int _address = zeroPage(pc++);
+        int _address = zeroPage();
         a ^=  memory.readByte(_address);
         
         not_zero = a & 0xFF;
@@ -1397,7 +1365,7 @@ public class MOS6502
     // Exclusive OR
     private void opcode_EOR_zero_page_x()
     {
-        int _address = zeroPageX(pc++);
+        int _address = zeroPageX();
         a ^=  memory.readByte(_address);
         
         not_zero = a & 0xFF;
@@ -1407,10 +1375,8 @@ public class MOS6502
     // Exclusive OR
     private void opcode_EOR_absolute()
     {
-        int _address = absolute(pc++);
+        int _address = absolute();
         a ^=  memory.readByte(_address);
-        
-        pc++;
         
         not_zero = a & 0xFF;
         negative = (a >> 7) & 1;
@@ -1419,10 +1385,8 @@ public class MOS6502
     // Exclusive OR
     private void opcode_EOR_absolute_x()
     {
-        int _address = absoluteX(pc++);
+        int _address = absoluteX();
         a ^=  memory.readByte(_address);
-        
-        pc++;
         
         not_zero = a & 0xFF;
         negative = (a >> 7) & 1;
@@ -1431,10 +1395,8 @@ public class MOS6502
     // Exclusive OR
     private void opcode_EOR_absolute_y()
     {
-        int _address = absoluteY(pc++);
+        int _address = absoluteY();
         a ^=  memory.readByte(_address);
-        
-        pc++;
         
         not_zero = a & 0xFF;
         negative = (a >> 7) & 1;
@@ -1443,7 +1405,7 @@ public class MOS6502
     // Exclusive OR
     private void opcode_EOR_indirect_x()
     {
-        int _value = indirectX(pc++);
+        int _value = indirectX();
         a ^=  memory.readByte(_value);
         
         not_zero = a & 0xFF;
@@ -1453,7 +1415,7 @@ public class MOS6502
     // Exclusive OR
     private void opcode_EOR_indirect_y()
     {
-        int _value = indirectY(pc++);
+        int _value = indirectY();
         a ^=  memory.readByte(_value);
         
         not_zero = a & 0xFF;
@@ -1463,7 +1425,7 @@ public class MOS6502
     // Increment Memory
     private void opcode_INC_zero_page()
     {
-        int _address = zeroPage(pc++);        
+        int _address = zeroPage();        
         int _value = memory.readByte(_address) + 1;
         
         memory.writeByte(_value, _address);
@@ -1475,7 +1437,7 @@ public class MOS6502
     // Increment Memory
     private void opcode_INC_zero_page_x()
     {
-        int _address = zeroPageX(pc++);        
+        int _address = zeroPageX();        
         int _value = memory.readByte(_address) + 1;
         
         memory.writeByte(_value, _address);
@@ -1487,10 +1449,8 @@ public class MOS6502
     // Increment Memory
     private void opcode_INC_absolute()
     {
-        int _address = absolute(pc++);
+        int _address = absolute();
         int _value = memory.readByte(_address) + 1;
-        
-        pc++;
         
         memory.writeByte(_value, _address);
         
@@ -1501,10 +1461,8 @@ public class MOS6502
     // Increment Memory
     private void opcode_INC_absolute_x()
     {
-        int _address = absoluteX(pc++);
+        int _address = absoluteX();
         int _value = memory.readByte(_address) + 1;
-        
-        pc++;
         
         memory.writeByte(_value, _address);
         
@@ -1533,7 +1491,7 @@ public class MOS6502
     // INC value then SBC value
     private void opcode_ISB_zero_page()
     {
-        int _address = zeroPage(pc++);
+        int _address = zeroPage();
         int _value = memory.readByte(_address) + 1;
         
         memory.writeByte(_value, _address);
@@ -1551,7 +1509,7 @@ public class MOS6502
     // INC value then SBC value
     private void opcode_ISB_zero_page_x()
     {
-        int _address = zeroPageX(pc++);
+        int _address = zeroPageX();
         int _value = memory.readByte(_address) + 1;
         
         memory.writeByte(_value, _address);
@@ -1569,10 +1527,8 @@ public class MOS6502
     // INC value then SBC value
     private void opcode_ISB_absolute()
     {
-        int _address = absolute(pc++);
+        int _address = absolute();
         int _value = memory.readByte(_address) + 1;
-        
-        pc++;
         
         memory.writeByte(_value, _address);
                 
@@ -1589,10 +1545,8 @@ public class MOS6502
     // INC value then SBC value
     private void opcode_ISB_absolute_x()
     {
-        int _address = absoluteX(pc++);
+        int _address = absoluteX();
         int _value = memory.readByte(_address) + 1;
-        
-        pc++;
         
         memory.writeByte(_value, _address);
         
@@ -1609,10 +1563,8 @@ public class MOS6502
     // INC value then SBC value
     private void opcode_ISB_absolute_y()
     {
-        int _address = absoluteY(pc++);
+        int _address = absoluteY();
         int _value = memory.readByte(_address) + 1;
-        
-        pc++;
         
         memory.writeByte(_value, _address);
         
@@ -1629,7 +1581,7 @@ public class MOS6502
     // INC value then SBC value
     private void opcode_ISB_indirect_x()
     {
-        int _address = indirectX(pc++);
+        int _address = indirectX();
         int _value = memory.readByte(_address) + 1;
         
         memory.writeByte(_value, _address);
@@ -1647,7 +1599,7 @@ public class MOS6502
     // INC value then SBC value
     private void opcode_ISB_indirect_y()
     {
-        int _address = indirectY(pc++);
+        int _address = indirectY();
         int _value = memory.readByte(_address) + 1;
         
         memory.writeByte(_value, _address);
@@ -1665,21 +1617,21 @@ public class MOS6502
     // Jump to target address
     private void opcode_JMP_absolute()
     {
-        pc = absolute(pc);
+        pc = absolute();
     }
 
     // Jump to target address
     private void opcode_JMP_indirect()
     {
-        pc = indirect(pc);   
+        pc = indirect();   
     }
     
     // Jump to subroutine
     private void opcode_JSR_absolute()
     {
-        int _address = absolute(pc);
+        int _address = absolute();
         
-        pushWord((pc + 2) - 1);
+        pushWord(pc - 1);
         
         pc = _address;
     }
@@ -1687,7 +1639,7 @@ public class MOS6502
     // Load Accumulator and X with memory
     private void opcode_LAX_zero_page()
     {
-        int _address = zeroPage(pc++);
+        int _address = zeroPage();
         a = memory.readByte(_address);
         x = a;
         
@@ -1698,7 +1650,7 @@ public class MOS6502
     // Load Accumulator and X with memory
     private void opcode_LAX_zero_page_y()
     {
-        int _address = zeroPageY(pc++);
+        int _address = zeroPageY();
         a = memory.readByte(_address);
         x = a;
         
@@ -1709,11 +1661,9 @@ public class MOS6502
     // Load Accumulator and X with memory
     private void opcode_LAX_absolute()
     {
-        int _address = absolute(pc++);
+        int _address = absolute();
         a = memory.readByte(_address);
         x = a;
-        
-        pc++;
         
         negative = (a >> 7) & 1;
         not_zero = a;
@@ -1722,11 +1672,9 @@ public class MOS6502
     // Load Accumulator and X with memory
     private void opcode_LAX_absolute_y()
     {
-        int _address = absoluteY(pc++);
+        int _address = absoluteY();
         a = memory.readByte(_address);
         x = a;
-        
-        pc++;
         
         negative = (a >> 7) & 1;
         not_zero = a;
@@ -1735,7 +1683,7 @@ public class MOS6502
     // Load Accumulator and X with memory
     private void opcode_LAX_indirect_x()
     {
-        int _address = indirectX(pc++);
+        int _address = indirectX();
         a = memory.readByte(_address);
         x = a;
         
@@ -1746,7 +1694,7 @@ public class MOS6502
     // Load Accumulator and X with memory
     private void opcode_LAX_indirect_y()
     {
-        int _address = indirectY(pc++);
+        int _address = indirectY();
         a = memory.readByte(_address);
         x = a;
         
@@ -1757,7 +1705,7 @@ public class MOS6502
     // Load Accumulator
     private void opcode_LDA_immediate()
     {
-        int _address = immediate(pc++);
+        int _address = immediate();
         a = memory.readByte(_address);
         
         negative = (a >> 7) & 1;
@@ -1767,7 +1715,7 @@ public class MOS6502
     // Load Accumulator
     private void opcode_LDA_zero_page()
     {
-    	int _address = zeroPage(pc++);
+    	int _address = zeroPage();
     	a = memory.readByte(_address);
     	
     	negative = (a >> 7) & 1;
@@ -1777,7 +1725,7 @@ public class MOS6502
     // Load Accumulator
     private void opcode_LDA_zero_page_x()
     {
-        int _address = zeroPageX(pc++);
+        int _address = zeroPageX();
         a = memory.readByte(_address);
         
         negative = (a >> 7) & 1;
@@ -1787,10 +1735,8 @@ public class MOS6502
     // Load Accumulator
     private void opcode_LDA_absolute()
     {
-        int _address = absolute(pc++); 
+        int _address = absolute(); 
         a = memory.readByte(_address);
-        
-        pc++;
         
         negative = (a >> 7) & 1;
         not_zero = a;        
@@ -1799,10 +1745,8 @@ public class MOS6502
     // Load Accumulator
     private void opcode_LDA_absolute_x()
     {
-        int _address = absoluteX(pc++); 
+        int _address = absoluteX(); 
         a = memory.readByte(_address);
-        
-        pc++;
         
         negative = (a >> 7) & 1;
         not_zero = a;        
@@ -1811,10 +1755,8 @@ public class MOS6502
     // Load Accumulator
     private void opcode_LDA_absolute_y()
     {
-        int _address = absoluteY(pc++); 
+        int _address = absoluteY(); 
         a = memory.readByte(_address);
-        
-        pc++;
         
         negative = (a >> 7) & 1;
         not_zero = a;
@@ -1823,7 +1765,7 @@ public class MOS6502
     // Load Accumulator
     private void opcode_LDA_indirect_x()
     {
-    	int _address = indirectX(pc++);
+    	int _address = indirectX();
         a = memory.readByte(_address);
         
     	negative = (a >> 7) & 1;
@@ -1833,7 +1775,7 @@ public class MOS6502
     // Load Accumulator
     private void opcode_LDA_indirect_y()
     {
-        int _address = indirectY(pc++);
+        int _address = indirectY();
         a = memory.readByte(_address);
         
         negative = (a >> 7) & 1;
@@ -1843,7 +1785,7 @@ public class MOS6502
     // Load X with memory
     private void opcode_LDX_immediate()
     {
-        int _address = immediate(pc++);
+        int _address = immediate();
         x = memory.readByte(_address);
         
         negative = (x >> 7) & 1;
@@ -1853,7 +1795,7 @@ public class MOS6502
     // Load X with memory
     private void opcode_LDX_zero_page()
     {
-        int _address = zeroPage(pc++);
+        int _address = zeroPage();
         x = memory.readByte(_address);
         
         negative = (x >> 7) & 1;
@@ -1863,7 +1805,7 @@ public class MOS6502
     // Load X with memory
     private void opcode_LDX_zero_page_y()
     {
-        int _address = zeroPageY(pc++);
+        int _address = zeroPageY();
         x = memory.readByte(_address);
         
         negative = (x >> 7) & 1;
@@ -1873,10 +1815,8 @@ public class MOS6502
     // Load X with memory
     private void opcode_LDX_absolute()
     {
-        int _address = absolute(pc++);
-        this.x = memory.readByte(_address);
-        
-        pc++;
+        int _address = absolute();
+        x = memory.readByte(_address);
         
         negative = (x >> 7) & 1;
         not_zero = x;
@@ -1885,10 +1825,8 @@ public class MOS6502
     // Load X with memory
     private void opcode_LDX_absolute_y()
     {
-        int _address = absoluteY(pc++);
-        this.x = memory.readByte(_address);
-        
-        pc++;
+        int _address = absoluteY();
+        x = memory.readByte(_address);
         
         negative = (x >> 7) & 1;
         not_zero = x;
@@ -1897,7 +1835,7 @@ public class MOS6502
     // Load Y Register
     private void opcode_LDY_immediate()
     {
-        int _address = immediate(pc++);
+        int _address = immediate();
         y = memory.readByte(_address);
         
         negative = (y >> 7) & 1;
@@ -1907,7 +1845,7 @@ public class MOS6502
     // Load Y Register
     private void opcode_LDY_zero_page()
     {
-        int _address = zeroPage(pc++);
+        int _address = zeroPage();
         y = memory.readByte(_address);
         
         negative = (y >> 7) & 1;
@@ -1917,7 +1855,7 @@ public class MOS6502
     // Load Y Register
     private void opcode_LDY_zero_page_x()
     {
-        int _address = zeroPageX(pc++);
+        int _address = zeroPageX();
         y = memory.readByte(_address);
         
         negative = (y >> 7) & 1;
@@ -1927,10 +1865,8 @@ public class MOS6502
     // Load Y Register
     private void opcode_LDY_absolute()
     {
-        int _address = absolute(pc++);
+        int _address = absolute();
         y = memory.readByte(_address);
-        
-        pc++;
         
         negative = (y >> 7) & 1;
         not_zero = y;
@@ -1939,10 +1875,8 @@ public class MOS6502
     // Load Y Register
     private void opcode_LDY_absolute_x()
     {
-        int _address = absoluteX(pc++);
+        int _address = absoluteX();
         y = memory.readByte(_address);
-        
-        pc++;
         
         negative = (y >> 7) & 1;
         not_zero = y;
@@ -1961,7 +1895,7 @@ public class MOS6502
     // Logical Shift Right
     private void opcode_LSR_zero_page()
     {
-        int _address = zeroPage(pc++);
+        int _address = zeroPage();
         int _value = memory.readByte(_address);
         
         carry = _value & 1; // old bit 0       
@@ -1976,7 +1910,7 @@ public class MOS6502
     // Logical Shift Right
     private void opcode_LSR_zero_page_x()
     {
-        int _address = zeroPageX(pc++);
+        int _address = zeroPageX();
         int _value = memory.readByte(_address);
         
         carry = _value & 1; // old bit 0       
@@ -1991,10 +1925,8 @@ public class MOS6502
     // Logical Shift Right
     private void opcode_LSR_absolute()
     {
-        int _address = absolute(pc++);
+        int _address = absolute();
         int _value = memory.readByte(_address);
-        
-        pc++;
         
         carry = _value & 1; // old bit 0       
         _value >>= 1;
@@ -2008,10 +1940,8 @@ public class MOS6502
     // Logical Shift Right
     private void opcode_LSR_absolute_x()
     {
-        int _address = absoluteX(pc++);
+        int _address = absoluteX();
         int _value = memory.readByte(_address);
-        
-        pc++;
         
         carry = _value & 1; // old bit 0       
         _value >>= 1;
@@ -2060,7 +1990,7 @@ public class MOS6502
     // Logical Inclusive OR
     private void opcode_ORA_immediate()
     {
-        int _address = immediate(pc++);
+        int _address = immediate();
         a |=  memory.readByte(_address);
         
         not_zero = a & 0xFF;
@@ -2070,7 +2000,7 @@ public class MOS6502
     // Logical Inclusive OR
     private void opcode_ORA_zero_page()
     {
-        int _address = zeroPage(pc++);
+        int _address = zeroPage();
         a |=  memory.readByte(_address);
         
         not_zero = a & 0xFF;
@@ -2080,7 +2010,7 @@ public class MOS6502
     // Logical Inclusive OR
     private void opcode_ORA_zero_page_x()
     {
-        int _address = zeroPageX(pc++);
+        int _address = zeroPageX();
         a |=  memory.readByte(_address);
         
         not_zero = a & 0xFF;
@@ -2090,10 +2020,8 @@ public class MOS6502
     // Logical Inclusive OR
     private void opcode_ORA_absolute()
     {
-        int _address = absolute(pc++);
+        int _address = absolute();
         a |=  memory.readByte(_address);
-        
-        pc++;
         
         not_zero = a & 0xFF;
         negative = (a >> 7) & 1;
@@ -2102,10 +2030,8 @@ public class MOS6502
     // Logical Inclusive OR
     private void opcode_ORA_absolute_x()
     {
-        int _address = absoluteX(pc++);
+        int _address = absoluteX();
         a |=  memory.readByte(_address);
-        
-        pc++;
         
         not_zero = a & 0xFF;
         negative = (a >> 7) & 1;
@@ -2114,10 +2040,8 @@ public class MOS6502
     // Logical Inclusive OR
     private void opcode_ORA_absolute_y()
     {
-        int _address = absoluteY(pc++);
+        int _address = absoluteY();
         a |=  memory.readByte(_address);
-        
-        pc++;
         
         not_zero = a & 0xFF;
         negative = (a >> 7) & 1;
@@ -2126,7 +2050,7 @@ public class MOS6502
     // Logical Inclusive OR
     private void opcode_ORA_indirect_x()
     {
-        int _value = memory.readByte(indirectX(pc++));
+        int _value = memory.readByte(indirectX());
         a |=  _value;
         
         not_zero = a & 0xFF;
@@ -2136,7 +2060,7 @@ public class MOS6502
     // Logical Inclusive OR
     private void opcode_ORA_indirect_y()
     {
-        int _value = memory.readByte(indirectY(pc++));
+        int _value = memory.readByte(indirectY());
         a |=  _value;
         
         not_zero = a & 0xFF;
@@ -2193,7 +2117,7 @@ public class MOS6502
     // ROL value then AND value
     private void opcode_RLA_zero_page()
     {
-        int _address = zeroPage(pc++);
+        int _address = zeroPage();
         int _value = memory.readByte(_address);
         
         int _temp = _value;
@@ -2214,7 +2138,7 @@ public class MOS6502
     // ROL value then AND value
     private void opcode_RLA_zero_page_x()
     {
-        int _address = zeroPageX(pc++);
+        int _address = zeroPageX();
         int _value = memory.readByte(_address);
         
         int _temp = _value;
@@ -2235,10 +2159,8 @@ public class MOS6502
     // ROL value then AND value
     private void opcode_RLA_absolute()
     {
-        int _address = absolute(pc++);
+        int _address = absolute();
         int _value = memory.readByte(_address);
-        
-        pc++;
         
         int _temp = _value;
         int _add = carry;
@@ -2258,10 +2180,8 @@ public class MOS6502
     // ROL value then AND value
     private void opcode_RLA_absolute_x()
     {
-        int _address = absoluteX(pc++);
+        int _address = absoluteX();
         int _value = memory.readByte(_address);
-        
-        pc++;
         
         int _temp = _value;
         int _add = carry;
@@ -2281,10 +2201,8 @@ public class MOS6502
     // ROL value then AND value
     private void opcode_RLA_absolute_y()
     {
-        int _address = absoluteY(pc++);
+        int _address = absoluteY();
         int _value = memory.readByte(_address);
-        
-        pc++;
         
         int _temp = _value;
         int _add = carry;
@@ -2304,7 +2222,7 @@ public class MOS6502
     // ROL value then AND value
     private void opcode_RLA_indirect_x()
     {
-        int _address = indirectX(pc++);
+        int _address = indirectX();
         int _value = memory.readByte(_address);
         
         int _temp = _value;
@@ -2325,7 +2243,7 @@ public class MOS6502
     // ROL value then AND value
     private void opcode_RLA_indirect_y()
     {
-        int _address = indirectY(pc++);
+        int _address = indirectY();
         int _value = memory.readByte(_address);
         
         int _temp = _value;
@@ -2360,7 +2278,7 @@ public class MOS6502
     // Rotate Left
     private void opcode_ROL_zero_page()
     {
-        int _address = zeroPage(pc++);
+        int _address = zeroPage();
         int _value = memory.readByte(_address);
         
         int _temp = _value;
@@ -2379,7 +2297,7 @@ public class MOS6502
     // Rotate Left
     private void opcode_ROL_zero_page_x()
     {
-        int _address = zeroPageX(pc++);
+        int _address = zeroPageX();
         int _value = memory.readByte(_address);
         
         int _temp = _value;
@@ -2398,10 +2316,8 @@ public class MOS6502
     // Rotate Left
     private void opcode_ROL_absolute()
     {
-        int _address = absolute(pc++);
+        int _address = absolute();
         int _value = memory.readByte(_address);
-        
-        pc++;
         
         int _temp = _value;
         int _add = carry;
@@ -2419,10 +2335,8 @@ public class MOS6502
     // Rotate Left
     private void opcode_ROL_absolute_x()
     {
-        int _address = absoluteX(pc++);
+        int _address = absoluteX();
         int _value = memory.readByte(_address);
-        
-        pc++;
         
         int _temp = _value;
         int _add = carry;
@@ -2452,7 +2366,7 @@ public class MOS6502
     // Rotate Right
     private void opcode_ROR_zero_page()
     {
-        int _address = zeroPage(pc++);
+        int _address = zeroPage();
         int _value = memory.readByte(_address);
         
         int _add = carry << 7;
@@ -2469,7 +2383,7 @@ public class MOS6502
     // Rotate Right
     private void opcode_ROR_zero_page_x()
     {
-        int _address = zeroPageX(pc++);
+        int _address = zeroPageX();
         int _value = memory.readByte(_address);
         
         int _add = carry << 7;
@@ -2486,10 +2400,8 @@ public class MOS6502
     // Rotate Right
     private void opcode_ROR_absolute()
     {
-        int _address = absolute(pc++);
+        int _address = absolute();
         int _value = memory.readByte(_address);
-        
-        pc++;
         
         int _add = carry << 7;
         
@@ -2505,10 +2417,8 @@ public class MOS6502
     // Rotate Right
     private void opcode_ROR_absolute_x()
     {
-        int _address = absoluteX(pc++);
+        int _address = absoluteX();
         int _value = memory.readByte(_address);
-        
-        pc++;
         
         int _add = carry << 7;
         
@@ -2524,7 +2434,7 @@ public class MOS6502
     // ROR value then ADC value
     private void opcode_RRA_zero_page()
     {
-        int _address = zeroPage(pc++);
+        int _address = zeroPage();
         int _value = memory.readByte(_address);
         
         int _add = carry << 7;
@@ -2547,7 +2457,7 @@ public class MOS6502
     // ROR value then ADC value
     private void opcode_RRA_zero_page_x()
     {
-        int _address = zeroPageX(pc++);
+        int _address = zeroPageX();
         int _value = memory.readByte(_address);
         
         int _add = carry << 7;
@@ -2570,10 +2480,8 @@ public class MOS6502
     // ROR value then ADC value
     private void opcode_RRA_absolute()
     {
-        int _address = absolute(pc++);
+        int _address = absolute();
         int _value = memory.readByte(_address);
-        
-        pc++;
         
         int _add = carry << 7;
         
@@ -2595,10 +2503,8 @@ public class MOS6502
     // ROR value then ADC value
     private void opcode_RRA_absolute_x()
     {
-        int _address = absoluteX(pc++);
+        int _address = absoluteX();
         int _value = memory.readByte(_address);
-        
-        pc++;
         
         int _add = carry << 7;
         
@@ -2620,10 +2526,8 @@ public class MOS6502
     // ROR value then ADC value
     private void opcode_RRA_absolute_y()
     {
-        int _address = absoluteY(pc++);
+        int _address = absoluteY();
         int _value = memory.readByte(_address);
-        
-        pc++;
         
         int _add = carry << 7;
         
@@ -2645,7 +2549,7 @@ public class MOS6502
     // ROR value then ADC value
     private void opcode_RRA_indirect_x()
     {
-        int _address = indirectX(pc++);
+        int _address = indirectX();
         int _value = memory.readByte(_address);
         
         int _add = carry << 7;
@@ -2668,7 +2572,7 @@ public class MOS6502
     // ROR value then ADC value
     private void opcode_RRA_indirect_y()
     {
-        int _address = indirectY(pc++);
+        int _address = indirectY();
         int _value = memory.readByte(_address);
         
         int _add = carry << 7;
@@ -2713,32 +2617,31 @@ public class MOS6502
     // Store A and X bitwise
     private void opcode_SAX_zero_page()
     {
-        memory.writeByte(a & x, zeroPage(pc++));
+        memory.writeByte(a & x, zeroPage());
     }
 
     // Store A and X bitwise
     private void opcode_SAX_zero_page_y()
     {
-        memory.writeByte(a & x, zeroPageY(pc++));
+        memory.writeByte(a & x, zeroPageY());
     }
 
     // Store A and X bitwise
     private void opcode_SAX_absolute()
     {
-        memory.writeByte(a & x, absolute(pc++));
-        pc++;
+        memory.writeByte(a & x, absolute());
     }
 
     // Store A and X bitwise
     private void opcode_SAX_indirect_x()
     {
-        memory.writeByte(a & x, indirectX(pc++));
+        memory.writeByte(a & x, indirectX());
     }
     
     // Subtract with Carry
     private void opcode_SBC_immediate()
     {
-        int _address = immediate(pc++);
+        int _address = immediate();
         int _value = memory.readByte(_address);
         int _temp = a - _value - (1 - carry);
         
@@ -2753,7 +2656,7 @@ public class MOS6502
     // Subtract with Carry
     private void opcode_SBC_zero_page()
     {
-        int _address = zeroPage(pc++);
+        int _address = zeroPage();
         int _value = memory.readByte(_address);
         int _temp = a - _value - (1 - carry);
         
@@ -2768,7 +2671,7 @@ public class MOS6502
     // Subtract with Carry
     private void opcode_SBC_zero_page_x()
     {
-        int _address = zeroPageX(pc++);
+        int _address = zeroPageX();
         int _value = memory.readByte(_address);
         int _temp = a - _value - (1 - carry);
         
@@ -2783,11 +2686,9 @@ public class MOS6502
     // Subtract with Carry
     private void opcode_SBC_absolute()
     {
-        int _address = absolute(pc++);
+        int _address = absolute();
         int _value = memory.readByte(_address);
         int _temp = a - _value - (1 - carry);
-        
-        pc++;
         
         carry = _temp < 0 ? 0 : 1;
         not_zero = _temp & 0xFF;
@@ -2800,11 +2701,9 @@ public class MOS6502
     // Subtract with Carry
     private void opcode_SBC_absolute_x()
     {
-        int _address = absoluteX(pc++);
+        int _address = absoluteX();
         int _value = memory.readByte(_address);
         int _temp = a - _value - (1 - carry);
-        
-        pc++;
         
         carry = _temp < 0 ? 0 : 1;
         not_zero = _temp & 0xFF;
@@ -2817,11 +2716,9 @@ public class MOS6502
     // Subtract with Carry
     private void opcode_SBC_absolute_y()
     {
-        int _address = absoluteY(pc++);
+        int _address = absoluteY();
         int _value = memory.readByte(_address);
         int _temp = a - _value - (1 - carry);
-        
-        pc++;
         
         carry = _temp < 0 ? 0 : 1;
         not_zero = _temp & 0xFF;
@@ -2834,7 +2731,7 @@ public class MOS6502
     // Subtract with Carry
     private void opcode_SBC_indirect_x()
     {
-        int _address = indirectX(pc++);
+        int _address = indirectX();
         int _value = memory.readByte(_address);
         int _temp = a - _value - (1 - carry);
         
@@ -2849,7 +2746,7 @@ public class MOS6502
     // Subtract with Carry
     private void opcode_SBC_indirect_y()
     {
-        int _address = indirectY(pc++);
+        int _address = indirectY();
         int _value = memory.readByte(_address);
         int _temp = a - _value - (1 - carry);
         
@@ -2882,7 +2779,7 @@ public class MOS6502
     // ASL value then ORA value
     private void opcode_SLO_zero_page()
     {
-        int _address = zeroPage(pc++);
+        int _address = zeroPage();
         int _value = memory.readByte(_address);
         
         carry = (_value >> 7) & 1;
@@ -2899,7 +2796,7 @@ public class MOS6502
     // ASL value then ORA value
     private void opcode_SLO_zero_page_x()
     {
-        int _address = zeroPageX(pc++);
+        int _address = zeroPageX();
         int _value = memory.readByte(_address);
         
         carry = (_value >> 7) & 1;
@@ -2916,10 +2813,8 @@ public class MOS6502
     // ASL value then ORA value
     private void opcode_SLO_absolute()
     {
-        int _address = absolute(pc++);
+        int _address = absolute();
         int _value = memory.readByte(_address);
-        
-        pc++;
         
         carry = (_value >> 7) & 1;
         _value = (_value << 1) & 0xFF;
@@ -2935,10 +2830,8 @@ public class MOS6502
     // ASL value then ORA value
     private void opcode_SLO_absolute_x()
     {
-        int _address = absoluteX(pc++);
+        int _address = absoluteX();
         int _value = memory.readByte(_address);
-        
-        pc++;
         
         carry = (_value >> 7) & 1;
         _value = (_value << 1) & 0xFF;
@@ -2954,10 +2847,8 @@ public class MOS6502
     // ASL value then ORA value
     private void opcode_SLO_absolute_y()
     {
-        int _address = absoluteY(pc++);
+        int _address = absoluteY();
         int _value = memory.readByte(_address);
-        
-        pc++;
         
         carry = (_value >> 7) & 1;
         _value = (_value << 1) & 0xFF;
@@ -2973,7 +2864,7 @@ public class MOS6502
     // ASL value then ORA value
     private void opcode_SLO_indirect_x()
     {
-        int _address = indirectX(pc++);
+        int _address = indirectX();
         int _value = memory.readByte(_address);
         
         carry = (_value >> 7) & 1;
@@ -2990,7 +2881,7 @@ public class MOS6502
     // ASL value then ORA value
     private void opcode_SLO_indirect_y()
     {
-        int _address = indirectY(pc++);
+        int _address = indirectY();
         int _value = memory.readByte(_address);
         
         carry = (_value >> 7) & 1;
@@ -3007,7 +2898,7 @@ public class MOS6502
     // Equivalent to LSR value then EOR value
     private void opcode_SRE_zero_page()
     {
-        int _address = zeroPage(pc++);
+        int _address = zeroPage();
         int _value = memory.readByte(_address);
         
         carry = _value & 1; // old bit 0       
@@ -3024,7 +2915,7 @@ public class MOS6502
     // Equivalent to LSR value then EOR value
     private void opcode_SRE_zero_page_x()
     {
-        int _address = zeroPageX(pc++);
+        int _address = zeroPageX();
         int _value = memory.readByte(_address);
         
         carry = _value & 1; // old bit 0       
@@ -3041,10 +2932,8 @@ public class MOS6502
     // Equivalent to LSR value then EOR value
     private void opcode_SRE_absolute()
     {
-        int _address = absolute(pc++);
+        int _address = absolute();
         int _value = memory.readByte(_address);
-        
-        pc++;
         
         carry = _value & 1; // old bit 0       
         _value >>= 1;
@@ -3060,10 +2949,8 @@ public class MOS6502
     // Equivalent to LSR value then EOR value
     private void opcode_SRE_absolute_x()
     {
-        int _address = absoluteX(pc++);
+        int _address = absoluteX();
         int _value = memory.readByte(_address);
-        
-        pc++;
         
         carry = _value & 1; // old bit 0       
         _value >>= 1;
@@ -3079,10 +2966,8 @@ public class MOS6502
     // Equivalent to LSR value then EOR value
     private void opcode_SRE_absolute_y()
     {
-        int _address = absoluteY(pc++);
+        int _address = absoluteY();
         int _value = memory.readByte(_address);
-        
-        pc++;
         
         carry = _value & 1; // old bit 0       
         _value >>= 1;
@@ -3098,7 +2983,7 @@ public class MOS6502
     // Equivalent to LSR value then EOR value
     private void opcode_SRE_indirect_x()
     {
-        int _address = indirectX(pc++);
+        int _address = indirectX();
         int _value = memory.readByte(_address);
         
         carry = _value & 1; // old bit 0       
@@ -3115,7 +3000,7 @@ public class MOS6502
     // Equivalent to LSR value then EOR value
     private void opcode_SRE_indirect_y()
     {
-        int _address = indirectY(pc++);
+        int _address = indirectY();
         int _value = memory.readByte(_address);
         
         carry = _value & 1; // old bit 0       
@@ -3132,88 +3017,82 @@ public class MOS6502
     // Store Accumulator
     private void opcode_STA_zero_page()
     {
-        memory.writeByte(a, zeroPage(pc++));        
+        memory.writeByte(a, zeroPage());        
     }
 
     // Store Accumulator
     private void opcode_STA_zero_page_x()
     {
-        memory.writeByte(a, zeroPageX(pc++));
+        memory.writeByte(a, zeroPageX());
     }
 
     // Store Accumulator
     private void opcode_STA_absolute()
     {
-        memory.writeByte(a, absolute(pc++));
-    	pc++;
+        memory.writeByte(a, absolute());
     }
 
     // Store Accumulator
     private void opcode_STA_absolute_x()
     {
-        memory.writeByte(a, absoluteX(pc++));
-        pc++;
+        memory.writeByte(a, absoluteX());
     }
 
     // Store Accumulator
     private void opcode_STA_absolute_y()
     {
-        memory.writeByte(a, absoluteY(pc++));
-        pc++;
+        memory.writeByte(a, absoluteY());
     }
 
     // Store Accumulator
     private void opcode_STA_indirect_x()
     {
-        memory.writeByte(a, indirectX(pc++));        
+        memory.writeByte(a, indirectX());        
     }
 
     // Store Accumulator
     private void opcode_STA_indirect_y()
     {
-        memory.writeByte(a, indirectY(pc++));
+        memory.writeByte(a, indirectY());
     }
 
     // Store X register
     private void opcode_STX_zero_page()
     {
-        memory.writeByte(x, zeroPage(pc++));
+        memory.writeByte(x, zeroPage());
     }
 
     // Store X register
     private void opcode_STX_zero_page_y()
     {
-        memory.writeByte(x, zeroPageY(pc++));
+        memory.writeByte(x, zeroPageY());
     }
 
     // Store X register
     private void opcode_STX_absolute()
     {
-        memory.writeByte(x, absolute(pc++));        
-        pc++;
+        memory.writeByte(x, absolute());        
     }
 
     // Store Y Register
     private void opcode_STY_zero_page()
     {
-        int _address = zeroPage(pc++);
+        int _address = zeroPage();
         memory.writeByte(y, _address);        
     }
 
     // Store Y Register
     private void opcode_STY_zero_page_x()
     {
-        int _address = zeroPageX(pc++);
+        int _address = zeroPageX();
         memory.writeByte(y, _address);
     }
 
     // Store Y Register
     private void opcode_STY_absolute()
     {
-        int _address = absolute(pc++);
+        int _address = absolute();
         memory.writeByte(y, _address);
-        
-        pc++;
     }
 
     // Transfer Accumulator to X
