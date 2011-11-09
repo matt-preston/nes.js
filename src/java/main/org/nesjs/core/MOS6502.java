@@ -331,10 +331,21 @@ public class MOS6502
         
         return _clocksRemain;
     }
+   
+    
+//-------------------------------------------------------------
+// Processor status flags
+//-------------------------------------------------------------     
     
     private boolean isZeroFlagSet()
     {
         return not_zero == 0;
+    }
+    
+    private final void setNZFlag(int aValue)
+    {
+        negative = (aValue >> 7) & 1;
+        not_zero = aValue & 0xFF;
     }
     
     /**
@@ -567,17 +578,14 @@ public class MOS6502
         a = _temp & 0xFF;
         
         carry = _temp > 0xFF ? 1 : 0;
-        not_zero = _temp & 0xFF;        
-        negative = (_temp >> 7) & 1;        
+        setNZFlag(_temp);
     }
  
     // Logical AND
     private void opcode_AND(int anAddress)
     {
-        a &= memory.readByte(anAddress);        
-        
-        negative = (a >> 7) & 1;
-        not_zero = a;        
+        a &= memory.readByte(anAddress);
+        setNZFlag(a);
     }
 
     // Arithmetic Shift Left
@@ -586,8 +594,7 @@ public class MOS6502
         carry = (a >> 7) & 1;
         a = (a << 1) & 0xFF;
         
-        negative = (a >> 7) & 1;
-        not_zero = a;
+        setNZFlag(a);
     }
 
     // Arithmetic Shift Left
@@ -600,8 +607,7 @@ public class MOS6502
         
         memory.writeByte(_value, anAddress);
         
-        negative = (_value >> 7) & 1;
-        not_zero = _value;
+        setNZFlag(_value);
     }
  
     // Branch if Carry Clear
@@ -737,8 +743,7 @@ public class MOS6502
         int _temp = a - memory.readByte(anAddress);
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;
-        negative = (_temp >> 7) & 1;        
+        setNZFlag(_temp);
     }
 
     // Compare X Register
@@ -747,8 +752,7 @@ public class MOS6502
         int _temp = x - memory.readByte(anAddress);
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;
-        negative = (_temp >> 7) & 1;
+        setNZFlag(_temp);
     }
 
     // Compare Y Register
@@ -757,8 +761,7 @@ public class MOS6502
         int _temp = y - memory.readByte(anAddress);
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;
-        negative = (_temp >> 7) & 1;
+        setNZFlag(_temp);
     }
     
     // DEC value then CMP value
@@ -771,8 +774,7 @@ public class MOS6502
         int _temp = a - _value;
         
         carry = (_temp >= 0 ? 1:0);
-        not_zero = _temp & 0xFF;
-        negative = (_temp >> 7) & 1;
+        setNZFlag(_temp);
     }
 
     // Decrement Memory
@@ -782,35 +784,28 @@ public class MOS6502
         
         memory.writeByte(_value, anAddress);
         
-        not_zero = _value & 0xFF;
-        negative = (_value >> 7) & 1;
+        setNZFlag(_value);
     }
 
     // Decrement X Register
     private void opcode_DEX_implied()
     {
         x = (x - 1) & 0xFF;
-        
-        not_zero = x & 0xFF;
-        negative = (x >> 7) & 1;
+        setNZFlag(x);
     }
 
     // Decrement Y Register
     private void opcode_DEY_implied()
     {
         y = (y - 1) & 0xFF;
-        
-        not_zero = y & 0xFF;
-        negative = (y >> 7) & 1;
+        setNZFlag(y);
     }
 
     // Exclusive OR
     private void opcode_EOR(int anAddress)
     {
         a ^=  memory.readByte(anAddress);
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;        
+        setNZFlag(a);
     }
 
     // Increment Memory
@@ -820,26 +815,21 @@ public class MOS6502
         
         memory.writeByte(_value, anAddress);
         
-        not_zero = _value & 0xFF;
-        negative = (_value >> 7) & 1;
+        setNZFlag(_value);
     }
 
     // Increment X Register
     private void opcode_INX_implied()
     {
         x = (x + 1) & 0xFF;
-        
-        not_zero = x & 0xFF;
-        negative = (x >> 7) & 1;
+        setNZFlag(x);
     }
 
     // Increment Y Register
     private void opcode_INY_implied()
     {
         y = (y + 1) & 0xFF;
-        
-        not_zero = y & 0xFF;
-        negative = (y >> 7) & 1;        
+        setNZFlag(y);
     }
 
     // INC value then SBC value
@@ -852,9 +842,9 @@ public class MOS6502
         int _temp = a - _value - (1 - carry);
         
         //carry = _temp + 1 < 0 ? 0 : 1; // TODO hacked + 1 to make test pass
-        not_zero = _temp & 0xFF;
         overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
-        negative = (_temp >> 7) & 1;
+        
+        setNZFlag(_temp);
         
         a = _temp & 0xFF;
     }
@@ -878,35 +868,28 @@ public class MOS6502
         a = memory.readByte(anAddress);
         x = a;
         
-        negative = (a >> 7) & 1;
-        not_zero = a;
+        setNZFlag(a);
     }
     
     // Load Accumulator
     private void opcode_LDA(int anAddress)
     {
         a = memory.readByte(anAddress);
-        
-        negative = (a >> 7) & 1;
-        not_zero = a;
+        setNZFlag(a);
     }
 
     // Load X with memory
     private void opcode_LDX(int anAddress)
     {
         x = memory.readByte(anAddress);
-        
-        negative = (x >> 7) & 1;
-        not_zero = x;
+        setNZFlag(x);
     }
 
     // Load Y Register
     private void opcode_LDY(int anAddress)
     {
         y = memory.readByte(anAddress);
-        
-        negative = (y >> 7) & 1;
-        not_zero = y;
+        setNZFlag(y);
     }
 
     // Logical Shift Right
@@ -947,9 +930,7 @@ public class MOS6502
     private void opcode_ORA(int anAddress)
     {
         a |=  memory.readByte(anAddress);
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1; 
+        setNZFlag(a);
     }
 
     // Push Accumulator
@@ -980,9 +961,7 @@ public class MOS6502
     private void opcode_PLA_implied()
     {
         a = pop();
-        
-        not_zero = a;
-        negative = (a >> 7) & 1;        
+        setNZFlag(a);
     }
 
     // Pull Processor Status
@@ -1003,52 +982,43 @@ public class MOS6502
     private void opcode_RLA(int anAddress)
     {
         int _value = memory.readByte(anAddress);
-        
-        int _temp = _value;
         int _add = carry;
         
-        carry = (_temp >> 7) &1;
+        carry = (_value >> 7) &1;
         
-        _value = ((_temp << 1) & 0xFF) + _add;
+        _value = ((_value << 1) & 0xFF) + _add;
         
         memory.writeByte(_value, anAddress);
         
         a &= _value;
         
-        negative = (a >> 7) & 1;
-        not_zero = a;
+        setNZFlag(a);
     }
     
     // Rotate Left
     private void opcode_ROL_accumulator()
     {
-        int _temp = a;
 		int _add = carry;
 		
-		carry = (_temp >> 7) &1;
+		carry = (a >> 7) &1;
 		
-		a = ((_temp << 1) & 0xFF) + _add;
+		a = ((a << 1) & 0xFF) + _add;
 		
-		negative = (a >> 7) & 1;
-		not_zero = a & 0xFF;
+		setNZFlag(a);
     }
 
     // Rotate Left
     private void opcode_ROL(int anAddress)
     {
         int _value = memory.readByte(anAddress);
-        
-        int _temp = _value;
         int _add = carry;
         
-        carry = (_temp >> 7) &1;
-        
-        _value = ((_temp << 1) & 0xFF) + _add;
+        carry = (_value >> 7) &1;
+        _value = ((_value << 1) & 0xFF) + _add;
         
         memory.writeByte(_value, anAddress);
         
-        negative = (_value >> 7) & 1;
-        not_zero = _value & 0xFF;
+        setNZFlag(_value);
     }
 
     // Rotate Right
@@ -1059,15 +1029,13 @@ public class MOS6502
 		carry = a & 1;
 		a = (a >> 1) + _add;
 		
-		negative = (a >> 7) & 1;
-		not_zero = a & 0xFF;
+		setNZFlag(a);
     }
 
     // Rotate Right
     private void opcode_ROR(int anAddress)
     {
         int _value = memory.readByte(anAddress);
-        
         int _add = carry << 7;
         
         carry = _value & 1;
@@ -1075,15 +1043,13 @@ public class MOS6502
         
         memory.writeByte(_value, anAddress);
         
-        negative = (_value >> 7) & 1;
-        not_zero = _value & 0xFF;
+        setNZFlag(_value);
     }
     
     // ROR value then ADC value
     private void opcode_RRA(int anAddress)
     {
         int _value = memory.readByte(anAddress);
-        
         int _add = carry << 7;
         
         carry = _value & 1;
@@ -1094,9 +1060,9 @@ public class MOS6502
         int _temp = a + _value + carry;
         
         carry = _temp > 0xFF ? 1 : 0;
-        not_zero = _temp & 0xFF;
         overflow = ((!(((a ^ _value) & 0x80) != 0) && (((a ^ _temp) & 0x80)) != 0) ? 1 : 0);
-        negative = (_temp >> 7) & 1;
+        
+        setNZFlag(_temp);
         
         a = _temp & 0xFF;
     }
@@ -1136,9 +1102,9 @@ public class MOS6502
         int _temp = a - _value - (1 - carry);
         
         carry = _temp < 0 ? 0 : 1;
-        not_zero = _temp & 0xFF;
         overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
-        negative = (_temp >> 7) & 1;
+        
+        setNZFlag(_temp);
         
         a = _temp & 0xFF;
     }
@@ -1173,8 +1139,7 @@ public class MOS6502
         
         a |=  _value;
         
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
+        setNZFlag(a);
     }
     
     // Equivalent to LSR value then EOR value
@@ -1189,8 +1154,7 @@ public class MOS6502
         
         a ^=  _value;
         
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
+        setNZFlag(a);
     }
     
     // Store Accumulator
@@ -1215,36 +1179,28 @@ public class MOS6502
     private void opcode_TAX_implied()
     {
         x = a;
-        
-        not_zero = x & 0xFF;
-        negative = (x >> 7) & 1;
+        setNZFlag(x);
     }
 
     // Transfer Accumulator to Y
     private void opcode_TAY_implied()
     {
         y = a;
-        
-        not_zero = y & 0xFF;
-        negative = (y >> 7) & 1;
+        setNZFlag(y);
     }
 
     // Transfer Stack Pointer to X
     private void opcode_TSX_implied()
     {
-        x = sp & 0xFF; // Only transfer the lower 8 bits
-        
-        not_zero = x & 0xFF;
-        negative = (x >> 7) & 1;
+        x = sp & 0xFF; // Only transfer the lower 8 bits        
+        setNZFlag(x);
     }
    
     // Transfer X to Accumulator
     private void opcode_TXA_implied()
     {
         a = x;
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
+        setNZFlag(a);
     }
 
     // Transfer X to Stack Pointer
@@ -1257,8 +1213,6 @@ public class MOS6502
     private void opcode_TYA_implied()
     {
         a = y;
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
+        setNZFlag(a);
     }    
 }
