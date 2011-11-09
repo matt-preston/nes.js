@@ -155,59 +155,59 @@ public class MOS6502
                 case 0xDE: opcode_DEC(absoluteX()); break;
                 case 0xCA: opcode_DEX_implied(); break;
                 case 0x88: opcode_DEY_implied(); break;
-                case 0x49: opcode_EOR_immediate(); break;
-                case 0x45: opcode_EOR_zero_page(); break;
-                case 0x55: opcode_EOR_zero_page_x(); break;
-                case 0x4D: opcode_EOR_absolute(); break;
-                case 0x5D: opcode_EOR_absolute_x(); break;
-                case 0x59: opcode_EOR_absolute_y(); break;
-                case 0x41: opcode_EOR_indirect_x(); break;
-                case 0x51: opcode_EOR_indirect_y(); break;
-                case 0xE6: opcode_INC_zero_page(); break;
-                case 0xF6: opcode_INC_zero_page_x(); break;
-                case 0xEE: opcode_INC_absolute(); break;
-                case 0xFE: opcode_INC_absolute_x(); break;
+                case 0x49: opcode_EOR(immediate()); break;
+                case 0x45: opcode_EOR(zeroPage()); break;
+                case 0x55: opcode_EOR(zeroPageX()); break;
+                case 0x4D: opcode_EOR(absolute()); break;
+                case 0x5D: opcode_EOR(absoluteX()); break;
+                case 0x59: opcode_EOR(absoluteY()); break;
+                case 0x41: opcode_EOR(indirectX()); break;
+                case 0x51: opcode_EOR(indirectY()); break;
+                case 0xE6: opcode_INC(zeroPage()); break;
+                case 0xF6: opcode_INC(zeroPageX()); break;
+                case 0xEE: opcode_INC(absolute()); break;
+                case 0xFE: opcode_INC(absoluteX()); break;
                 case 0xE8: opcode_INX_implied(); break;
                 case 0xC8: opcode_INY_implied(); break;
-                case 0xE7: opcode_ISB_zero_page(); break;
-                case 0xF7: opcode_ISB_zero_page_x(); break;
-                case 0xEF: opcode_ISB_absolute(); break;
-                case 0xFF: opcode_ISB_absolute_x(); break;
-                case 0xFB: opcode_ISB_absolute_y(); break;
-                case 0xE3: opcode_ISB_indirect_x(); break;
-                case 0xF3: opcode_ISB_indirect_y(); break;
-                case 0x4C: opcode_JMP_absolute(); break;
-                case 0x6C: opcode_JMP_indirect(); break;
-                case 0x20: opcode_JSR_absolute(); break;
-                case 0xA7: opcode_LAX_zero_page(); break;
-                case 0xB7: opcode_LAX_zero_page_y(); break;
-                case 0xAF: opcode_LAX_absolute(); break;
-                case 0xBF: opcode_LAX_absolute_y(); break;
-                case 0xA3: opcode_LAX_indirect_x(); break;
-                case 0xB3: opcode_LAX_indirect_y(); break;
-                case 0xA9: opcode_LDA_immediate(); break;
-                case 0xA5: opcode_LDA_zero_page(); break;
-                case 0xB5: opcode_LDA_zero_page_x(); break;
-                case 0xAD: opcode_LDA_absolute(); break;
-                case 0xBD: opcode_LDA_absolute_x(); break;
-                case 0xB9: opcode_LDA_absolute_y(); break;
-                case 0xA1: opcode_LDA_indirect_x(); break;
-                case 0xB1: opcode_LDA_indirect_y(); break;
-                case 0xA2: opcode_LDX_immediate(); break;
-                case 0xA6: opcode_LDX_zero_page(); break;
-                case 0xB6: opcode_LDX_zero_page_y(); break;
-                case 0xAE: opcode_LDX_absolute(); break;
-                case 0xBE: opcode_LDX_absolute_y(); break;
-                case 0xA0: opcode_LDY_immediate(); break;
-                case 0xA4: opcode_LDY_zero_page(); break;
-                case 0xB4: opcode_LDY_zero_page_x(); break;
-                case 0xAC: opcode_LDY_absolute(); break;
-                case 0xBC: opcode_LDY_absolute_x(); break;
+                case 0xE7: opcode_ISB(zeroPage()); break;
+                case 0xF7: opcode_ISB(zeroPageX()); break;
+                case 0xEF: opcode_ISB(absolute()); break;
+                case 0xFF: opcode_ISB(absoluteX()); break;
+                case 0xFB: opcode_ISB(absoluteY()); break;
+                case 0xE3: opcode_ISB(indirectX()); break;
+                case 0xF3: opcode_ISB(indirectY()); break;
+                case 0x4C: opcode_JMP(absolute()); break;
+                case 0x6C: opcode_JMP(indirect()); break;
+                case 0x20: opcode_JSR(absolute()); break;
+                case 0xA7: opcode_LAX(zeroPage()); break;
+                case 0xB7: opcode_LAX(zeroPageY()); break;
+                case 0xAF: opcode_LAX(absolute()); break;
+                case 0xBF: opcode_LAX(absoluteY()); break;
+                case 0xA3: opcode_LAX(indirectX()); break;
+                case 0xB3: opcode_LAX(indirectY()); break;
+                case 0xA9: opcode_LDA(immediate()); break;
+                case 0xA5: opcode_LDA(zeroPage()); break;
+                case 0xB5: opcode_LDA(zeroPageX()); break;
+                case 0xAD: opcode_LDA(absolute()); break;
+                case 0xBD: opcode_LDA(absoluteX()); break;
+                case 0xB9: opcode_LDA(absoluteY()); break;
+                case 0xA1: opcode_LDA(indirectX()); break;
+                case 0xB1: opcode_LDA(indirectY()); break;
+                case 0xA2: opcode_LDX(immediate()); break;
+                case 0xA6: opcode_LDX(zeroPage()); break;
+                case 0xB6: opcode_LDX(zeroPageY()); break;
+                case 0xAE: opcode_LDX(absolute()); break;
+                case 0xBE: opcode_LDX(absoluteY()); break;
+                case 0xA0: opcode_LDY(immediate()); break;
+                case 0xA4: opcode_LDY(zeroPage()); break;
+                case 0xB4: opcode_LDY(zeroPageX()); break;
+                case 0xAC: opcode_LDY(absolute()); break;
+                case 0xBC: opcode_LDY(absoluteX()); break;
                 case 0x4A: opcode_LSR_accumulator(); break;
-                case 0x46: opcode_LSR_zero_page(); break;
-                case 0x56: opcode_LSR_zero_page_x(); break;
-                case 0x4E: opcode_LSR_absolute(); break;
-                case 0x5E: opcode_LSR_absolute_x(); break;
+                case 0x46: opcode_LSR(zeroPage()); break;
+                case 0x56: opcode_LSR(zeroPageX()); break;
+                case 0x4E: opcode_LSR(absolute()); break;
+                case 0x5E: opcode_LSR(absoluteX()); break;
                 case 0xEA:
                 case 0x1A:
                 case 0x3A:
@@ -215,104 +215,104 @@ public class MOS6502
                 case 0x7A:
                 case 0xDA:
                 case 0xFA: opcode_NOP_implied(); break;
-                case 0x80: opcode_NOP_immediate(); break;
+                case 0x80: opcode_NOP(immediate()); break;
                 case 0x04:
                 case 0x44:
-                case 0x64: opcode_NOP_zero_page(); break;
-                case 0x0C: opcode_NOP_absolute(); break;
+                case 0x64: opcode_NOP(zeroPage()); break;
+                case 0x0C: opcode_NOP(absolute()); break;
                 case 0x1C:
                 case 0x3C:
                 case 0x5C:
                 case 0x7C:
                 case 0xDC:
-                case 0xFC: opcode_NOP_absolute_x(); break;
+                case 0xFC: opcode_NOP(absoluteX()); break;
                 case 0x14:
                 case 0x34:
                 case 0x54:
                 case 0x74:
                 case 0xD4:
-                case 0xF4: opcode_NOP_zero_page_x(); break;
-                case 0x09: opcode_ORA_immediate(); break;
-                case 0x05: opcode_ORA_zero_page(); break;
-                case 0x15: opcode_ORA_zero_page_x(); break;
-                case 0x0D: opcode_ORA_absolute(); break;
-                case 0x1D: opcode_ORA_absolute_x(); break;
-                case 0x19: opcode_ORA_absolute_y(); break;
-                case 0x01: opcode_ORA_indirect_x(); break;
-                case 0x11: opcode_ORA_indirect_y(); break;
+                case 0xF4: opcode_NOP(zeroPageX()); break;
+                case 0x09: opcode_ORA(immediate()); break;
+                case 0x05: opcode_ORA(zeroPage()); break;
+                case 0x15: opcode_ORA(zeroPageX()); break;
+                case 0x0D: opcode_ORA(absolute()); break;
+                case 0x1D: opcode_ORA(absoluteX()); break;
+                case 0x19: opcode_ORA(absoluteY()); break;
+                case 0x01: opcode_ORA(indirectX()); break;
+                case 0x11: opcode_ORA(indirectY()); break;
                 case 0x48: opcode_PHA_implied(); break;
                 case 0x08: opcode_PHP_implied(); break;
                 case 0x68: opcode_PLA_implied(); break;
                 case 0x28: opcode_PLP_implied(); break;
-                case 0x27: opcode_RLA_zero_page(); break;
-                case 0x37: opcode_RLA_zero_page_x(); break;
-                case 0x2F: opcode_RLA_absolute(); break;
-                case 0x3F: opcode_RLA_absolute_x(); break;
-                case 0x3B: opcode_RLA_absolute_y(); break;
-                case 0x23: opcode_RLA_indirect_x(); break;
-                case 0x33: opcode_RLA_indirect_y(); break;
+                case 0x27: opcode_RLA(zeroPage()); break;
+                case 0x37: opcode_RLA(zeroPageX()); break;
+                case 0x2F: opcode_RLA(absolute()); break;
+                case 0x3F: opcode_RLA(absoluteX()); break;
+                case 0x3B: opcode_RLA(absoluteY()); break;
+                case 0x23: opcode_RLA(indirectX()); break;
+                case 0x33: opcode_RLA(indirectY()); break;
                 case 0x2A: opcode_ROL_accumulator(); break;
-                case 0x26: opcode_ROL_zero_page(); break;
-                case 0x36: opcode_ROL_zero_page_x(); break;
-                case 0x2E: opcode_ROL_absolute(); break;
-                case 0x3E: opcode_ROL_absolute_x(); break;
+                case 0x26: opcode_ROL(zeroPage()); break;
+                case 0x36: opcode_ROL(zeroPageX()); break;
+                case 0x2E: opcode_ROL(absolute()); break;
+                case 0x3E: opcode_ROL(absoluteX()); break;
                 case 0x6A: opcode_ROR_accumulator(); break;
-                case 0x66: opcode_ROR_zero_page(); break;
-                case 0x76: opcode_ROR_zero_page_x(); break;
-                case 0x6E: opcode_ROR_absolute(); break;
-                case 0x7E: opcode_ROR_absolute_x(); break;
-                case 0x67: opcode_RRA_zero_page(); break;
-                case 0x77: opcode_RRA_zero_page_x(); break;
-                case 0x6F: opcode_RRA_absolute(); break;
-                case 0x7F: opcode_RRA_absolute_x(); break;
-                case 0x7B: opcode_RRA_absolute_y(); break;
-                case 0x63: opcode_RRA_indirect_x(); break;
-                case 0x73: opcode_RRA_indirect_y(); break;
+                case 0x66: opcode_ROR(zeroPage()); break;
+                case 0x76: opcode_ROR(zeroPageX()); break;
+                case 0x6E: opcode_ROR(absolute()); break;
+                case 0x7E: opcode_ROR(absoluteX()); break;
+                case 0x67: opcode_RRA(zeroPage()); break;
+                case 0x77: opcode_RRA(zeroPageX()); break;
+                case 0x6F: opcode_RRA(absolute()); break;
+                case 0x7F: opcode_RRA(absoluteX()); break;
+                case 0x7B: opcode_RRA(absoluteY()); break;
+                case 0x63: opcode_RRA(indirectX()); break;
+                case 0x73: opcode_RRA(indirectY()); break;
                 case 0x40: opcode_RTI_implied(); break;
                 case 0x60: opcode_RTS_implied(); break;
-                case 0x87: opcode_SAX_zero_page(); break;
-                case 0x97: opcode_SAX_zero_page_y(); break;
-                case 0x8F: opcode_SAX_absolute(); break;
-                case 0x83: opcode_SAX_indirect_x(); break;
+                case 0x87: opcode_SAX(zeroPage()); break;
+                case 0x97: opcode_SAX(zeroPageY()); break;
+                case 0x8F: opcode_SAX(absolute()); break;
+                case 0x83: opcode_SAX(indirectX()); break;
                 case 0xE9:
-                case 0xEB: opcode_SBC_immediate(); break;
-                case 0xE5: opcode_SBC_zero_page(); break;
-                case 0xF5: opcode_SBC_zero_page_x(); break;
-                case 0xED: opcode_SBC_absolute(); break;
-                case 0xFD: opcode_SBC_absolute_x(); break;
-                case 0xF9: opcode_SBC_absolute_y(); break;
-                case 0xE1: opcode_SBC_indirect_x(); break;
-                case 0xF1: opcode_SBC_indirect_y(); break;
+                case 0xEB: opcode_SBC(immediate()); break;
+                case 0xE5: opcode_SBC(zeroPage()); break;
+                case 0xF5: opcode_SBC(zeroPageX()); break;
+                case 0xED: opcode_SBC(absolute()); break;
+                case 0xFD: opcode_SBC(absoluteX()); break;
+                case 0xF9: opcode_SBC(absoluteY()); break;
+                case 0xE1: opcode_SBC(indirectX()); break;
+                case 0xF1: opcode_SBC(indirectY()); break;
                 case 0x38: opcode_SEC_implied(); break;
                 case 0xF8: opcode_SED_implied(); break;
                 case 0x78: opcode_SEI_implied(); break;
-                case 0x07: opcode_SLO_zero_page(); break;
-                case 0x17: opcode_SLO_zero_page_x(); break;
-                case 0x0F: opcode_SLO_absolute(); break;
-                case 0x1F: opcode_SLO_absolute_x(); break;
-                case 0x1B: opcode_SLO_absolute_y(); break;
-                case 0x03: opcode_SLO_indirect_x(); break;
-                case 0x13: opcode_SLO_indirect_y(); break;
-                case 0x47: opcode_SRE_zero_page(); break;
-                case 0x57: opcode_SRE_zero_page_x(); break;
-                case 0x4F: opcode_SRE_absolute(); break;
-                case 0x5F: opcode_SRE_absolute_x(); break;
-                case 0x5B: opcode_SRE_absolute_y(); break;
-                case 0x43: opcode_SRE_indirect_x(); break;
-                case 0x53: opcode_SRE_indirect_y(); break;
-                case 0x85: opcode_STA_zero_page(); break;
-                case 0x95: opcode_STA_zero_page_x(); break;
-                case 0x8D: opcode_STA_absolute(); break;
-                case 0x9D: opcode_STA_absolute_x(); break;
-                case 0x99: opcode_STA_absolute_y(); break;
-                case 0x81: opcode_STA_indirect_x(); break;
-                case 0x91: opcode_STA_indirect_y(); break;
-                case 0x86: opcode_STX_zero_page(); break;
-                case 0x96: opcode_STX_zero_page_y(); break;
-                case 0x8E: opcode_STX_absolute(); break;
-                case 0x84: opcode_STY_zero_page(); break;
-                case 0x94: opcode_STY_zero_page_x(); break;
-                case 0x8C: opcode_STY_absolute(); break;
+                case 0x07: opcode_SLO(zeroPage()); break;
+                case 0x17: opcode_SLO(zeroPageX()); break;
+                case 0x0F: opcode_SLO(absolute()); break;
+                case 0x1F: opcode_SLO(absoluteX()); break;
+                case 0x1B: opcode_SLO(absoluteY()); break;
+                case 0x03: opcode_SLO(indirectX()); break;
+                case 0x13: opcode_SLO(indirectY()); break;
+                case 0x47: opcode_SRE(zeroPage()); break;
+                case 0x57: opcode_SRE(zeroPageX()); break;
+                case 0x4F: opcode_SRE(absolute()); break;
+                case 0x5F: opcode_SRE(absoluteX()); break;
+                case 0x5B: opcode_SRE(absoluteY()); break;
+                case 0x43: opcode_SRE(indirectX()); break;
+                case 0x53: opcode_SRE(indirectY()); break;
+                case 0x85: opcode_STA(zeroPage()); break;
+                case 0x95: opcode_STA(zeroPageX()); break;
+                case 0x8D: opcode_STA(absolute()); break;
+                case 0x9D: opcode_STA(absoluteX()); break;
+                case 0x99: opcode_STA(absoluteY()); break;
+                case 0x81: opcode_STA(indirectX()); break;
+                case 0x91: opcode_STA(indirectY()); break;
+                case 0x86: opcode_STX(zeroPage()); break;
+                case 0x96: opcode_STX(zeroPageY()); break;
+                case 0x8E: opcode_STX(absolute()); break;
+                case 0x84: opcode_STY(zeroPage()); break;
+                case 0x94: opcode_STY(zeroPageX()); break;
+                case 0x8C: opcode_STY(absolute()); break;
                 case 0xAA: opcode_TAX_implied(); break;
                 case 0xA8: opcode_TAY_implied(); break;
                 case 0xBA: opcode_TSX_implied(); break;
@@ -324,7 +324,7 @@ public class MOS6502
             }
             
             // Mask to 16 bit
-            pc = pc & 0xFFFF;
+            pc &= 0xFFFF;
             
             setProcessorStatusRegisterFromFlags();
         }
@@ -508,14 +508,12 @@ public class MOS6502
 
     private void push(int aByte)
     {
-        memory.writeByte(aByte, sp);
-        sp--;
+        memory.writeByte(aByte, sp--);
     }
     
     private int pop()
     {
-        sp++;
-        sp = 0x0100 | (sp & 0xFF);
+        sp = 0x0100 | (++sp & 0xFF);
         return memory.readByte(sp);
     }
     
@@ -565,12 +563,12 @@ public class MOS6502
         int _value = memory.readByte(anAddress);
         int _temp = a + _value + carry;
         
-        carry = _temp > 0xFF ? 1 : 0;
-        not_zero = _temp & 0xFF;
         overflow = ((!(((a ^ _value) & 0x80) != 0) && (((a ^ _temp) & 0x80)) != 0) ? 1 : 0);
-        negative = (_temp >> 7) & 1;
-        
         a = _temp & 0xFF;
+        
+        carry = _temp > 0xFF ? 1 : 0;
+        not_zero = _temp & 0xFF;        
+        negative = (_temp >> 7) & 1;        
     }
  
     // Logical AND
@@ -855,128 +853,20 @@ public class MOS6502
     }
 
     // Exclusive OR
-    private void opcode_EOR_immediate()
+    private void opcode_EOR(int anAddress)
     {
-        int _address = immediate();
-        a ^=  memory.readByte(_address);
+        a ^=  memory.readByte(anAddress);
         
         not_zero = a & 0xFF;
         negative = (a >> 7) & 1;        
     }
 
-    // Exclusive OR
-    private void opcode_EOR_zero_page()
-    {
-        int _address = zeroPage();
-        a ^=  memory.readByte(_address);
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // Exclusive OR
-    private void opcode_EOR_zero_page_x()
-    {
-        int _address = zeroPageX();
-        a ^=  memory.readByte(_address);
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // Exclusive OR
-    private void opcode_EOR_absolute()
-    {
-        int _address = absolute();
-        a ^=  memory.readByte(_address);
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // Exclusive OR
-    private void opcode_EOR_absolute_x()
-    {
-        int _address = absoluteX();
-        a ^=  memory.readByte(_address);
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // Exclusive OR
-    private void opcode_EOR_absolute_y()
-    {
-        int _address = absoluteY();
-        a ^=  memory.readByte(_address);
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // Exclusive OR
-    private void opcode_EOR_indirect_x()
-    {
-        int _value = indirectX();
-        a ^=  memory.readByte(_value);
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // Exclusive OR
-    private void opcode_EOR_indirect_y()
-    {
-        int _value = indirectY();
-        a ^=  memory.readByte(_value);
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
     // Increment Memory
-    private void opcode_INC_zero_page()
-    {
-        int _address = zeroPage();        
-        int _value = memory.readByte(_address) + 1;
+    private void opcode_INC(int anAddress)
+    {    
+        int _value = memory.readByte(anAddress) + 1;
         
-        memory.writeByte(_value, _address);
-        
-        not_zero = _value & 0xFF;
-        negative = (_value >> 7) & 1;
-    }
-
-    // Increment Memory
-    private void opcode_INC_zero_page_x()
-    {
-        int _address = zeroPageX();        
-        int _value = memory.readByte(_address) + 1;
-        
-        memory.writeByte(_value, _address);
-        
-        not_zero = _value & 0xFF;
-        negative = (_value >> 7) & 1;
-    }
-
-    // Increment Memory
-    private void opcode_INC_absolute()
-    {
-        int _address = absolute();
-        int _value = memory.readByte(_address) + 1;
-        
-        memory.writeByte(_value, _address);
-        
-        not_zero = _value & 0xFF;
-        negative = (_value >> 7) & 1;
-    }
-
-    // Increment Memory
-    private void opcode_INC_absolute_x()
-    {
-        int _address = absoluteX();
-        int _value = memory.readByte(_address) + 1;
-        
-        memory.writeByte(_value, _address);
+        memory.writeByte(_value, anAddress);
         
         not_zero = _value & 0xFF;
         negative = (_value >> 7) & 1;
@@ -1001,12 +891,11 @@ public class MOS6502
     }
 
     // INC value then SBC value
-    private void opcode_ISB_zero_page()
+    private void opcode_ISB(int anAddress)
     {
-        int _address = zeroPage();
-        int _value = memory.readByte(_address) + 1;
+        int _value = memory.readByte(anAddress) + 1;
         
-        memory.writeByte(_value, _address);
+        memory.writeByte(_value, anAddress);
         
         int _temp = a - _value - (1 - carry);
         
@@ -1016,198 +905,25 @@ public class MOS6502
         negative = (_temp >> 7) & 1;
         
         a = _temp & 0xFF;
-    }
-
-    // INC value then SBC value
-    private void opcode_ISB_zero_page_x()
-    {
-        int _address = zeroPageX();
-        int _value = memory.readByte(_address) + 1;
-        
-        memory.writeByte(_value, _address);
-        
-        int _temp = a - _value - (1 - carry);
-        
-        //carry = _temp + 1 < 0 ? 0 : 1; // TODO hacked + 1 to make test pass
-        not_zero = _temp & 0xFF;
-        overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
-        negative = (_temp >> 7) & 1;
-        
-        a = _temp & 0xFF;
-    }
-
-    // INC value then SBC value
-    private void opcode_ISB_absolute()
-    {
-        int _address = absolute();
-        int _value = memory.readByte(_address) + 1;
-        
-        memory.writeByte(_value, _address);
-                
-        int _temp = a - _value - (1 - carry);
-        
-        //carry = _temp + 1 < 0 ? 0 : 1; // TODO hacked + 1 to make test pass
-        not_zero = _temp & 0xFF;
-        overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
-        negative = (_temp >> 7) & 1;
-        
-        a = _temp & 0xFF;
-    }
-
-    // INC value then SBC value
-    private void opcode_ISB_absolute_x()
-    {
-        int _address = absoluteX();
-        int _value = memory.readByte(_address) + 1;
-        
-        memory.writeByte(_value, _address);
-        
-        int _temp = a - _value - (1 - carry);
-        
-        //carry = _temp + 1 < 0 ? 0 : 1; // TODO hacked + 1 to make test pass
-        not_zero = _temp & 0xFF;
-        overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
-        negative = (_temp >> 7) & 1;
-        
-        a = _temp & 0xFF;
-    }
-
-    // INC value then SBC value
-    private void opcode_ISB_absolute_y()
-    {
-        int _address = absoluteY();
-        int _value = memory.readByte(_address) + 1;
-        
-        memory.writeByte(_value, _address);
-        
-        int _temp = a - _value - (1 - carry);
-        
-        //carry = _temp + 1 < 0 ? 0 : 1; // TODO hacked + 1 to make test pass
-        not_zero = _temp & 0xFF;
-        overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
-        negative = (_temp >> 7) & 1;
-        
-        a = _temp & 0xFF;
-    }
-
-    // INC value then SBC value
-    private void opcode_ISB_indirect_x()
-    {
-        int _address = indirectX();
-        int _value = memory.readByte(_address) + 1;
-        
-        memory.writeByte(_value, _address);
-        
-        int _temp = a - _value - (1 - carry);
-        
-        //carry = _temp + 1 < 0 ? 0 : 1; // TODO hacked + 1 to make test pass
-        not_zero = _temp & 0xFF;
-        overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
-        negative = (_temp >> 7) & 1;
-        
-        a = _temp & 0xFF;    
-    }
-
-    // INC value then SBC value
-    private void opcode_ISB_indirect_y()
-    {
-        int _address = indirectY();
-        int _value = memory.readByte(_address) + 1;
-        
-        memory.writeByte(_value, _address);
-        
-        int _temp = a - _value - (1 - carry);
-        
-        //carry = _temp + 1 < 0 ? 0 : 1; // TODO hacked + 1 to make test pass
-        not_zero = _temp & 0xFF;
-        overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
-        negative = (_temp >> 7) & 1;
-        
-        a = _temp & 0xFF; 
     }
     
     // Jump to target address
-    private void opcode_JMP_absolute()
+    private void opcode_JMP(int anAddress)
     {
-        pc = absolute();
+        pc = anAddress;
     }
 
-    // Jump to target address
-    private void opcode_JMP_indirect()
-    {
-        pc = indirect();   
-    }
-    
     // Jump to subroutine
-    private void opcode_JSR_absolute()
+    private void opcode_JSR(int anAddress)
     {
-        int _address = absolute();
-        
-        pushWord(pc - 1);
-        
-        pc = _address;
+        pushWord(pc - 1);        
+        pc = anAddress;
     }
 
     // Load Accumulator and X with memory
-    private void opcode_LAX_zero_page()
+    private void opcode_LAX(int anAddress)
     {
-        int _address = zeroPage();
-        a = memory.readByte(_address);
-        x = a;
-        
-        negative = (a >> 7) & 1;
-        not_zero = a;
-    }
-    
-    // Load Accumulator and X with memory
-    private void opcode_LAX_zero_page_y()
-    {
-        int _address = zeroPageY();
-        a = memory.readByte(_address);
-        x = a;
-        
-        negative = (a >> 7) & 1;
-        not_zero = a;
-    }
-
-    // Load Accumulator and X with memory
-    private void opcode_LAX_absolute()
-    {
-        int _address = absolute();
-        a = memory.readByte(_address);
-        x = a;
-        
-        negative = (a >> 7) & 1;
-        not_zero = a;
-    }
-    
-    // Load Accumulator and X with memory
-    private void opcode_LAX_absolute_y()
-    {
-        int _address = absoluteY();
-        a = memory.readByte(_address);
-        x = a;
-        
-        negative = (a >> 7) & 1;
-        not_zero = a;
-    }
-
-    // Load Accumulator and X with memory
-    private void opcode_LAX_indirect_x()
-    {
-        int _address = indirectX();
-        a = memory.readByte(_address);
-        x = a;
-        
-        negative = (a >> 7) & 1;
-        not_zero = a;
-    }
-
-    // Load Accumulator and X with memory
-    private void opcode_LAX_indirect_y()
-    {
-        int _address = indirectY();
-        a = memory.readByte(_address);
+        a = memory.readByte(anAddress);
         x = a;
         
         negative = (a >> 7) & 1;
@@ -1215,180 +931,27 @@ public class MOS6502
     }
     
     // Load Accumulator
-    private void opcode_LDA_immediate()
+    private void opcode_LDA(int anAddress)
     {
-        int _address = immediate();
-        a = memory.readByte(_address);
-        
-        negative = (a >> 7) & 1;
-        not_zero = a;
-    }
-
-    // Load Accumulator
-    private void opcode_LDA_zero_page()
-    {
-    	int _address = zeroPage();
-    	a = memory.readByte(_address);
-    	
-    	negative = (a >> 7) & 1;
-        not_zero = a;
-    }
-
-    // Load Accumulator
-    private void opcode_LDA_zero_page_x()
-    {
-        int _address = zeroPageX();
-        a = memory.readByte(_address);
-        
-        negative = (a >> 7) & 1;
-        not_zero = a;
-    }
-
-    // Load Accumulator
-    private void opcode_LDA_absolute()
-    {
-        int _address = absolute(); 
-        a = memory.readByte(_address);
-        
-        negative = (a >> 7) & 1;
-        not_zero = a;        
-    }
-
-    // Load Accumulator
-    private void opcode_LDA_absolute_x()
-    {
-        int _address = absoluteX(); 
-        a = memory.readByte(_address);
-        
-        negative = (a >> 7) & 1;
-        not_zero = a;        
-    }
-
-    // Load Accumulator
-    private void opcode_LDA_absolute_y()
-    {
-        int _address = absoluteY(); 
-        a = memory.readByte(_address);
-        
-        negative = (a >> 7) & 1;
-        not_zero = a;
-    }
-
-    // Load Accumulator
-    private void opcode_LDA_indirect_x()
-    {
-    	int _address = indirectX();
-        a = memory.readByte(_address);
-        
-    	negative = (a >> 7) & 1;
-        not_zero = a;
-    }
-
-    // Load Accumulator
-    private void opcode_LDA_indirect_y()
-    {
-        int _address = indirectY();
-        a = memory.readByte(_address);
+        a = memory.readByte(anAddress);
         
         negative = (a >> 7) & 1;
         not_zero = a;
     }
 
     // Load X with memory
-    private void opcode_LDX_immediate()
+    private void opcode_LDX(int anAddress)
     {
-        int _address = immediate();
-        x = memory.readByte(_address);
-        
-        negative = (x >> 7) & 1;
-        not_zero = x;
-    }
-
-    // Load X with memory
-    private void opcode_LDX_zero_page()
-    {
-        int _address = zeroPage();
-        x = memory.readByte(_address);
-        
-        negative = (x >> 7) & 1;
-        not_zero = x;
-    }
-
-    // Load X with memory
-    private void opcode_LDX_zero_page_y()
-    {
-        int _address = zeroPageY();
-        x = memory.readByte(_address);
-        
-        negative = (x >> 7) & 1;
-        not_zero = x;
-    }
-
-    // Load X with memory
-    private void opcode_LDX_absolute()
-    {
-        int _address = absolute();
-        x = memory.readByte(_address);
-        
-        negative = (x >> 7) & 1;
-        not_zero = x;
-    }
-
-    // Load X with memory
-    private void opcode_LDX_absolute_y()
-    {
-        int _address = absoluteY();
-        x = memory.readByte(_address);
+        x = memory.readByte(anAddress);
         
         negative = (x >> 7) & 1;
         not_zero = x;
     }
 
     // Load Y Register
-    private void opcode_LDY_immediate()
+    private void opcode_LDY(int anAddress)
     {
-        int _address = immediate();
-        y = memory.readByte(_address);
-        
-        negative = (y >> 7) & 1;
-        not_zero = y;
-    }
-
-    // Load Y Register
-    private void opcode_LDY_zero_page()
-    {
-        int _address = zeroPage();
-        y = memory.readByte(_address);
-        
-        negative = (y >> 7) & 1;
-        not_zero = y;
-    }
-
-    // Load Y Register
-    private void opcode_LDY_zero_page_x()
-    {
-        int _address = zeroPageX();
-        y = memory.readByte(_address);
-        
-        negative = (y >> 7) & 1;
-        not_zero = y;
-    }
-
-    // Load Y Register
-    private void opcode_LDY_absolute()
-    {
-        int _address = absolute();
-        y = memory.readByte(_address);
-        
-        negative = (y >> 7) & 1;
-        not_zero = y;
-    }
-
-    // Load Y Register
-    private void opcode_LDY_absolute_x()
-    {
-        int _address = absoluteX();
-        y = memory.readByte(_address);
+        y = memory.readByte(anAddress);
         
         negative = (y >> 7) & 1;
         not_zero = y;
@@ -1405,60 +968,14 @@ public class MOS6502
     }
 
     // Logical Shift Right
-    private void opcode_LSR_zero_page()
+    private void opcode_LSR(int anAddress)
     {
-        int _address = zeroPage();
-        int _value = memory.readByte(_address);
+        int _value = memory.readByte(anAddress);
         
         carry = _value & 1; // old bit 0       
         _value >>= 1;
         
-        memory.writeByte(_value, _address);
-        
-        not_zero = _value;
-        negative = 0;
-    }
-
-    // Logical Shift Right
-    private void opcode_LSR_zero_page_x()
-    {
-        int _address = zeroPageX();
-        int _value = memory.readByte(_address);
-        
-        carry = _value & 1; // old bit 0       
-        _value >>= 1;
-        
-        memory.writeByte(_value, _address);
-        
-        not_zero = _value;
-        negative = 0;
-    }
-
-    // Logical Shift Right
-    private void opcode_LSR_absolute()
-    {
-        int _address = absolute();
-        int _value = memory.readByte(_address);
-        
-        carry = _value & 1; // old bit 0       
-        _value >>= 1;
-        
-        memory.writeByte(_value, _address);
-        
-        not_zero = _value;
-        negative = 0;
-    }
-
-    // Logical Shift Right
-    private void opcode_LSR_absolute_x()
-    {
-        int _address = absoluteX();
-        int _value = memory.readByte(_address);
-        
-        carry = _value & 1; // old bit 0       
-        _value >>= 1;
-        
-        memory.writeByte(_value, _address);
+        memory.writeByte(_value, anAddress);
         
         not_zero = _value;
         negative = 0;
@@ -1470,113 +987,17 @@ public class MOS6502
     }
     
     // No operation
-    private void opcode_NOP_immediate()
+    private void opcode_NOP(int anAddress)
     {
-        pc++;
-    }
-    
-    // No operation
-    private void opcode_NOP_zero_page()
-    {
-       pc++;
-    }
-
-    // No operation
-    private void opcode_NOP_absolute()
-    {
-        pc = pc + 2;
-    }
-    
-    // No operation
-    private void opcode_NOP_absolute_x()
-    {
-        pc = pc + 2;
-    }
-    
-    // No operation
-    private void opcode_NOP_zero_page_x()
-    {
-        pc++;
     }
     
     // Logical Inclusive OR
-    private void opcode_ORA_immediate()
+    private void opcode_ORA(int anAddress)
     {
-        int _address = immediate();
-        a |=  memory.readByte(_address);
+        a |=  memory.readByte(anAddress);
         
         not_zero = a & 0xFF;
         negative = (a >> 7) & 1; 
-    }
-
-    // Logical Inclusive OR
-    private void opcode_ORA_zero_page()
-    {
-        int _address = zeroPage();
-        a |=  memory.readByte(_address);
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // Logical Inclusive OR
-    private void opcode_ORA_zero_page_x()
-    {
-        int _address = zeroPageX();
-        a |=  memory.readByte(_address);
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // Logical Inclusive OR
-    private void opcode_ORA_absolute()
-    {
-        int _address = absolute();
-        a |=  memory.readByte(_address);
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // Logical Inclusive OR
-    private void opcode_ORA_absolute_x()
-    {
-        int _address = absoluteX();
-        a |=  memory.readByte(_address);
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // Logical Inclusive OR
-    private void opcode_ORA_absolute_y()
-    {
-        int _address = absoluteY();
-        a |=  memory.readByte(_address);
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // Logical Inclusive OR
-    private void opcode_ORA_indirect_x()
-    {
-        int _value = memory.readByte(indirectX());
-        a |=  _value;
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // Logical Inclusive OR
-    private void opcode_ORA_indirect_y()
-    {
-        int _value = memory.readByte(indirectY());
-        a |=  _value;
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
     }
 
     // Push Accumulator
@@ -1627,10 +1048,9 @@ public class MOS6502
     }
 
     // ROL value then AND value
-    private void opcode_RLA_zero_page()
+    private void opcode_RLA(int anAddress)
     {
-        int _address = zeroPage();
-        int _value = memory.readByte(_address);
+        int _value = memory.readByte(anAddress);
         
         int _temp = _value;
         int _add = carry;
@@ -1639,133 +1059,7 @@ public class MOS6502
         
         _value = ((_temp << 1) & 0xFF) + _add;
         
-        memory.writeByte(_value, _address);
-        
-        a &= _value;
-        
-        negative = (a >> 7) & 1;
-        not_zero = a;
-    }
-
-    // ROL value then AND value
-    private void opcode_RLA_zero_page_x()
-    {
-        int _address = zeroPageX();
-        int _value = memory.readByte(_address);
-        
-        int _temp = _value;
-        int _add = carry;
-        
-        carry = (_temp >> 7) &1;
-        
-        _value = ((_temp << 1) & 0xFF) + _add;
-        
-        memory.writeByte(_value, _address);
-        
-        a &= _value;
-        
-        negative = (a >> 7) & 1;
-        not_zero = a;
-    }
-
-    // ROL value then AND value
-    private void opcode_RLA_absolute()
-    {
-        int _address = absolute();
-        int _value = memory.readByte(_address);
-        
-        int _temp = _value;
-        int _add = carry;
-        
-        carry = (_temp >> 7) &1;
-        
-        _value = ((_temp << 1) & 0xFF) + _add;
-        
-        memory.writeByte(_value, _address);
-        
-        a &= _value;
-        
-        negative = (a >> 7) & 1;
-        not_zero = a;
-    }
-    
-    // ROL value then AND value
-    private void opcode_RLA_absolute_x()
-    {
-        int _address = absoluteX();
-        int _value = memory.readByte(_address);
-        
-        int _temp = _value;
-        int _add = carry;
-        
-        carry = (_temp >> 7) &1;
-        
-        _value = ((_temp << 1) & 0xFF) + _add;
-        
-        memory.writeByte(_value, _address);
-        
-        a &= _value;
-        
-        negative = (a >> 7) & 1;
-        not_zero = a;
-    }
-
-    // ROL value then AND value
-    private void opcode_RLA_absolute_y()
-    {
-        int _address = absoluteY();
-        int _value = memory.readByte(_address);
-        
-        int _temp = _value;
-        int _add = carry;
-        
-        carry = (_temp >> 7) &1;
-        
-        _value = ((_temp << 1) & 0xFF) + _add;
-        
-        memory.writeByte(_value, _address);
-        
-        a &= _value;
-        
-        negative = (a >> 7) & 1;
-        not_zero = a;
-    }
-
-    // ROL value then AND value
-    private void opcode_RLA_indirect_x()
-    {
-        int _address = indirectX();
-        int _value = memory.readByte(_address);
-        
-        int _temp = _value;
-        int _add = carry;
-        
-        carry = (_temp >> 7) &1;
-        
-        _value = ((_temp << 1) & 0xFF) + _add;
-        
-        memory.writeByte(_value, _address);
-        
-        a &= _value;
-        
-        negative = (a >> 7) & 1;
-        not_zero = a;
-    }
-
-    // ROL value then AND value
-    private void opcode_RLA_indirect_y()
-    {
-        int _address = indirectY();
-        int _value = memory.readByte(_address);
-        
-        int _temp = _value;
-        int _add = carry;
-        
-        carry = (_temp >> 7) &1;
-        
-        _value = ((_temp << 1) & 0xFF) + _add;
-        
-        memory.writeByte(_value, _address);
+        memory.writeByte(_value, anAddress);
         
         a &= _value;
         
@@ -1788,10 +1082,9 @@ public class MOS6502
     }
 
     // Rotate Left
-    private void opcode_ROL_zero_page()
+    private void opcode_ROL(int anAddress)
     {
-        int _address = zeroPage();
-        int _value = memory.readByte(_address);
+        int _value = memory.readByte(anAddress);
         
         int _temp = _value;
         int _add = carry;
@@ -1800,64 +1093,7 @@ public class MOS6502
         
         _value = ((_temp << 1) & 0xFF) + _add;
         
-        memory.writeByte(_value, _address);
-        
-        negative = (_value >> 7) & 1;
-        not_zero = _value & 0xFF;
-    }
-
-    // Rotate Left
-    private void opcode_ROL_zero_page_x()
-    {
-        int _address = zeroPageX();
-        int _value = memory.readByte(_address);
-        
-        int _temp = _value;
-        int _add = carry;
-        
-        carry = (_temp >> 7) &1;
-        
-        _value = ((_temp << 1) & 0xFF) + _add;
-        
-        memory.writeByte(_value, _address);
-        
-        negative = (_value >> 7) & 1;
-        not_zero = _value & 0xFF;
-    }
-
-    // Rotate Left
-    private void opcode_ROL_absolute()
-    {
-        int _address = absolute();
-        int _value = memory.readByte(_address);
-        
-        int _temp = _value;
-        int _add = carry;
-        
-        carry = (_temp >> 7) &1;
-        
-        _value = ((_temp << 1) & 0xFF) + _add;
-        
-        memory.writeByte(_value, _address);
-        
-        negative = (_value >> 7) & 1;
-        not_zero = _value & 0xFF;
-    }
-
-    // Rotate Left
-    private void opcode_ROL_absolute_x()
-    {
-        int _address = absoluteX();
-        int _value = memory.readByte(_address);
-        
-        int _temp = _value;
-        int _add = carry;
-        
-        carry = (_temp >> 7) &1;
-        
-        _value = ((_temp << 1) & 0xFF) + _add;
-        
-        memory.writeByte(_value, _address);
+        memory.writeByte(_value, anAddress);
         
         negative = (_value >> 7) & 1;
         not_zero = _value & 0xFF;
@@ -1876,223 +1112,32 @@ public class MOS6502
     }
 
     // Rotate Right
-    private void opcode_ROR_zero_page()
+    private void opcode_ROR(int anAddress)
     {
-        int _address = zeroPage();
-        int _value = memory.readByte(_address);
+        int _value = memory.readByte(anAddress);
         
         int _add = carry << 7;
         
         carry = _value & 1;
         _value = (_value >> 1) + _add;
         
-        memory.writeByte(_value, _address);
-        
-        negative = (_value >> 7) & 1;
-        not_zero = _value & 0xFF;
-    }
-
-    // Rotate Right
-    private void opcode_ROR_zero_page_x()
-    {
-        int _address = zeroPageX();
-        int _value = memory.readByte(_address);
-        
-        int _add = carry << 7;
-        
-        carry = _value & 1;
-        _value = (_value >> 1) + _add;
-        
-        memory.writeByte(_value, _address);
-        
-        negative = (_value >> 7) & 1;
-        not_zero = _value & 0xFF;
-    }
-
-    // Rotate Right
-    private void opcode_ROR_absolute()
-    {
-        int _address = absolute();
-        int _value = memory.readByte(_address);
-        
-        int _add = carry << 7;
-        
-        carry = _value & 1;
-        _value = (_value >> 1) + _add;
-        
-        memory.writeByte(_value, _address);
-        
-        negative = (_value >> 7) & 1;
-        not_zero = _value & 0xFF;
-    }
-
-    // Rotate Right
-    private void opcode_ROR_absolute_x()
-    {
-        int _address = absoluteX();
-        int _value = memory.readByte(_address);
-        
-        int _add = carry << 7;
-        
-        carry = _value & 1;
-        _value = (_value >> 1) + _add;
-        
-        memory.writeByte(_value, _address);
+        memory.writeByte(_value, anAddress);
         
         negative = (_value >> 7) & 1;
         not_zero = _value & 0xFF;
     }
     
     // ROR value then ADC value
-    private void opcode_RRA_zero_page()
+    private void opcode_RRA(int anAddress)
     {
-        int _address = zeroPage();
-        int _value = memory.readByte(_address);
+        int _value = memory.readByte(anAddress);
         
         int _add = carry << 7;
         
         carry = _value & 1;
         _value = (_value >> 1) + _add;
         
-        memory.writeByte(_value, _address);
-        
-        int _temp = a + _value + carry;
-        
-        carry = _temp > 0xFF ? 1 : 0;
-        not_zero = _temp & 0xFF;
-        overflow = ((!(((a ^ _value) & 0x80) != 0) && (((a ^ _temp) & 0x80)) != 0) ? 1 : 0);
-        negative = (_temp >> 7) & 1;
-        
-        a = _temp & 0xFF;
-    }
-
-    // ROR value then ADC value
-    private void opcode_RRA_zero_page_x()
-    {
-        int _address = zeroPageX();
-        int _value = memory.readByte(_address);
-        
-        int _add = carry << 7;
-        
-        carry = _value & 1;
-        _value = (_value >> 1) + _add;
-        
-        memory.writeByte(_value, _address);
-        
-        int _temp = a + _value + carry;
-        
-        carry = _temp > 0xFF ? 1 : 0;
-        not_zero = _temp & 0xFF;
-        overflow = ((!(((a ^ _value) & 0x80) != 0) && (((a ^ _temp) & 0x80)) != 0) ? 1 : 0);
-        negative = (_temp >> 7) & 1;
-        
-        a = _temp & 0xFF;
-    }
-
-    // ROR value then ADC value
-    private void opcode_RRA_absolute()
-    {
-        int _address = absolute();
-        int _value = memory.readByte(_address);
-        
-        int _add = carry << 7;
-        
-        carry = _value & 1;
-        _value = (_value >> 1) + _add;
-        
-        memory.writeByte(_value, _address);
-        
-        int _temp = a + _value + carry;
-        
-        carry = _temp > 0xFF ? 1 : 0;
-        not_zero = _temp & 0xFF;
-        overflow = ((!(((a ^ _value) & 0x80) != 0) && (((a ^ _temp) & 0x80)) != 0) ? 1 : 0);
-        negative = (_temp >> 7) & 1;
-        
-        a = _temp & 0xFF;
-    }
-
-    // ROR value then ADC value
-    private void opcode_RRA_absolute_x()
-    {
-        int _address = absoluteX();
-        int _value = memory.readByte(_address);
-        
-        int _add = carry << 7;
-        
-        carry = _value & 1;
-        _value = (_value >> 1) + _add;
-        
-        memory.writeByte(_value, _address);
-        
-        int _temp = a + _value + carry;
-        
-        carry = _temp > 0xFF ? 1 : 0;
-        not_zero = _temp & 0xFF;
-        overflow = ((!(((a ^ _value) & 0x80) != 0) && (((a ^ _temp) & 0x80)) != 0) ? 1 : 0);
-        negative = (_temp >> 7) & 1;
-        
-        a = _temp & 0xFF;
-    }
-
-    // ROR value then ADC value
-    private void opcode_RRA_absolute_y()
-    {
-        int _address = absoluteY();
-        int _value = memory.readByte(_address);
-        
-        int _add = carry << 7;
-        
-        carry = _value & 1;
-        _value = (_value >> 1) + _add;
-        
-        memory.writeByte(_value, _address);
-        
-        int _temp = a + _value + carry;
-        
-        carry = _temp > 0xFF ? 1 : 0;
-        not_zero = _temp & 0xFF;
-        overflow = ((!(((a ^ _value) & 0x80) != 0) && (((a ^ _temp) & 0x80)) != 0) ? 1 : 0);
-        negative = (_temp >> 7) & 1;
-        
-        a = _temp & 0xFF;
-    }
-
-    // ROR value then ADC value
-    private void opcode_RRA_indirect_x()
-    {
-        int _address = indirectX();
-        int _value = memory.readByte(_address);
-        
-        int _add = carry << 7;
-        
-        carry = _value & 1;
-        _value = (_value >> 1) + _add;
-        
-        memory.writeByte(_value, _address);
-        
-        int _temp = a + _value + carry;
-        
-        carry = _temp > 0xFF ? 1 : 0;
-        not_zero = _temp & 0xFF;
-        overflow = ((!(((a ^ _value) & 0x80) != 0) && (((a ^ _temp) & 0x80)) != 0) ? 1 : 0);
-        negative = (_temp >> 7) & 1;
-        
-        a = _temp & 0xFF;
-    }
-
-    // ROR value then ADC value
-    private void opcode_RRA_indirect_y()
-    {
-        int _address = indirectY();
-        int _value = memory.readByte(_address);
-        
-        int _add = carry << 7;
-        
-        carry = _value & 1;
-        _value = (_value >> 1) + _add;
-        
-        memory.writeByte(_value, _address);
+        memory.writeByte(_value, anAddress);
         
         int _temp = a + _value + carry;
         
@@ -2127,139 +1172,15 @@ public class MOS6502
     }
 
     // Store A and X bitwise
-    private void opcode_SAX_zero_page()
+    private void opcode_SAX(int anAddress)
     {
-        memory.writeByte(a & x, zeroPage());
-    }
-
-    // Store A and X bitwise
-    private void opcode_SAX_zero_page_y()
-    {
-        memory.writeByte(a & x, zeroPageY());
-    }
-
-    // Store A and X bitwise
-    private void opcode_SAX_absolute()
-    {
-        memory.writeByte(a & x, absolute());
-    }
-
-    // Store A and X bitwise
-    private void opcode_SAX_indirect_x()
-    {
-        memory.writeByte(a & x, indirectX());
-    }
-    
-    // Subtract with Carry
-    private void opcode_SBC_immediate()
-    {
-        int _address = immediate();
-        int _value = memory.readByte(_address);
-        int _temp = a - _value - (1 - carry);
-        
-        carry = _temp < 0 ? 0 : 1;
-        not_zero = _temp & 0xFF;
-        overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
-        negative = (_temp >> 7) & 1;
-        
-        a = _temp & 0xFF;
+        memory.writeByte(a & x, anAddress);
     }
 
     // Subtract with Carry
-    private void opcode_SBC_zero_page()
+    private void opcode_SBC(int anAddress)
     {
-        int _address = zeroPage();
-        int _value = memory.readByte(_address);
-        int _temp = a - _value - (1 - carry);
-        
-        carry = _temp < 0 ? 0 : 1;
-        not_zero = _temp & 0xFF;
-        overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
-        negative = (_temp >> 7) & 1;
-        
-        a = _temp & 0xFF;
-    }
-
-    // Subtract with Carry
-    private void opcode_SBC_zero_page_x()
-    {
-        int _address = zeroPageX();
-        int _value = memory.readByte(_address);
-        int _temp = a - _value - (1 - carry);
-        
-        carry = _temp < 0 ? 0 : 1;
-        not_zero = _temp & 0xFF;
-        overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
-        negative = (_temp >> 7) & 1;
-        
-        a = _temp & 0xFF;
-    }
-
-    // Subtract with Carry
-    private void opcode_SBC_absolute()
-    {
-        int _address = absolute();
-        int _value = memory.readByte(_address);
-        int _temp = a - _value - (1 - carry);
-        
-        carry = _temp < 0 ? 0 : 1;
-        not_zero = _temp & 0xFF;
-        overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
-        negative = (_temp >> 7) & 1;
-        
-        a = _temp & 0xFF;
-    }
-
-    // Subtract with Carry
-    private void opcode_SBC_absolute_x()
-    {
-        int _address = absoluteX();
-        int _value = memory.readByte(_address);
-        int _temp = a - _value - (1 - carry);
-        
-        carry = _temp < 0 ? 0 : 1;
-        not_zero = _temp & 0xFF;
-        overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
-        negative = (_temp >> 7) & 1;
-        
-        a = _temp & 0xFF;
-    }
-
-    // Subtract with Carry
-    private void opcode_SBC_absolute_y()
-    {
-        int _address = absoluteY();
-        int _value = memory.readByte(_address);
-        int _temp = a - _value - (1 - carry);
-        
-        carry = _temp < 0 ? 0 : 1;
-        not_zero = _temp & 0xFF;
-        overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
-        negative = (_temp >> 7) & 1;
-        
-        a = _temp & 0xFF;
-    }
-
-    // Subtract with Carry
-    private void opcode_SBC_indirect_x()
-    {
-        int _address = indirectX();
-        int _value = memory.readByte(_address);
-        int _temp = a - _value - (1 - carry);
-        
-        carry = _temp < 0 ? 0 : 1;
-        not_zero = _temp & 0xFF;
-        overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
-        negative = (_temp >> 7) & 1;
-        
-        a = _temp & 0xFF;
-    }
-
-    // Subtract with Carry
-    private void opcode_SBC_indirect_y()
-    {
-        int _address = indirectY();
-        int _value = memory.readByte(_address);
+        int _value = memory.readByte(anAddress);
         int _temp = a - _value - (1 - carry);
         
         carry = _temp < 0 ? 0 : 1;
@@ -2289,117 +1210,14 @@ public class MOS6502
     }
 
     // ASL value then ORA value
-    private void opcode_SLO_zero_page()
+    private void opcode_SLO(int anAddress)
     {
-        int _address = zeroPage();
-        int _value = memory.readByte(_address);
+        int _value = memory.readByte(anAddress);
         
         carry = (_value >> 7) & 1;
         _value = (_value << 1) & 0xFF;
         
-        memory.writeByte(_value, _address);
-        
-        a |=  _value;
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // ASL value then ORA value
-    private void opcode_SLO_zero_page_x()
-    {
-        int _address = zeroPageX();
-        int _value = memory.readByte(_address);
-        
-        carry = (_value >> 7) & 1;
-        _value = (_value << 1) & 0xFF;
-        
-        memory.writeByte(_value, _address);
-        
-        a |=  _value;
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // ASL value then ORA value
-    private void opcode_SLO_absolute()
-    {
-        int _address = absolute();
-        int _value = memory.readByte(_address);
-        
-        carry = (_value >> 7) & 1;
-        _value = (_value << 1) & 0xFF;
-        
-        memory.writeByte(_value, _address);
-        
-        a |=  _value;
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // ASL value then ORA value
-    private void opcode_SLO_absolute_x()
-    {
-        int _address = absoluteX();
-        int _value = memory.readByte(_address);
-        
-        carry = (_value >> 7) & 1;
-        _value = (_value << 1) & 0xFF;
-        
-        memory.writeByte(_value, _address);
-        
-        a |=  _value;
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // ASL value then ORA value
-    private void opcode_SLO_absolute_y()
-    {
-        int _address = absoluteY();
-        int _value = memory.readByte(_address);
-        
-        carry = (_value >> 7) & 1;
-        _value = (_value << 1) & 0xFF;
-        
-        memory.writeByte(_value, _address);
-        
-        a |=  _value;
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // ASL value then ORA value
-    private void opcode_SLO_indirect_x()
-    {
-        int _address = indirectX();
-        int _value = memory.readByte(_address);
-        
-        carry = (_value >> 7) & 1;
-        _value = (_value << 1) & 0xFF;
-        
-        memory.writeByte(_value, _address);
-        
-        a |=  _value;
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // ASL value then ORA value
-    private void opcode_SLO_indirect_y()
-    {
-        int _address = indirectY();
-        int _value = memory.readByte(_address);
-        
-        carry = (_value >> 7) & 1;
-        _value = (_value << 1) & 0xFF;
-        
-        memory.writeByte(_value, _address);
+        memory.writeByte(_value, anAddress);
         
         a |=  _value;
         
@@ -2408,117 +1226,14 @@ public class MOS6502
     }
     
     // Equivalent to LSR value then EOR value
-    private void opcode_SRE_zero_page()
+    private void opcode_SRE(int anAddress)
     {
-        int _address = zeroPage();
-        int _value = memory.readByte(_address);
+        int _value = memory.readByte(anAddress);
         
         carry = _value & 1; // old bit 0       
         _value >>= 1;
         
-        memory.writeByte(_value, _address);
-        
-        a ^=  _value;
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // Equivalent to LSR value then EOR value
-    private void opcode_SRE_zero_page_x()
-    {
-        int _address = zeroPageX();
-        int _value = memory.readByte(_address);
-        
-        carry = _value & 1; // old bit 0       
-        _value >>= 1;
-        
-        memory.writeByte(_value, _address);
-        
-        a ^=  _value;
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // Equivalent to LSR value then EOR value
-    private void opcode_SRE_absolute()
-    {
-        int _address = absolute();
-        int _value = memory.readByte(_address);
-        
-        carry = _value & 1; // old bit 0       
-        _value >>= 1;
-        
-        memory.writeByte(_value, _address);
-        
-        a ^=  _value;
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // Equivalent to LSR value then EOR value
-    private void opcode_SRE_absolute_x()
-    {
-        int _address = absoluteX();
-        int _value = memory.readByte(_address);
-        
-        carry = _value & 1; // old bit 0       
-        _value >>= 1;
-        
-        memory.writeByte(_value, _address);
-        
-        a ^=  _value;
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // Equivalent to LSR value then EOR value
-    private void opcode_SRE_absolute_y()
-    {
-        int _address = absoluteY();
-        int _value = memory.readByte(_address);
-        
-        carry = _value & 1; // old bit 0       
-        _value >>= 1;
-        
-        memory.writeByte(_value, _address);
-        
-        a ^=  _value;
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // Equivalent to LSR value then EOR value
-    private void opcode_SRE_indirect_x()
-    {
-        int _address = indirectX();
-        int _value = memory.readByte(_address);
-        
-        carry = _value & 1; // old bit 0       
-        _value >>= 1;
-        
-        memory.writeByte(_value, _address);
-        
-        a ^=  _value;
-        
-        not_zero = a & 0xFF;
-        negative = (a >> 7) & 1;
-    }
-
-    // Equivalent to LSR value then EOR value
-    private void opcode_SRE_indirect_y()
-    {
-        int _address = indirectY();
-        int _value = memory.readByte(_address);
-        
-        carry = _value & 1; // old bit 0       
-        _value >>= 1;
-        
-        memory.writeByte(_value, _address);
+        memory.writeByte(_value, anAddress);
         
         a ^=  _value;
         
@@ -2527,84 +1242,21 @@ public class MOS6502
     }
     
     // Store Accumulator
-    private void opcode_STA_zero_page()
+    private void opcode_STA(int anAddress)
     {
-        memory.writeByte(a, zeroPage());        
-    }
-
-    // Store Accumulator
-    private void opcode_STA_zero_page_x()
-    {
-        memory.writeByte(a, zeroPageX());
-    }
-
-    // Store Accumulator
-    private void opcode_STA_absolute()
-    {
-        memory.writeByte(a, absolute());
-    }
-
-    // Store Accumulator
-    private void opcode_STA_absolute_x()
-    {
-        memory.writeByte(a, absoluteX());
-    }
-
-    // Store Accumulator
-    private void opcode_STA_absolute_y()
-    {
-        memory.writeByte(a, absoluteY());
-    }
-
-    // Store Accumulator
-    private void opcode_STA_indirect_x()
-    {
-        memory.writeByte(a, indirectX());        
-    }
-
-    // Store Accumulator
-    private void opcode_STA_indirect_y()
-    {
-        memory.writeByte(a, indirectY());
+        memory.writeByte(a, anAddress);        
     }
 
     // Store X register
-    private void opcode_STX_zero_page()
+    private void opcode_STX(int anAddress)
     {
-        memory.writeByte(x, zeroPage());
-    }
-
-    // Store X register
-    private void opcode_STX_zero_page_y()
-    {
-        memory.writeByte(x, zeroPageY());
-    }
-
-    // Store X register
-    private void opcode_STX_absolute()
-    {
-        memory.writeByte(x, absolute());        
+        memory.writeByte(x, anAddress);
     }
 
     // Store Y Register
-    private void opcode_STY_zero_page()
+    private void opcode_STY(int anAddress)
     {
-        int _address = zeroPage();
-        memory.writeByte(y, _address);        
-    }
-
-    // Store Y Register
-    private void opcode_STY_zero_page_x()
-    {
-        int _address = zeroPageX();
-        memory.writeByte(y, _address);
-    }
-
-    // Store Y Register
-    private void opcode_STY_absolute()
-    {
-        int _address = absolute();
-        memory.writeByte(y, _address);
+        memory.writeByte(y, anAddress);        
     }
 
     // Transfer Accumulator to X
