@@ -607,51 +607,33 @@ public class MOS6502
     // Branch if Carry Clear
     private void opcode_BCC_relative()
     {
+        int _address = relative();        
         if(carry == 0)
         {
-            int _address = relative();
             int _value = memory.readByte(_address);
-            
-            int _relative = asSignedByte(_value);
-            pc += _relative;
-        }
-        else
-        {
-            pc++;
+            pc += asSignedByte(_value);
         }
     }
  
     // Branch if Carry Set
     private void opcode_BCS_relative()
     {
+        int _address = relative();
         if(carry > 0)
         {
-            int _address = relative();
             int _value = memory.readByte(_address);
-            
-            int _relative = asSignedByte(_value); 
-            pc += _relative;
-        }
-        else
-        {
-            pc++;
+            pc += asSignedByte(_value);
         }
     }
 
     // Branch if Equal
     private void opcode_BEQ_relative()
     {
+        int _address = relative();
         if(isZeroFlagSet())
         {            
-            int _address = relative();
-            int _value = memory.readByte(_address);
-            
-            int _relative = asSignedByte(_value);
-            pc += _relative;
-        }
-        else
-        {
-            pc++;
+            int _value = memory.readByte(_address);            
+            pc += asSignedByte(_value);
         }
     }
 
@@ -669,51 +651,33 @@ public class MOS6502
     // Branch if Minus
     private void opcode_BMI_relative()
     {
+        int _address = relative();
     	if(negative != 0)
     	{
-    	    int _address = relative();
-            int _value = memory.readByte(_address);
-            
-            int _relative = asSignedByte(_value);
-    		pc += _relative;
-    	}
-    	else
-    	{
-    		pc++;
+    	    int _value = memory.readByte(_address);
+    		pc += asSignedByte(_value);
     	}
     }
 
     // Branch if Not Equal
     private void opcode_BNE_relative()
     {
+        int _address = relative();
         if(!isZeroFlagSet())
         {            
-            int _address = relative();
             int _value = memory.readByte(_address);
-            
-            int _relative = asSignedByte(_value);
-            pc += _relative;
-        }
-        else
-        {
-            pc++;
+            pc += asSignedByte(_value);
         }
     }
 
     // Branch if Positive
     private void opcode_BPL_relative()
     {
+        int _address = relative();
         if(negative == 0)
         {
-            int _address = relative();
             int _value = memory.readByte(_address);
-            
-            int _relative = asSignedByte(_value);
-            pc += _relative;
-        }
-        else
-        {
-            pc++;
+            pc += asSignedByte(_value);
         }
     }
 
@@ -725,34 +689,22 @@ public class MOS6502
     // Branch if Overflow Clear
     private void opcode_BVC_relative()
     {
+        int _address = relative();
         if(overflow == 0)
-        {
-            int _address = relative();
-            int _value = memory.readByte(_address);
-            
-            int _relative = asSignedByte(_value);
-            pc += _relative;
-        }
-        else
-        {
-            pc++;
+        {   
+            int _value = memory.readByte(_address);            
+            pc += asSignedByte(_value);
         }
     }
 
     // Branch if Overflow Set
     private void opcode_BVS_relative()
     {
+        int _address = relative();
         if(overflow != 0)
         {
-            int _address = relative();
             int _value = memory.readByte(_address);
-            
-            int _relative = asSignedByte(_value);
-            pc += _relative;
-        }
-        else
-        {
-            pc++;
+            pc += asSignedByte(_value);
         }
     }
 
