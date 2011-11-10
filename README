@@ -15,4 +15,3 @@ TODOs
 
 * Try first GWT compile with custom ROM loading
 * Processor status register cleanup
-* Opcode implementation refactor to remove duplication
