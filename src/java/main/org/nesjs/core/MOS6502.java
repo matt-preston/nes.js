@@ -689,7 +689,11 @@ public class MOS6502
 
     private void opcode_BRK_implied()
     {
-        throw new RuntimeException("opcode not implemented [opcode_BRK]");
+        pushWord(pc);
+        push(p);
+        
+        pc = readWord(0xFFFE); // interrupt vector
+        brk = 1;
     }
 
     // Branch if Overflow Clear
@@ -728,7 +732,7 @@ public class MOS6502
 
     private void opcode_CLI_implied()
     {
-        throw new RuntimeException("opcode not implemented [opcode_CLI]");
+        interruptDisable = 0;
     }
 
     // Clear Overflow Flag
