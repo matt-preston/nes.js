@@ -1,6 +1,13 @@
 package org.nesjs.core;
 
 
+/**
+ * Implements iNes Mapper 000 memory mapping
+ *  
+ * iNES Mapper 000 is used to designate a board with up to 32 KiB PRG ROM, 8 KiB CHR ROM. 
+ *  
+ * @author Matt
+ */
 public class Memory
 {
     public final int[] lowMem = new int[0x0800];
@@ -36,13 +43,13 @@ public class Memory
             return byteAtIndex(prom, _address);
         }
 
-        System.out.println("Don't know how to read from memory address [" + Utils.toHexString(_address) + "]");
-
-        return 0;  // TODO
+        throw new RuntimeException("Don't know how to read from memory address [" + Utils.toHexString(_address) + "]");
     }
     
     public final void writeByte(int aByte, int anAddress)
     {
+        assert aByte <= 0xFF;
+        
         if (anAddress < 0x2000)
         {
             // Low memory 2KB (mirrored 3 times)
@@ -53,9 +60,23 @@ public class Memory
             // Program ROM
             prom[anAddress] = aByte;
         }
+        else if (anAddress < 0x2008)
+        {
+            // PPU registers
+            System.out.printf("Don't know how to write [%s] to PPU registers [%s]\n", Utils.toHexString(aByte), Utils.toHexString(anAddress));
+        }
+        else if (anAddress < 0x4000)
+        {
+            // Mirrors of of 0x2000 every 8 bytes
+            System.out.printf("Don't know how to write [%s] to PPU register mirrors [%s]\n", Utils.toHexString(aByte), Utils.toHexString(anAddress));
+        }
         else
         {
-            System.out.println("Don't know how to write to memory at address [" + Utils.toHexString(anAddress) + "]");
+            // Must be between 0x4000 and 0x4018
+            assert anAddress > 0x3FFF && anAddress < 0x4018;
+            
+            // NES APU and I/O registers            
+            System.out.printf("Don't know how to write [%s] to APU and I/O registers [%s]\n", Utils.toHexString(aByte), Utils.toHexString(anAddress));
         }
     }
     

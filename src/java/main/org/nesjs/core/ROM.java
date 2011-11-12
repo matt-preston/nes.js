@@ -21,7 +21,7 @@ public class ROM
              (_header[3] == 0x1A)))   // <CR>
         {
             // Invalid ROM header.
-            System.out.println("Invalid ROM header");
+            throw new Exception("Invalid ROM header");
         }
         
         int _romCount   = _header[4];
@@ -30,7 +30,12 @@ public class ROM
         //boolean _batteryRam = (_header[6] & 2) != 0;
         //boolean _trainer    = (_header[6] & 4) != 0;
         //boolean _fourScreen = (_header[6] & 8) != 0;
-        //int _mapperType = (_header[6] >> 4) | (_header[7] & 0xF0);
+        int _mapperType = (_header[6] >> 4) | (_header[7] & 0xF0);
+        
+        if(_mapperType != 0)
+        {
+            throw new Exception("Can't handle mapper type [" + _mapperType + "] ROMs");
+        }
         
          // Load PRG-ROM banks:
         int _offset = 16;
