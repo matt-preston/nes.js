@@ -577,9 +577,15 @@ public final class MOS6502
         return memory.readByte(anAddress) | (memory.readByte(aSecondAddress) << 8);
     }
     
-    private final int asSignedByte(int aByte)
+    private final void branchOnCondition(boolean isBranch)
     {
-        return aByte < 0x80 ? aByte : aByte - 256;
+        int _address = relative();
+        if(isBranch)
+        {
+            int _value = memory.readByte(_address);
+            int _signedByte = _value < 0x80 ? _value : _value - 256;
+            pc += _signedByte;
+        }
     }
     
 //-------------------------------------------------------------
@@ -631,34 +637,19 @@ public final class MOS6502
     // Branch if Carry Clear
     private void opcode_BCC_relative()
     {
-        int _address = relative();        
-        if(!isCarryFlagSet())
-        {
-            int _value = memory.readByte(_address);
-            pc += asSignedByte(_value);
-        }
+        branchOnCondition(!isCarryFlagSet());
     }
  
     // Branch if Carry Set
     private void opcode_BCS_relative()
     {
-        int _address = relative();
-        if(isCarryFlagSet())
-        {
-            int _value = memory.readByte(_address);
-            pc += asSignedByte(_value);
-        }
+        branchOnCondition(isCarryFlagSet());
     }
 
     // Branch if Equal
     private void opcode_BEQ_relative()
     {
-        int _address = relative();
-        if(isZeroFlagSet())
-        {            
-            int _value = memory.readByte(_address);            
-            pc += asSignedByte(_value);
-        }
+        branchOnCondition(isZeroFlagSet());
     }
 
     // Bit Test
@@ -675,36 +666,22 @@ public final class MOS6502
     // Branch if Minus
     private void opcode_BMI_relative()
     {
-        int _address = relative();
-    	if(isNegativeFlagSet())
-    	{
-    	    int _value = memory.readByte(_address);
-    		pc += asSignedByte(_value);
-    	}
+        branchOnCondition(isNegativeFlagSet());
     }
 
     // Branch if Not Equal
     private void opcode_BNE_relative()
     {
-        int _address = relative();
-        if(!isZeroFlagSet())
-        {            
-            int _value = memory.readByte(_address);
-            pc += asSignedByte(_value);
-        }
+        branchOnCondition(!isZeroFlagSet());
     }
 
     // Branch if Positive
     private void opcode_BPL_relative()
     {
-        int _address = relative();
-        if(!isNegativeFlagSet())
-        {
-            int _value = memory.readByte(_address);
-            pc += asSignedByte(_value);
-        }
+        branchOnCondition(!isNegativeFlagSet());
     }
 
+    // Force Interrupt
     private void opcode_BRK_implied()
     {
         pushWord(pc);
@@ -717,25 +694,15 @@ public final class MOS6502
     // Branch if Overflow Clear
     private void opcode_BVC_relative()
     {
-        int _address = relative();
-        if(!isOverflowFlagSet())
-        {   
-            int _value = memory.readByte(_address);            
-            pc += asSignedByte(_value);
-        }
+        branchOnCondition(!isOverflowFlagSet());
     }
 
     // Branch if Overflow Set
     private void opcode_BVS_relative()
     {
-        int _address = relative();
-        if(isOverflowFlagSet())
-        {
-            int _value = memory.readByte(_address);
-            pc += asSignedByte(_value);
-        }
+        branchOnCondition(isOverflowFlagSet());
     }
-
+    
     // Clear Carry Flag
     private void opcode_CLC_implied()
     {
@@ -748,6 +715,7 @@ public final class MOS6502
         decimal = 0;
     }
 
+    // Clear Interrupt Disable
     private void opcode_CLI_implied()
     {
         interruptDisable = 0;
@@ -964,16 +932,13 @@ public final class MOS6502
     // Push Processor Status
     private void opcode_PHP_implied()
     {
-        /**
-         * TODO, need a way of easily setting brk to 1 in the
-         * pushed processor status 
-         */
+        // TODO, need a way of easily setting brk to 1 in the pushed processor status
         int _oldBrk = brk;
         brk = 1;
         
         push(getRegisterP());
         
-        // Restore brk to what it was before - the needs to be an easier method
+        // Restore brk to what it was before - there needs to be an easier method
         brk = _oldBrk;
     }
 
