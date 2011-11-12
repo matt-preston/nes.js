@@ -21,7 +21,7 @@ public final class MOS6502
     private static final int IRQ_VECTOR   = 0xFFFE;
     
     private int a, x, y;
-    private int sp, pc;    
+    private int s, pc;    
     private int carry, not_zero, interruptDisable, decimal, overflow, negative;
     
     private Memory memory;
@@ -50,7 +50,7 @@ public final class MOS6502
          * TODO, stack pointer should run between 0x0100 and 0x01FF, using only the lower 8 bits.
          *       ON reset, the pc and p should be pushed onto the stack.
          */
-        sp = 0x01FF - 2;
+        s = 0x01FF - 2;
         pc = readWord(RESET_VECTOR);
     }
     
@@ -78,9 +78,9 @@ public final class MOS6502
         return getRegisterP(0);
     }
     
-    public final int getRegisterSP()
+    public final int getRegisterS()
     {
-        return sp;
+        return s;
     }
     
     public final int getRegisterPC()
@@ -543,13 +543,13 @@ public final class MOS6502
 
     private final void push(int aByte)
     {
-        memory.writeByte(aByte, sp--);
+        memory.writeByte(aByte, s--);
     }
     
     private final int pop()
     {
-        sp = 0x0100 | (++sp & 0xFF);
-        return memory.readByte(sp);
+        s = 0x0100 | (++s & 0xFF);
+        return memory.readByte(s);
     }
     
     private final void pushWord(int aWord)
@@ -1173,7 +1173,7 @@ public final class MOS6502
     // Transfer Stack Pointer to X
     private void opcode_TSX_implied()
     {
-        x = sp & 0xFF; // Only transfer the lower 8 bits        
+        x = s & 0xFF; // Only transfer the lower 8 bits        
         setNZFlag(x);
     }
    
@@ -1187,7 +1187,7 @@ public final class MOS6502
     // Transfer X to Stack Pointer
     private void opcode_TXS_implied()
     {
-        sp = x | 0x0100;
+        s = x | 0x0100;
     }
 
     // Transfer Y to Accumulator

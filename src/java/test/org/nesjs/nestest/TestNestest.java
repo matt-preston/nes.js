@@ -30,7 +30,7 @@ public class TestNestest
             assertHexEquals("X not valid at step [" + _stepCount + "]", _state.x, _6502.getRegisterX());
             assertHexEquals("Y not valid at step [" + _stepCount + "]", _state.y, _6502.getRegisterY());
             assertPEquals("P not valid at step [" + _stepCount + "]", _state.p, _6502.getRegisterP());
-            assertHexEquals("SP not valid at step [" + _stepCount + "]", _state.sp, _6502.getRegisterSP());
+            assertHexEquals("SP not valid at step [" + _stepCount + "]", _state.s, _6502.getRegisterS());
             
             _6502.step();            
             _stepCount++;
@@ -90,9 +90,9 @@ public class TestNestest
             int _p = _scanner.nextInt(16);
             
             _scanner.skip("\\s+SP:");
-            int _sp = _scanner.nextInt(16);
+            int _s = _scanner.nextInt(16);
             
-            _states.add(new CPUState(_pc, _op, _sp, _a, _x, _y, _p));
+            _states.add(new CPUState(_pc, _op, _s, _a, _x, _y, _p));
         }
         
         return _states;
@@ -102,17 +102,17 @@ public class TestNestest
     private class CPUState
     {
         public int pc;        
-        public int sp;
+        public int s;
         
         public int a;
         public int x;
         public int y;
         public int p;
         
-        public CPUState(int aPc, int aOpcode, int aSp, int aA, int aX, int aY, int aP)
+        public CPUState(int aPc, int aOpcode, int aS, int aA, int aX, int aY, int aP)
         {
             pc = aPc;            
-            sp = aSp;
+            s = aS;
             a = aA;
             x = aX;
             y = aY;
