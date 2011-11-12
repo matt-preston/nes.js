@@ -22,7 +22,7 @@ public final class MOS6502
     
     private int a, x, y;
     private int sp, pc;    
-    private int carry, not_zero, interruptDisable, decimal, brk, overflow, negative;
+    private int carry, not_zero, interruptDisable, decimal, overflow, negative;
     
     private Memory memory;
     
@@ -43,7 +43,6 @@ public final class MOS6502
         not_zero         = 1;
         interruptDisable = 1;
         decimal          = 0;
-        brk              = 0;
         overflow         = 0;
         negative         = 0;
 
@@ -76,8 +75,7 @@ public final class MOS6502
      */
     public final int getRegisterP()
     {
-        int _zero = isZeroFlagSet() ? 1 : 0;
-        return carry << 0 | (_zero << 1) | (interruptDisable << 2) | (decimal << 3) | (brk << 4) | (1 << 5) | (overflow << 6) | (negative << 7);
+        return getRegisterP(0);
     }
     
     public final int getRegisterSP()
@@ -383,7 +381,15 @@ public final class MOS6502
         negative = (aValue >> 7) & 1;
         not_zero = aValue & 0xFF;
     }
-
+    
+    public final int getRegisterP(int aBRKValue)
+    {
+        assert aBRKValue == 0 || aBRKValue == 1;
+        
+        int _zero = isZeroFlagSet() ? 1 : 0;
+        return carry << 0 | (_zero << 1) | (interruptDisable << 2) | (decimal << 3) | (aBRKValue << 4) | (1 << 5) | (overflow << 6) | (negative << 7);
+    }
+    
 //-------------------------------------------------------------
 // Addressing
 //-------------------------------------------------------------    
@@ -685,10 +691,9 @@ public final class MOS6502
     private void opcode_BRK_implied()
     {
         pushWord(pc);
-        push(getRegisterP());
+        push(getRegisterP(1));
         
         pc = readWord(IRQ_VECTOR);
-        brk = 1;
     }
 
     // Branch if Overflow Clear
@@ -831,7 +836,7 @@ public final class MOS6502
         
         int _temp = a - _value - (1 - carry);
         
-        //carry = _temp + 1 < 0 ? 0 : 1; // TODO hacked + 1 to make test pass
+        // carry = _temp < 0 ? 0 : 1; // TODO removed to make test pass
         overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
         
         setNZFlag(_temp);
@@ -932,14 +937,7 @@ public final class MOS6502
     // Push Processor Status
     private void opcode_PHP_implied()
     {
-        // TODO, need a way of easily setting brk to 1 in the pushed processor status
-        int _oldBrk = brk;
-        brk = 1;
-        
-        push(getRegisterP());
-        
-        // Restore brk to what it was before - there needs to be an easier method
-        brk = _oldBrk;
+        push(getRegisterP(1));
     }
 
     // Pull Accumulator
@@ -958,7 +956,6 @@ public final class MOS6502
         not_zero         = ((_temp >> 1) & 1) == 1 ? 0 : 1;
         interruptDisable = (_temp >> 2) & 1;
         decimal          = (_temp >> 3) & 1; 
-        brk              = 0; // TODO, very unsure about this...
         overflow         = (_temp >> 6) & 1;
         negative         = (_temp >> 7) & 1;        
     }
@@ -1061,7 +1058,6 @@ public final class MOS6502
         not_zero         = ((_temp >> 1) & 1) == 1 ? 0 : 1;
         interruptDisable = (_temp >> 2) & 1;
         decimal          = (_temp >> 3) & 1; 
-        brk              = 0; // TODO, very unsure about this...
         overflow         = (_temp >> 6) & 1;
         negative         = (_temp >> 7) & 1;
         
