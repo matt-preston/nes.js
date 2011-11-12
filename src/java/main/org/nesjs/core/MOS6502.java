@@ -14,39 +14,26 @@ package org.nesjs.core;
  *           x, y: index registers
  *           p: processor status
  */
-public class MOS6502
+public final class MOS6502
 {
-    public int a;
-    public int x;
-    public int y;
-    public int p;
+    private static final int NMI_VECTOR   = 0xFFFA;
+    private static final int RESET_VECTOR = 0xFFFC;
+    private static final int IRQ_VECTOR   = 0xFFFE;
     
-    public int sp;
-    public int pc;
-    
-    public int carry;
-    public int not_zero;
-    public int interruptDisable;
-    public int decimal;
-    public int brk;
-    public int overflow;
-    public int negative;
+    private int a, x, y;
+    private int sp, pc;    
+    private int carry, not_zero, interruptDisable, decimal, brk, overflow, negative;
     
     private Memory memory;
     
     public MOS6502(Memory aMemory)
     {
-    	memory = aMemory;
+    	memory = aMemory;    	
+    	memory.resetLowMemory();
     }
     
-    public void init()
+    public final void reset()
     {
-    }
-    
-    public void reset()
-    {
-        memory.resetLowMemory();
-        
         a = 0;
         x = 0;
         y = 0;
@@ -60,23 +47,60 @@ public class MOS6502
         overflow         = 0;
         negative         = 0;
 
-        // The processor status, based on the flags
-        setProcessorStatusRegisterFromFlags();
-
         /**
          * TODO, stack pointer should run between 0x0100 and 0x01FF, using only the lower 8 bits.
          *       ON reset, the pc and p should be pushed onto the stack.
          */
         sp = 0x01FF - 2;
-        pc = 0;
+        pc = readWord(RESET_VECTOR);
     }
     
-    public void step()
+    public final int getRegisterA()
+    {
+        return a;
+    }
+    
+    public final int getRegisterX()
+    {
+        return x;
+    }
+    
+    public final int getRegisterY()
+    {
+        return y;
+    }
+    
+    /**
+     * Status Register   7  6  5  4  3  2  1  0
+     *                   N  V  U  B  D  I  Z  C
+     */
+    public final int getRegisterP()
+    {
+        int _zero = isZeroFlagSet() ? 1 : 0;
+        return carry << 0 | (_zero << 1) | (interruptDisable << 2) | (decimal << 3) | (brk << 4) | (1 << 5) | (overflow << 6) | (negative << 7);
+    }
+    
+    public final int getRegisterSP()
+    {
+        return sp;
+    }
+    
+    public final int getRegisterPC()
+    {
+        return pc;
+    }
+    
+    public final void setRegisterPC(int aPC)
+    {
+        pc = aPC;
+    }
+    
+    public final void step()
     {
         execute(1);
     }
     
-    public int execute(int aNumberOfCycles)
+    public final int execute(int aNumberOfCycles)
     {
         int _clocksRemain = aNumberOfCycles;
 
@@ -325,21 +349,33 @@ public class MOS6502
             
             // Mask to 16 bit
             pc &= 0xFFFF;
-            
-            setProcessorStatusRegisterFromFlags();
         }
         
         return _clocksRemain;
     }
-   
     
 //-------------------------------------------------------------
 // Processor status flags
 //-------------------------------------------------------------     
     
-    private boolean isZeroFlagSet()
+    private final boolean isZeroFlagSet()
     {
         return not_zero == 0;
+    }
+    
+    private final boolean isCarryFlagSet()
+    {
+        return carry > 0;
+    }
+    
+    private final boolean isNegativeFlagSet()
+    {
+        return negative > 0;
+    }
+    
+    private final boolean isOverflowFlagSet()
+    {
+        return overflow > 0;
     }
     
     private final void setNZFlag(int aValue)
@@ -347,24 +383,6 @@ public class MOS6502
         negative = (aValue >> 7) & 1;
         not_zero = aValue & 0xFF;
     }
-    
-    /**
-     * [0] carry
-     * [1] zero
-     * [2] interrupt disable
-     * [3] decimal - not used 
-     * [4] break - probably not used
-     * [5] UNUSED - always set
-     * [6] overflow
-     * [7] negative
-     */
-    private void setProcessorStatusRegisterFromFlags()
-    {        
-        int _zero = isZeroFlagSet() ? 1 : 0;
-        
-        p = carry << 0 | (_zero << 1) | (interruptDisable << 2) | (decimal << 3) | (brk << 4) | (1 << 5) | (overflow << 6) | (negative << 7);        
-    }
-
 
 //-------------------------------------------------------------
 // Addressing
@@ -373,7 +391,7 @@ public class MOS6502
     /**
      * Immediate addressing allows the programmer to directly specify an 8 bit constant within the instruction. 
      */
-    public final int immediate()
+    private final int immediate()
     {
         return pc++;
     }
@@ -387,7 +405,7 @@ public class MOS6502
      * An assembler will automatically select zero page addressing mode if the operand evaluates to a zero page address
      * and the instruction supports the mode (not all do).
      */
-    public final int zeroPage()
+    private final int zeroPage()
     {        
         return memory.readByte(pc++);
     }
@@ -403,7 +421,7 @@ public class MOS6502
      * last example but with $FF in the X register then the accumulator will be loaded from $007F (e.g. $80 + $FF => $7F) 
      * and not $017F.
      */
-    public final int zeroPageX()
+    private final int zeroPageX()
     {
         return (memory.readByte(pc++) + x) & 0xFF;        
     }
@@ -413,7 +431,7 @@ public class MOS6502
      * zero page address from the instruction and adding the current value of the Y register to it. This mode can only be 
      * used with the LDX and STX instructions.
      */
-    public final int zeroPageY()
+    private final int zeroPageY()
     {
         return (memory.readByte(pc++) + y) & 0xFF;        
     }
@@ -424,7 +442,7 @@ public class MOS6502
      * is incremented during instruction execution by two the effective address range for the target instruction must be 
      * with -126 to +129 bytes of the branch.
      */
-    public final int relative()
+    private final int relative()
     {
         return pc++; 
     }
@@ -432,7 +450,7 @@ public class MOS6502
     /**
      * Instructions using absolute addressing contain a full 16 bit address to identify the target location.
      */
-    public final int absolute()
+    private final int absolute()
     {
         int _result = readWord(pc);
         pc += 2;
@@ -444,7 +462,7 @@ public class MOS6502
      * the 16 bit address from the instruction and added the contents of the X register. For example if X contains $92 
      * then an STA $2000,X instruction will store the accumulator at $2092 (e.g. $2000 + $92).
      */
-    public final int absoluteX()
+    private final int absoluteX()
     {
         int _result = readWord(pc) + x;
         pc += 2;
@@ -455,7 +473,7 @@ public class MOS6502
      * The Y register indexed absolute addressing mode is the same as the previous mode only with the contents of the Y 
      * register added to the 16 bit address from the instruction.
      */
-    public final int absoluteY()
+    private final int absoluteY()
     {
         int _result = readWord(pc) + y;
         pc += 2;
@@ -475,7 +493,7 @@ public class MOS6502
      * the MSB from $xx00. This is fixed in some later chips like the 65SC02 so for compatibility always ensure the indirect 
      * vector is not at the end of the page.
      */
-    public final int indirect()
+    private final int indirect()
     {
         int _address = readWord(pc++);
         
@@ -496,7 +514,7 @@ public class MOS6502
      * of the table is taken from the instruction and the X register added to it (with zero page wrap around) to give the 
      * location of the least significant byte of the target address.
      */
-    public final int indirectX()
+    private final int indirectX()
     {
         int _address = (memory.readByte(pc++) + x) & 0xFF;       
         return readWordZeroPageWrap(_address);
@@ -507,7 +525,7 @@ public class MOS6502
      * page location of the least significant byte of 16 bit address. The Y register is dynamically added to this value 
      * to generated the actual target address for operation.
      */
-    public final int indirectY()
+    private final int indirectY()
     {
         int _address = memory.readByte(pc++);
         return readWordZeroPageWrap(_address) + y;        
@@ -517,24 +535,24 @@ public class MOS6502
 // Stack
 //-------------------------------------------------------------    
 
-    private void push(int aByte)
+    private final void push(int aByte)
     {
         memory.writeByte(aByte, sp--);
     }
     
-    private int pop()
+    private final int pop()
     {
         sp = 0x0100 | (++sp & 0xFF);
         return memory.readByte(sp);
     }
     
-    private void pushWord(int aWord)
+    private final void pushWord(int aWord)
     {
         push((aWord >> 8) & 255);
         push(aWord & 255);
     }
     
-    private int popWord()
+    private final int popWord()
     {
         int _byte1 = pop();
         return (pop() << 8) | _byte1;
@@ -614,7 +632,7 @@ public class MOS6502
     private void opcode_BCC_relative()
     {
         int _address = relative();        
-        if(carry == 0)
+        if(!isCarryFlagSet())
         {
             int _value = memory.readByte(_address);
             pc += asSignedByte(_value);
@@ -625,7 +643,7 @@ public class MOS6502
     private void opcode_BCS_relative()
     {
         int _address = relative();
-        if(carry > 0)
+        if(isCarryFlagSet())
         {
             int _value = memory.readByte(_address);
             pc += asSignedByte(_value);
@@ -658,7 +676,7 @@ public class MOS6502
     private void opcode_BMI_relative()
     {
         int _address = relative();
-    	if(negative != 0)
+    	if(isNegativeFlagSet())
     	{
     	    int _value = memory.readByte(_address);
     		pc += asSignedByte(_value);
@@ -680,7 +698,7 @@ public class MOS6502
     private void opcode_BPL_relative()
     {
         int _address = relative();
-        if(negative == 0)
+        if(!isNegativeFlagSet())
         {
             int _value = memory.readByte(_address);
             pc += asSignedByte(_value);
@@ -690,9 +708,9 @@ public class MOS6502
     private void opcode_BRK_implied()
     {
         pushWord(pc);
-        push(p);
+        push(getRegisterP());
         
-        pc = readWord(0xFFFE); // interrupt vector
+        pc = readWord(IRQ_VECTOR);
         brk = 1;
     }
 
@@ -700,7 +718,7 @@ public class MOS6502
     private void opcode_BVC_relative()
     {
         int _address = relative();
-        if(overflow == 0)
+        if(!isOverflowFlagSet())
         {   
             int _value = memory.readByte(_address);            
             pc += asSignedByte(_value);
@@ -711,7 +729,7 @@ public class MOS6502
     private void opcode_BVS_relative()
     {
         int _address = relative();
-        if(overflow != 0)
+        if(isOverflowFlagSet())
         {
             int _value = memory.readByte(_address);
             pc += asSignedByte(_value);
@@ -953,9 +971,7 @@ public class MOS6502
         int _oldBrk = brk;
         brk = 1;
         
-        setProcessorStatusRegisterFromFlags();
-        
-        push(p);
+        push(getRegisterP());
         
         // Restore brk to what it was before - the needs to be an easier method
         brk = _oldBrk;
@@ -1141,7 +1157,7 @@ public class MOS6502
         
         memory.writeByte(_value, anAddress);
         
-        a |=  _value;
+        a |= _value;
         
         setNZFlag(a);
     }

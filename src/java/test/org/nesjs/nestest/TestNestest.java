@@ -18,21 +18,19 @@ public class TestNestest
     	Memory _memory = ROM.memoryWithROMFile("nestest.nes");
         MOS6502 _6502 = new MOS6502(_memory);
         
-        _6502.init();
-        _6502.reset();
-        
-        _6502.pc = 0xC000;
+        _6502.reset();        
+        _6502.setRegisterPC(0xC000);
 
         int _stepCount = 0;
         
         for (CPUState _state : getExpectedCpuStates())
         {
-            assertHexEquals("PC not valid at step [" + _stepCount + "]", _state.pc, _6502.pc);
-            assertHexEquals("A not valid at step [" + _stepCount + "]", _state.a, _6502.a);
-            assertHexEquals("X not valid at step [" + _stepCount + "]", _state.x, _6502.x);
-            assertHexEquals("Y not valid at step [" + _stepCount + "]", _state.y, _6502.y);
-            assertPEquals("P not valid at step [" + _stepCount + "]", _state.p, _6502.p);
-            assertHexEquals("SP not valid at step [" + _stepCount + "]", _state.sp, _6502.sp);
+            assertHexEquals("PC not valid at step [" + _stepCount + "]", _state.pc, _6502.getRegisterPC());
+            assertHexEquals("A not valid at step [" + _stepCount + "]", _state.a, _6502.getRegisterA());
+            assertHexEquals("X not valid at step [" + _stepCount + "]", _state.x, _6502.getRegisterX());
+            assertHexEquals("Y not valid at step [" + _stepCount + "]", _state.y, _6502.getRegisterY());
+            assertPEquals("P not valid at step [" + _stepCount + "]", _state.p, _6502.getRegisterP());
+            assertHexEquals("SP not valid at step [" + _stepCount + "]", _state.sp, _6502.getRegisterSP());
             
             _6502.step();            
             _stepCount++;
@@ -61,8 +59,8 @@ public class TestNestest
     {
         if(anExpected != anActual)
         {
-            String _expected = toHexString(anExpected) + " <" + Integer.toBinaryString(anExpected) + ">";
-            String _actual   = toHexString(anActual) + " <" + Integer.toBinaryString(anActual) + ">";
+            String _expected = ProcessorStatus.toString(anExpected) + " [" + Integer.toHexString(anExpected) + "]";
+            String _actual   = ProcessorStatus.toString(anActual) + " [" + Integer.toHexString(anActual) + "]";
             
             throw new ComparisonFailure(aMessage, _expected, _actual);
         }
