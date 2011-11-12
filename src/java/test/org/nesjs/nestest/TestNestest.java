@@ -13,7 +13,7 @@ import static org.nesjs.core.Utils.*;
 public class TestNestest
 {
     @Test
-    public void testNestestRom() throws Exception
+    public void testNestestRomAndCompareWithLog() throws Exception
     {
     	Memory _memory = ROM.memoryWithROMFile("nestest.nes");
         MOS6502 _6502 = new MOS6502(_memory);
@@ -41,8 +41,12 @@ public class TestNestest
         int _02h = _memory.readByte(0x02);
         int _03h = _memory.readByte(0x03);
         
-        System.out.println("0x02 => " + Utils.toHexString(_02h));
-        System.out.println("0x03 => " + Utils.toHexString(_03h));
+        /**
+         * Should both be 0x00 according to docs, must related to now I initialise the memory, as
+         * I put 0xFF in there and it is never modified. 
+         */
+        Assert.assertEquals(0xFF, _02h); 
+        Assert.assertEquals(0xFF, _03h);        
     }
     
     private void assertHexEquals(String aMessage, int anExpected, int anActual)
