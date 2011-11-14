@@ -15,7 +15,9 @@ public class TestNestest
     @Test
     public void testNestestRomAndCompareWithLog() throws Exception
     {
-    	Memory _memory = ROM.memoryWithROMFile("nestest.nes");
+        InputStream _in = getClass().getResourceAsStream("nestest.nes");
+    	Memory _memory = ROM.memoryWithROMInputStream(_in);
+    	
         MOS6502 _6502 = new MOS6502(_memory);
         
         _6502.reset();        
@@ -68,7 +70,8 @@ public class TestNestest
     
     private List<CPUState> getExpectedCpuStates() throws Exception
     {
-        Scanner _scanner = new Scanner(new File("nestest-simple.log"), "UTF-8");
+        InputStream _in = getClass().getResourceAsStream("nestest-simple.log");
+        Scanner _scanner = new Scanner(_in, "UTF-8");
         
         List<CPUState> _states = new ArrayList<CPUState>();
         

@@ -42,8 +42,30 @@ public class Memory
             // Program ROM
             return byteAtIndex(prom, _address);
         }
-
-        throw new RuntimeException("Don't know how to read from memory address [" + Utils.toHexString(_address) + "]");
+        else if (anAddress < 0x2008)
+        {
+            // PPU registers
+            System.out.printf("Don't know how to read from PPU registers [%s]\n", Utils.toHexString(anAddress));
+            
+            return 0; // TODO
+        }
+        else if (anAddress < 0x4000)
+        {
+            // Mirrors of of 0x2000 every 8 bytes
+            System.out.printf("Don't know how to read from PPU register mirrors [%s]\n", Utils.toHexString(anAddress));
+            
+            return 0; // TODO
+        }
+        else
+        {
+            // Must be between 0x4000 and 0x4018
+            assert anAddress > 0x3FFF && anAddress < 0x4018;
+            
+            // NES APU and I/O registers            
+            System.out.printf("Don't know how to read from APU and I/O registers [%s]\n", Utils.toHexString(anAddress));
+            
+            return 0; // TODO
+        }        
     }
     
     public final void writeByte(int aByte, int anAddress)

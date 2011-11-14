@@ -4,15 +4,23 @@ import java.io.*;
 
 public class ROM
 {
+    public static final Memory memoryWithROMInputStream(InputStream anInputStream) throws Exception
+    {
+        return memoryWithROMBytes(toByteArray(anInputStream));
+    }
+    
     public static final Memory memoryWithROMFile(String aFile) throws Exception
     {
-        byte[] _bytes = toByteArray(aFile);
-        
-         // Read the header
-        byte[] _header = new byte[16];
+        return memoryWithROMBytes(toByteArray(aFile));
+    }
+    
+    private static final Memory memoryWithROMBytes(int[] aBytes) throws Exception
+    {
+        // Read the header
+        int[] _header = new int[16];
         for(int _index = 0; _index < 16; _index++)
         {
-            _header[_index] = _bytes[_index];
+            _header[_index] = aBytes[_index];
         }
 
         if(!((_header[0] == 0x4E) &&  // N
@@ -37,9 +45,17 @@ public class ROM
             throw new Exception("Can't handle mapper type [" + _mapperType + "] ROMs");
         }
         
+        /**
+         * Mapper 000 should only have 1 or 2 banks
+         */
+        if(_romCount > 2)
+        {
+            throw new RuntimeException("Don't know how to handle " + _romCount + " rom banks");
+        }
+        
          // Load PRG-ROM banks:
         int _offset = 16;
-        int _bufferLength = _bytes.length;
+        int _bufferLength = aBytes.length;
 
         int[][] _prom = new int[_romCount][16384];
         
@@ -52,17 +68,23 @@ public class ROM
                     break;
                 }
 
-                _prom[_i][_j] = _bytes[_offset + _j];
+                _prom[_i][_j] = aBytes[_offset + _j];
             }
             _offset += 16384;
         }
 
         Memory _memory = new Memory();
         
-        // Load prom into memory - the default mapper uses only a single bank, so
-        // load it into both locations
-        loadRomBank(_prom[0], _memory.prom, 0x8000);
-        loadRomBank(_prom[0], _memory.prom, 0xC000);
+        if (_romCount > 1) 
+        {
+            loadRomBank(_prom[0], _memory.prom, 0x8000);
+            loadRomBank(_prom[1], _memory.prom, 0xC000);
+        }
+        else
+        {
+            loadRomBank(_prom[0], _memory.prom, 0x8000);
+            loadRomBank(_prom[0], _memory.prom, 0xC000);
+        }
         
         return _memory;
     }
@@ -72,19 +94,34 @@ public class ROM
         System.arraycopy(aBank, 0, aMemory, anAddress, 16384);
     }
     
-    private static byte[] toByteArray(String aFilename) throws Exception
+    private static int[] toByteArray(String aFilename) throws Exception
     {
-        FileInputStream _fin = new FileInputStream(aFilename);
-        
+        return toByteArray(new FileInputStream(aFilename));        
+    }
+    
+    private static int[] toByteArray(InputStream anInputStream) throws Exception
+    {
         int _byte;
         
         ByteArrayOutputStream _buffer = new ByteArrayOutputStream();
         
-        while((_byte = _fin.read()) > -1)
+        while((_byte = anInputStream.read()) > -1)
         {
             _buffer.write(_byte);
         }
         
-        return _buffer.toByteArray();
+        anInputStream.close();
+        
+        byte[] _bytes = _buffer.toByteArray();
+        
+        // We need unsigned bytes, so we can't use the normal byte type.
+        int[] _result = new int[_bytes.length];
+        
+        for (int _index = 0; _index < _bytes.length; _index++)
+        {
+            _result[_index] =  _bytes[_index] & 0xFF;
+        }
+        
+        return _result;
     }
 }

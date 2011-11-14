@@ -106,11 +106,11 @@ public final class MOS6502
         {
             _clocksRemain--;
 
-            System.out.print(Utils.toHexString(pc));
+            //System.out.print(Utils.toHexString(pc));
 
             int _opcode = memory.readByte(pc++);
 
-            System.out.printf(": %s [%s]\n", Utils.toHexString(_opcode), Opcodes.name(_opcode));
+            //System.out.printf(": %s [%s]\n", Utils.toHexString(_opcode), Opcodes.name(_opcode));
             
             switch(_opcode)
             {
