@@ -12,7 +12,7 @@ public class TestInstructions
     {
         runTestROM("01-implied.nes");
     }
-    
+        
     @Test
     public void test02Immediate() throws Exception
     {

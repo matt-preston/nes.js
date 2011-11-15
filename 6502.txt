@@ -47,6 +47,36 @@ Lets begin shall we?
 ======================================================================
 
 
+   ALR  -  Equivalent to AND #i then LSR A.
+           (undocumented)
+           
+						Flags Affected:
+						---------------      
+
+      Mnemonic   Addressing Mode       Opcode
+      ---------------------------------------
+
+      ALR        #aa                   4B
+      
+======================================================================
+
+
+   ANC  -  Does AND #i, setting N and Z flags based on the result. Then it copies N (bit 7) to C.
+           (undocumented)
+           
+						Flags Affected:
+						---------------
+      A and M -> A                              N, Z, C
+
+      Mnemonic   Addressing Mode       Opcode
+      ---------------------------------------
+
+      ANC        #aa                   0B
+      ANC        #aa                   2B
+      
+======================================================================
+
+
    AND  -  AND Memory with Accumulator
 						
 						Flags Affected:

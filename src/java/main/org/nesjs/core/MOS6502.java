@@ -122,6 +122,9 @@ public final class MOS6502
 	            case 0x79: opcode_ADC(absoluteY()); break;
 	            case 0x61: opcode_ADC(indirectX()); break;
 	            case 0x71: opcode_ADC(indirectY()); break;
+	            case 0x4B: opcode_ALR(immediate()); break;
+	            case 0x0B:
+	            case 0x2B: opcode_ANC(immediate()); break;
 	            case 0x29: opcode_AND(immediate()); break;
 	            case 0x25: opcode_AND(zeroPage()); break;
 	            case 0x35: opcode_AND(zeroPageX()); break;
@@ -614,7 +617,28 @@ public final class MOS6502
         carry = _temp > 0xFF ? 1 : 0;
         setNZFlag(_temp);
     }
+    
+    // Equivalent to AND #i then LSR A.  TODO not sure about this
+    private final void opcode_ALR(int anAddress)
+    {
+        a &= memory.readByte(anAddress);
+        
+        carry = a & 1; // old bit 0       
+        a >>= 1;
+        
+        not_zero = a;
+        negative = 0; 
+    }
  
+    // AND followed by Copy N (bit 7) to C.  TODO not sure about this
+    private final void opcode_ANC(int anAddress)
+    {
+    	 a &= memory.readByte(anAddress);
+         setNZFlag(a);
+         
+         carry = (a >> 7) & 1;
+    }
+    
     // Logical AND
     private void opcode_AND(int anAddress)
     {
