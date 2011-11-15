@@ -55,6 +55,52 @@ public class TestInstructions
         runTestROM("08-ind_y.nes");
     }
     
+    @Test
+    public void test09Branches() throws Exception
+    {
+        runTestROM("09-branches.nes");
+    }
+    
+    @Test
+    public void test10Stack() throws Exception
+    {
+        runTestROM("10-stack.nes");
+    }
+    
+    @Test
+    public void test11JumpJsr() throws Exception
+    {
+        runTestROM("11-jmp_jsr.nes");
+    }
+    
+    @Test
+    public void test12Rts() throws Exception
+    {
+        runTestROM("12-rts.nes");
+    }
+    
+    @Test
+    public void test13Rti() throws Exception
+    {
+        runTestROM("13-rti.nes");
+    }
+    
+    @Test
+    public void test14Brk() throws Exception
+    {
+        runTestROM("14-brk.nes");
+    }
+    
+    @Test
+    public void test15Special() throws Exception
+    {
+        runTestROM("15-special.nes");
+    }
+    
+//-----------------------------------
+// Private methods
+//-----------------------------------    
+    
     private void runTestROM(String aROMName) throws Exception
     {
         InputStream _in = getClass().getResourceAsStream(aROMName);
