@@ -609,6 +609,10 @@ N.B. CMP, CPX, and CPY all set flags according to:
       
       // Undocumented immediate
       NOP        #aa                   80
+      NOP        #aa                   82
+      NOP        #aa                   89
+      NOP        #aa                   C2
+      NOP        #aa                   E2
       
       // Undocumented zero page      
       NOP        $aa                   04

@@ -114,233 +114,237 @@ public final class MOS6502
             
             switch(_opcode)
             {
-                case 0x69: opcode_ADC(immediate()); break;
-                case 0x65: opcode_ADC(zeroPage()); break;
-                case 0x75: opcode_ADC(zeroPageX()); break;
-                case 0x6D: opcode_ADC(absolute()); break;
-                case 0x7D: opcode_ADC(absoluteX()); break;
-                case 0x79: opcode_ADC(absoluteY()); break;
-                case 0x61: opcode_ADC(indirectX()); break;
-                case 0x71: opcode_ADC(indirectY()); break;
-                case 0x29: opcode_AND(immediate()); break;
-                case 0x25: opcode_AND(zeroPage()); break;
-                case 0x35: opcode_AND(zeroPageX()); break;
-                case 0x2D: opcode_AND(absolute()); break;
-                case 0x3D: opcode_AND(absoluteX()); break;
-                case 0x39: opcode_AND(absoluteY()); break;
-                case 0x21: opcode_AND(indirectX()); break;
-                case 0x31: opcode_AND(indirectY()); break;
-                case 0x0A: opcode_ASL_accumulator(); break;
-                case 0x06: opcode_ASL(zeroPage()); break;
-                case 0x16: opcode_ASL(zeroPageX()); break;
-                case 0x0E: opcode_ASL(absolute()); break;
-                case 0x1E: opcode_ASL(absoluteX()); break;
-                case 0x90: opcode_BCC_relative(); break;
-                case 0xB0: opcode_BCS_relative(); break;
-                case 0xF0: opcode_BEQ_relative(); break;
-                case 0x24: opcode_BIT(zeroPage()); break;
-                case 0x2C: opcode_BIT(absolute()); break;
-                case 0x30: opcode_BMI_relative(); break;
-                case 0xD0: opcode_BNE_relative(); break;
-                case 0x10: opcode_BPL_relative(); break;
-                case 0x00: opcode_BRK_implied(); break;
-                case 0x50: opcode_BVC_relative(); break;
-                case 0x70: opcode_BVS_relative(); break;
-                case 0x18: opcode_CLC_implied(); break;
-                case 0xD8: opcode_CLD_implied(); break;
-                case 0x58: opcode_CLI_implied(); break;
-                case 0xB8: opcode_CLV_implied(); break;
-                case 0xC9: opcode_CMP(immediate()); break;
-                case 0xC5: opcode_CMP(zeroPage()); break;
-                case 0xD5: opcode_CMP(zeroPageX()); break;
-                case 0xCD: opcode_CMP(absolute()); break;
-                case 0xDD: opcode_CMP(absoluteX()); break;
-                case 0xD9: opcode_CMP(absoluteY()); break;
-                case 0xC1: opcode_CMP(indirectX()); break;
-                case 0xD1: opcode_CMP(indirectY()); break;
-                case 0xE0: opcode_CPX(immediate()); break;
-                case 0xE4: opcode_CPX(zeroPage()); break;
-                case 0xEC: opcode_CPX(absolute()); break;
-                case 0xC0: opcode_CPY(immediate()); break;
-                case 0xC4: opcode_CPY(zeroPage()); break;
-                case 0xCC: opcode_CPY(absolute()); break;
-                case 0xC7: opcode_DCP(zeroPage()); break;
-                case 0xD7: opcode_DCP(zeroPageX()); break;
-                case 0xCF: opcode_DCP(absolute()); break;
-                case 0xDF: opcode_DCP(absoluteX()); break;
-                case 0xDB: opcode_DCP(absoluteY()); break;
-                case 0xC3: opcode_DCP(indirectX()); break;
-                case 0xD3: opcode_DCP(indirectY()); break;
-                case 0xC6: opcode_DEC(zeroPage()); break;
-                case 0xD6: opcode_DEC(zeroPageX()); break;
-                case 0xCE: opcode_DEC(absolute()); break;
-                case 0xDE: opcode_DEC(absoluteX()); break;
-                case 0xCA: opcode_DEX_implied(); break;
-                case 0x88: opcode_DEY_implied(); break;
-                case 0x49: opcode_EOR(immediate()); break;
-                case 0x45: opcode_EOR(zeroPage()); break;
-                case 0x55: opcode_EOR(zeroPageX()); break;
-                case 0x4D: opcode_EOR(absolute()); break;
-                case 0x5D: opcode_EOR(absoluteX()); break;
-                case 0x59: opcode_EOR(absoluteY()); break;
-                case 0x41: opcode_EOR(indirectX()); break;
-                case 0x51: opcode_EOR(indirectY()); break;
-                case 0xE6: opcode_INC(zeroPage()); break;
-                case 0xF6: opcode_INC(zeroPageX()); break;
-                case 0xEE: opcode_INC(absolute()); break;
-                case 0xFE: opcode_INC(absoluteX()); break;
-                case 0xE8: opcode_INX_implied(); break;
-                case 0xC8: opcode_INY_implied(); break;
-                case 0xE7: opcode_ISB(zeroPage()); break;
-                case 0xF7: opcode_ISB(zeroPageX()); break;
-                case 0xEF: opcode_ISB(absolute()); break;
-                case 0xFF: opcode_ISB(absoluteX()); break;
-                case 0xFB: opcode_ISB(absoluteY()); break;
-                case 0xE3: opcode_ISB(indirectX()); break;
-                case 0xF3: opcode_ISB(indirectY()); break;
-                case 0x4C: opcode_JMP(absolute()); break;
-                case 0x6C: opcode_JMP(indirect()); break;
-                case 0x20: opcode_JSR(absolute()); break;
-                case 0xA7: opcode_LAX(zeroPage()); break;
-                case 0xB7: opcode_LAX(zeroPageY()); break;
-                case 0xAF: opcode_LAX(absolute()); break;
-                case 0xBF: opcode_LAX(absoluteY()); break;
-                case 0xA3: opcode_LAX(indirectX()); break;
-                case 0xB3: opcode_LAX(indirectY()); break;
-                case 0xA9: opcode_LDA(immediate()); break;
-                case 0xA5: opcode_LDA(zeroPage()); break;
-                case 0xB5: opcode_LDA(zeroPageX()); break;
-                case 0xAD: opcode_LDA(absolute()); break;
-                case 0xBD: opcode_LDA(absoluteX()); break;
-                case 0xB9: opcode_LDA(absoluteY()); break;
-                case 0xA1: opcode_LDA(indirectX()); break;
-                case 0xB1: opcode_LDA(indirectY()); break;
-                case 0xA2: opcode_LDX(immediate()); break;
-                case 0xA6: opcode_LDX(zeroPage()); break;
-                case 0xB6: opcode_LDX(zeroPageY()); break;
-                case 0xAE: opcode_LDX(absolute()); break;
-                case 0xBE: opcode_LDX(absoluteY()); break;
-                case 0xA0: opcode_LDY(immediate()); break;
-                case 0xA4: opcode_LDY(zeroPage()); break;
-                case 0xB4: opcode_LDY(zeroPageX()); break;
-                case 0xAC: opcode_LDY(absolute()); break;
-                case 0xBC: opcode_LDY(absoluteX()); break;
-                case 0x4A: opcode_LSR_accumulator(); break;
-                case 0x46: opcode_LSR(zeroPage()); break;
-                case 0x56: opcode_LSR(zeroPageX()); break;
-                case 0x4E: opcode_LSR(absolute()); break;
-                case 0x5E: opcode_LSR(absoluteX()); break;
-                case 0xEA:
-                case 0x1A:
-                case 0x3A:
-                case 0x5A:
-                case 0x7A:
-                case 0xDA:
-                case 0xFA: opcode_NOP_implied(); break;
-                case 0x80: opcode_NOP(immediate()); break;
-                case 0x04:
-                case 0x44:
-                case 0x64: opcode_NOP(zeroPage()); break;
-                case 0x0C: opcode_NOP(absolute()); break;
-                case 0x1C:
-                case 0x3C:
-                case 0x5C:
-                case 0x7C:
-                case 0xDC:
-                case 0xFC: opcode_NOP(absoluteX()); break;
-                case 0x14:
-                case 0x34:
-                case 0x54:
-                case 0x74:
-                case 0xD4:
-                case 0xF4: opcode_NOP(zeroPageX()); break;
-                case 0x09: opcode_ORA(immediate()); break;
-                case 0x05: opcode_ORA(zeroPage()); break;
-                case 0x15: opcode_ORA(zeroPageX()); break;
-                case 0x0D: opcode_ORA(absolute()); break;
-                case 0x1D: opcode_ORA(absoluteX()); break;
-                case 0x19: opcode_ORA(absoluteY()); break;
-                case 0x01: opcode_ORA(indirectX()); break;
-                case 0x11: opcode_ORA(indirectY()); break;
-                case 0x48: opcode_PHA_implied(); break;
-                case 0x08: opcode_PHP_implied(); break;
-                case 0x68: opcode_PLA_implied(); break;
-                case 0x28: opcode_PLP_implied(); break;
-                case 0x27: opcode_RLA(zeroPage()); break;
-                case 0x37: opcode_RLA(zeroPageX()); break;
-                case 0x2F: opcode_RLA(absolute()); break;
-                case 0x3F: opcode_RLA(absoluteX()); break;
-                case 0x3B: opcode_RLA(absoluteY()); break;
-                case 0x23: opcode_RLA(indirectX()); break;
-                case 0x33: opcode_RLA(indirectY()); break;
-                case 0x2A: opcode_ROL_accumulator(); break;
-                case 0x26: opcode_ROL(zeroPage()); break;
-                case 0x36: opcode_ROL(zeroPageX()); break;
-                case 0x2E: opcode_ROL(absolute()); break;
-                case 0x3E: opcode_ROL(absoluteX()); break;
-                case 0x6A: opcode_ROR_accumulator(); break;
-                case 0x66: opcode_ROR(zeroPage()); break;
-                case 0x76: opcode_ROR(zeroPageX()); break;
-                case 0x6E: opcode_ROR(absolute()); break;
-                case 0x7E: opcode_ROR(absoluteX()); break;
-                case 0x67: opcode_RRA(zeroPage()); break;
-                case 0x77: opcode_RRA(zeroPageX()); break;
-                case 0x6F: opcode_RRA(absolute()); break;
-                case 0x7F: opcode_RRA(absoluteX()); break;
-                case 0x7B: opcode_RRA(absoluteY()); break;
-                case 0x63: opcode_RRA(indirectX()); break;
-                case 0x73: opcode_RRA(indirectY()); break;
-                case 0x40: opcode_RTI_implied(); break;
-                case 0x60: opcode_RTS_implied(); break;
-                case 0x87: opcode_SAX(zeroPage()); break;
-                case 0x97: opcode_SAX(zeroPageY()); break;
-                case 0x8F: opcode_SAX(absolute()); break;
-                case 0x83: opcode_SAX(indirectX()); break;
-                case 0xE9:
-                case 0xEB: opcode_SBC(immediate()); break;
-                case 0xE5: opcode_SBC(zeroPage()); break;
-                case 0xF5: opcode_SBC(zeroPageX()); break;
-                case 0xED: opcode_SBC(absolute()); break;
-                case 0xFD: opcode_SBC(absoluteX()); break;
-                case 0xF9: opcode_SBC(absoluteY()); break;
-                case 0xE1: opcode_SBC(indirectX()); break;
-                case 0xF1: opcode_SBC(indirectY()); break;
-                case 0x38: opcode_SEC_implied(); break;
-                case 0xF8: opcode_SED_implied(); break;
-                case 0x78: opcode_SEI_implied(); break;
-                case 0x07: opcode_SLO(zeroPage()); break;
-                case 0x17: opcode_SLO(zeroPageX()); break;
-                case 0x0F: opcode_SLO(absolute()); break;
-                case 0x1F: opcode_SLO(absoluteX()); break;
-                case 0x1B: opcode_SLO(absoluteY()); break;
-                case 0x03: opcode_SLO(indirectX()); break;
-                case 0x13: opcode_SLO(indirectY()); break;
-                case 0x47: opcode_SRE(zeroPage()); break;
-                case 0x57: opcode_SRE(zeroPageX()); break;
-                case 0x4F: opcode_SRE(absolute()); break;
-                case 0x5F: opcode_SRE(absoluteX()); break;
-                case 0x5B: opcode_SRE(absoluteY()); break;
-                case 0x43: opcode_SRE(indirectX()); break;
-                case 0x53: opcode_SRE(indirectY()); break;
-                case 0x85: opcode_STA(zeroPage()); break;
-                case 0x95: opcode_STA(zeroPageX()); break;
-                case 0x8D: opcode_STA(absolute()); break;
-                case 0x9D: opcode_STA(absoluteX()); break;
-                case 0x99: opcode_STA(absoluteY()); break;
-                case 0x81: opcode_STA(indirectX()); break;
-                case 0x91: opcode_STA(indirectY()); break;
-                case 0x86: opcode_STX(zeroPage()); break;
-                case 0x96: opcode_STX(zeroPageY()); break;
-                case 0x8E: opcode_STX(absolute()); break;
-                case 0x84: opcode_STY(zeroPage()); break;
-                case 0x94: opcode_STY(zeroPageX()); break;
-                case 0x8C: opcode_STY(absolute()); break;
-                case 0xAA: opcode_TAX_implied(); break;
-                case 0xA8: opcode_TAY_implied(); break;
-                case 0xBA: opcode_TSX_implied(); break;
-                case 0x8A: opcode_TXA_implied(); break;
-                case 0x9A: opcode_TXS_implied(); break;
-                case 0x98: opcode_TYA_implied(); break;
+	            case 0x69: opcode_ADC(immediate()); break;
+	            case 0x65: opcode_ADC(zeroPage()); break;
+	            case 0x75: opcode_ADC(zeroPageX()); break;
+	            case 0x6D: opcode_ADC(absolute()); break;
+	            case 0x7D: opcode_ADC(absoluteX()); break;
+	            case 0x79: opcode_ADC(absoluteY()); break;
+	            case 0x61: opcode_ADC(indirectX()); break;
+	            case 0x71: opcode_ADC(indirectY()); break;
+	            case 0x29: opcode_AND(immediate()); break;
+	            case 0x25: opcode_AND(zeroPage()); break;
+	            case 0x35: opcode_AND(zeroPageX()); break;
+	            case 0x2D: opcode_AND(absolute()); break;
+	            case 0x3D: opcode_AND(absoluteX()); break;
+	            case 0x39: opcode_AND(absoluteY()); break;
+	            case 0x21: opcode_AND(indirectX()); break;
+	            case 0x31: opcode_AND(indirectY()); break;
+	            case 0x0A: opcode_ASL_accumulator(); break;
+	            case 0x06: opcode_ASL(zeroPage()); break;
+	            case 0x16: opcode_ASL(zeroPageX()); break;
+	            case 0x0E: opcode_ASL(absolute()); break;
+	            case 0x1E: opcode_ASL(absoluteX()); break;
+	            case 0x90: opcode_BCC_relative(); break;
+	            case 0xB0: opcode_BCS_relative(); break;
+	            case 0xF0: opcode_BEQ_relative(); break;
+	            case 0x24: opcode_BIT(zeroPage()); break;
+	            case 0x2C: opcode_BIT(absolute()); break;
+	            case 0x30: opcode_BMI_relative(); break;
+	            case 0xD0: opcode_BNE_relative(); break;
+	            case 0x10: opcode_BPL_relative(); break;
+	            case 0x00: opcode_BRK_implied(); break;
+	            case 0x50: opcode_BVC_relative(); break;
+	            case 0x70: opcode_BVS_relative(); break;
+	            case 0x18: opcode_CLC_implied(); break;
+	            case 0xD8: opcode_CLD_implied(); break;
+	            case 0x58: opcode_CLI_implied(); break;
+	            case 0xB8: opcode_CLV_implied(); break;
+	            case 0xC9: opcode_CMP(immediate()); break;
+	            case 0xC5: opcode_CMP(zeroPage()); break;
+	            case 0xD5: opcode_CMP(zeroPageX()); break;
+	            case 0xCD: opcode_CMP(absolute()); break;
+	            case 0xDD: opcode_CMP(absoluteX()); break;
+	            case 0xD9: opcode_CMP(absoluteY()); break;
+	            case 0xC1: opcode_CMP(indirectX()); break;
+	            case 0xD1: opcode_CMP(indirectY()); break;
+	            case 0xE0: opcode_CPX(immediate()); break;
+	            case 0xE4: opcode_CPX(zeroPage()); break;
+	            case 0xEC: opcode_CPX(absolute()); break;
+	            case 0xC0: opcode_CPY(immediate()); break;
+	            case 0xC4: opcode_CPY(zeroPage()); break;
+	            case 0xCC: opcode_CPY(absolute()); break;
+	            case 0xC7: opcode_DCP(zeroPage()); break;
+	            case 0xD7: opcode_DCP(zeroPageX()); break;
+	            case 0xCF: opcode_DCP(absolute()); break;
+	            case 0xDF: opcode_DCP(absoluteX()); break;
+	            case 0xDB: opcode_DCP(absoluteY()); break;
+	            case 0xC3: opcode_DCP(indirectX()); break;
+	            case 0xD3: opcode_DCP(indirectY()); break;
+	            case 0xC6: opcode_DEC(zeroPage()); break;
+	            case 0xD6: opcode_DEC(zeroPageX()); break;
+	            case 0xCE: opcode_DEC(absolute()); break;
+	            case 0xDE: opcode_DEC(absoluteX()); break;
+	            case 0xCA: opcode_DEX_implied(); break;
+	            case 0x88: opcode_DEY_implied(); break;
+	            case 0x49: opcode_EOR(immediate()); break;
+	            case 0x45: opcode_EOR(zeroPage()); break;
+	            case 0x55: opcode_EOR(zeroPageX()); break;
+	            case 0x4D: opcode_EOR(absolute()); break;
+	            case 0x5D: opcode_EOR(absoluteX()); break;
+	            case 0x59: opcode_EOR(absoluteY()); break;
+	            case 0x41: opcode_EOR(indirectX()); break;
+	            case 0x51: opcode_EOR(indirectY()); break;
+	            case 0xE6: opcode_INC(zeroPage()); break;
+	            case 0xF6: opcode_INC(zeroPageX()); break;
+	            case 0xEE: opcode_INC(absolute()); break;
+	            case 0xFE: opcode_INC(absoluteX()); break;
+	            case 0xE8: opcode_INX_implied(); break;
+	            case 0xC8: opcode_INY_implied(); break;
+	            case 0xE7: opcode_ISB(zeroPage()); break;
+	            case 0xF7: opcode_ISB(zeroPageX()); break;
+	            case 0xEF: opcode_ISB(absolute()); break;
+	            case 0xFF: opcode_ISB(absoluteX()); break;
+	            case 0xFB: opcode_ISB(absoluteY()); break;
+	            case 0xE3: opcode_ISB(indirectX()); break;
+	            case 0xF3: opcode_ISB(indirectY()); break;
+	            case 0x4C: opcode_JMP(absolute()); break;
+	            case 0x6C: opcode_JMP(indirect()); break;
+	            case 0x20: opcode_JSR(absolute()); break;
+	            case 0xA7: opcode_LAX(zeroPage()); break;
+	            case 0xB7: opcode_LAX(zeroPageY()); break;
+	            case 0xAF: opcode_LAX(absolute()); break;
+	            case 0xBF: opcode_LAX(absoluteY()); break;
+	            case 0xA3: opcode_LAX(indirectX()); break;
+	            case 0xB3: opcode_LAX(indirectY()); break;
+	            case 0xA9: opcode_LDA(immediate()); break;
+	            case 0xA5: opcode_LDA(zeroPage()); break;
+	            case 0xB5: opcode_LDA(zeroPageX()); break;
+	            case 0xAD: opcode_LDA(absolute()); break;
+	            case 0xBD: opcode_LDA(absoluteX()); break;
+	            case 0xB9: opcode_LDA(absoluteY()); break;
+	            case 0xA1: opcode_LDA(indirectX()); break;
+	            case 0xB1: opcode_LDA(indirectY()); break;
+	            case 0xA2: opcode_LDX(immediate()); break;
+	            case 0xA6: opcode_LDX(zeroPage()); break;
+	            case 0xB6: opcode_LDX(zeroPageY()); break;
+	            case 0xAE: opcode_LDX(absolute()); break;
+	            case 0xBE: opcode_LDX(absoluteY()); break;
+	            case 0xA0: opcode_LDY(immediate()); break;
+	            case 0xA4: opcode_LDY(zeroPage()); break;
+	            case 0xB4: opcode_LDY(zeroPageX()); break;
+	            case 0xAC: opcode_LDY(absolute()); break;
+	            case 0xBC: opcode_LDY(absoluteX()); break;
+	            case 0x4A: opcode_LSR_accumulator(); break;
+	            case 0x46: opcode_LSR(zeroPage()); break;
+	            case 0x56: opcode_LSR(zeroPageX()); break;
+	            case 0x4E: opcode_LSR(absolute()); break;
+	            case 0x5E: opcode_LSR(absoluteX()); break;
+	            case 0xEA:
+	            case 0x1A:
+	            case 0x3A:
+	            case 0x5A:
+	            case 0x7A:
+	            case 0xDA:
+	            case 0xFA: opcode_NOP_implied(); break;
+	            case 0x80:
+	            case 0x82:
+	            case 0x89:
+	            case 0xC2:
+	            case 0xE2: opcode_NOP(immediate()); break;
+	            case 0x04:
+	            case 0x44:
+	            case 0x64: opcode_NOP(zeroPage()); break;
+	            case 0x0C: opcode_NOP(absolute()); break;
+	            case 0x1C:
+	            case 0x3C:
+	            case 0x5C:
+	            case 0x7C:
+	            case 0xDC:
+	            case 0xFC: opcode_NOP(absoluteX()); break;
+	            case 0x14:
+	            case 0x34:
+	            case 0x54:
+	            case 0x74:
+	            case 0xD4:
+	            case 0xF4: opcode_NOP(zeroPageX()); break;
+	            case 0x09: opcode_ORA(immediate()); break;
+	            case 0x05: opcode_ORA(zeroPage()); break;
+	            case 0x15: opcode_ORA(zeroPageX()); break;
+	            case 0x0D: opcode_ORA(absolute()); break;
+	            case 0x1D: opcode_ORA(absoluteX()); break;
+	            case 0x19: opcode_ORA(absoluteY()); break;
+	            case 0x01: opcode_ORA(indirectX()); break;
+	            case 0x11: opcode_ORA(indirectY()); break;
+	            case 0x48: opcode_PHA_implied(); break;
+	            case 0x08: opcode_PHP_implied(); break;
+	            case 0x68: opcode_PLA_implied(); break;
+	            case 0x28: opcode_PLP_implied(); break;
+	            case 0x27: opcode_RLA(zeroPage()); break;
+	            case 0x37: opcode_RLA(zeroPageX()); break;
+	            case 0x2F: opcode_RLA(absolute()); break;
+	            case 0x3F: opcode_RLA(absoluteX()); break;
+	            case 0x3B: opcode_RLA(absoluteY()); break;
+	            case 0x23: opcode_RLA(indirectX()); break;
+	            case 0x33: opcode_RLA(indirectY()); break;
+	            case 0x2A: opcode_ROL_accumulator(); break;
+	            case 0x26: opcode_ROL(zeroPage()); break;
+	            case 0x36: opcode_ROL(zeroPageX()); break;
+	            case 0x2E: opcode_ROL(absolute()); break;
+	            case 0x3E: opcode_ROL(absoluteX()); break;
+	            case 0x6A: opcode_ROR_accumulator(); break;
+	            case 0x66: opcode_ROR(zeroPage()); break;
+	            case 0x76: opcode_ROR(zeroPageX()); break;
+	            case 0x6E: opcode_ROR(absolute()); break;
+	            case 0x7E: opcode_ROR(absoluteX()); break;
+	            case 0x67: opcode_RRA(zeroPage()); break;
+	            case 0x77: opcode_RRA(zeroPageX()); break;
+	            case 0x6F: opcode_RRA(absolute()); break;
+	            case 0x7F: opcode_RRA(absoluteX()); break;
+	            case 0x7B: opcode_RRA(absoluteY()); break;
+	            case 0x63: opcode_RRA(indirectX()); break;
+	            case 0x73: opcode_RRA(indirectY()); break;
+	            case 0x40: opcode_RTI_implied(); break;
+	            case 0x60: opcode_RTS_implied(); break;
+	            case 0x87: opcode_SAX(zeroPage()); break;
+	            case 0x97: opcode_SAX(zeroPageY()); break;
+	            case 0x8F: opcode_SAX(absolute()); break;
+	            case 0x83: opcode_SAX(indirectX()); break;
+	            case 0xE9:
+	            case 0xEB: opcode_SBC(immediate()); break;
+	            case 0xE5: opcode_SBC(zeroPage()); break;
+	            case 0xF5: opcode_SBC(zeroPageX()); break;
+	            case 0xED: opcode_SBC(absolute()); break;
+	            case 0xFD: opcode_SBC(absoluteX()); break;
+	            case 0xF9: opcode_SBC(absoluteY()); break;
+	            case 0xE1: opcode_SBC(indirectX()); break;
+	            case 0xF1: opcode_SBC(indirectY()); break;
+	            case 0x38: opcode_SEC_implied(); break;
+	            case 0xF8: opcode_SED_implied(); break;
+	            case 0x78: opcode_SEI_implied(); break;
+	            case 0x07: opcode_SLO(zeroPage()); break;
+	            case 0x17: opcode_SLO(zeroPageX()); break;
+	            case 0x0F: opcode_SLO(absolute()); break;
+	            case 0x1F: opcode_SLO(absoluteX()); break;
+	            case 0x1B: opcode_SLO(absoluteY()); break;
+	            case 0x03: opcode_SLO(indirectX()); break;
+	            case 0x13: opcode_SLO(indirectY()); break;
+	            case 0x47: opcode_SRE(zeroPage()); break;
+	            case 0x57: opcode_SRE(zeroPageX()); break;
+	            case 0x4F: opcode_SRE(absolute()); break;
+	            case 0x5F: opcode_SRE(absoluteX()); break;
+	            case 0x5B: opcode_SRE(absoluteY()); break;
+	            case 0x43: opcode_SRE(indirectX()); break;
+	            case 0x53: opcode_SRE(indirectY()); break;
+	            case 0x85: opcode_STA(zeroPage()); break;
+	            case 0x95: opcode_STA(zeroPageX()); break;
+	            case 0x8D: opcode_STA(absolute()); break;
+	            case 0x9D: opcode_STA(absoluteX()); break;
+	            case 0x99: opcode_STA(absoluteY()); break;
+	            case 0x81: opcode_STA(indirectX()); break;
+	            case 0x91: opcode_STA(indirectY()); break;
+	            case 0x86: opcode_STX(zeroPage()); break;
+	            case 0x96: opcode_STX(zeroPageY()); break;
+	            case 0x8E: opcode_STX(absolute()); break;
+	            case 0x84: opcode_STY(zeroPage()); break;
+	            case 0x94: opcode_STY(zeroPageX()); break;
+	            case 0x8C: opcode_STY(absolute()); break;
+	            case 0xAA: opcode_TAX_implied(); break;
+	            case 0xA8: opcode_TAY_implied(); break;
+	            case 0xBA: opcode_TSX_implied(); break;
+	            case 0x8A: opcode_TXA_implied(); break;
+	            case 0x9A: opcode_TXS_implied(); break;
+	            case 0x98: opcode_TYA_implied(); break;
 
                 default: throw new RuntimeException("Unhandled opcode [" + Utils.toHexString(_opcode) + "]");
             }

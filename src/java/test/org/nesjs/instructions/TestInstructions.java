@@ -5,12 +5,59 @@ import java.io.*;
 import org.junit.*;
 import org.nesjs.core.*;
 
-public class Test01Implied
+public class TestInstructions
 {
     @Test
-    public void testImplied() throws Exception
+    public void test01Implied() throws Exception
     {
-        InputStream _in = getClass().getResourceAsStream("01-implied.nes");
+        runTestROM("01-implied.nes");
+    }
+    
+    @Test
+    public void test02Immediate() throws Exception
+    {
+        runTestROM("02-immediate.nes");
+    }
+    
+    @Test
+    public void test03ZeroPage() throws Exception
+    {
+        runTestROM("03-zero_page.nes");
+    }
+    
+    @Test
+    public void test04ZeroPageXY() throws Exception
+    {
+        runTestROM("04-zp_xy.nes");
+    }
+    
+    @Test
+    public void test05Absolute() throws Exception
+    {
+        runTestROM("05-absolute.nes");
+    }
+    
+    @Test
+    public void test06AbsoluteXY() throws Exception
+    {
+        runTestROM("06-abs_xy.nes");
+    }
+    
+    @Test
+    public void test07IndirectX() throws Exception
+    {
+        runTestROM("07-ind_x.nes");
+    }
+    
+    @Test
+    public void test08IndirectY() throws Exception
+    {
+        runTestROM("08-ind_y.nes");
+    }
+    
+    private void runTestROM(String aROMName) throws Exception
+    {
+        InputStream _in = getClass().getResourceAsStream(aROMName);
         Memory _memory = ROM.memoryWithROMInputStream(_in);
         
         MOS6502 _6502 = new MOS6502(_memory);
@@ -23,11 +70,11 @@ public class Test01Implied
         }
         while(!isTestFinished(_memory));
         
-        Assert.assertEquals(0x00, _memory.readByte(0x6000));
-        
         String _message = getNullTerminatedString(_memory, 0x6004);
         System.out.println(_message);
         Assert.assertTrue(_message.contains("Passed"));
+        
+        Assert.assertEquals(0x00, _memory.readByte(0x6000));
     }
     
     private boolean isTestFinished(Memory aMemory)
