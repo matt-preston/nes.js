@@ -712,10 +712,11 @@ public final class MOS6502
     // Force Interrupt
     private void opcode_BRK_implied()
     {
-        pushWord(pc);
-        push(getRegisterP(1));
+        pushWord(pc + 1);
         
-        pc = readWord(IRQ_VECTOR);
+        opcode_PHP_implied();
+        opcode_SEI_implied();
+        opcode_JMP(readWord(IRQ_VECTOR));        
     }
 
     // Branch if Overflow Clear

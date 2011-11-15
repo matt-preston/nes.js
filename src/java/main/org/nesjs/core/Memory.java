@@ -45,14 +45,14 @@ public class Memory
         else if (anAddress < 0x2008)
         {
             // PPU registers
-            System.out.printf("Don't know how to read from PPU registers [%s]\n", Utils.toHexString(anAddress));
+            //System.out.printf("Don't know how to read from PPU registers [%s]\n", Utils.toHexString(anAddress));
             
             return 0; // TODO
         }
         else if (anAddress < 0x4000)
         {
             // Mirrors of of 0x2000 every 8 bytes
-            System.out.printf("Don't know how to read from PPU register mirrors [%s]\n", Utils.toHexString(anAddress));
+            //System.out.printf("Don't know how to read from PPU register mirrors [%s]\n", Utils.toHexString(anAddress));
             
             return 0; // TODO
         }
@@ -62,7 +62,7 @@ public class Memory
             assert anAddress > 0x3FFF && anAddress < 0x4018;
             
             // NES APU and I/O registers            
-            System.out.printf("Don't know how to read from APU and I/O registers [%s]\n", Utils.toHexString(anAddress));
+            //System.out.printf("Don't know how to read from APU and I/O registers [%s]\n", Utils.toHexString(anAddress));
             
             return 0; // TODO
         }        
@@ -85,12 +85,12 @@ public class Memory
         else if (anAddress < 0x2008)
         {
             // PPU registers
-            System.out.printf("Don't know how to write [%s] to PPU registers [%s]\n", Utils.toHexString(aByte), Utils.toHexString(anAddress));
+            //System.out.printf("Don't know how to write [%s] to PPU registers [%s]\n", Utils.toHexString(aByte), Utils.toHexString(anAddress));
         }
         else if (anAddress < 0x4000)
         {
             // Mirrors of of 0x2000 every 8 bytes
-            System.out.printf("Don't know how to write [%s] to PPU register mirrors [%s]\n", Utils.toHexString(aByte), Utils.toHexString(anAddress));
+            //System.out.printf("Don't know how to write [%s] to PPU register mirrors [%s]\n", Utils.toHexString(aByte), Utils.toHexString(anAddress));
         }
         else
         {
@@ -98,7 +98,7 @@ public class Memory
             assert anAddress > 0x3FFF && anAddress < 0x4018;
             
             // NES APU and I/O registers            
-            System.out.printf("Don't know how to write [%s] to APU and I/O registers [%s]\n", Utils.toHexString(aByte), Utils.toHexString(anAddress));
+            //System.out.printf("Don't know how to write [%s] to APU and I/O registers [%s]\n", Utils.toHexString(aByte), Utils.toHexString(anAddress));
         }
     }
     
