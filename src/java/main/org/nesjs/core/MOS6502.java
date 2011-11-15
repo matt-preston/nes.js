@@ -621,22 +621,16 @@ public final class MOS6502
     // Equivalent to AND #i then LSR A.  TODO not sure about this
     private final void opcode_ALR(int anAddress)
     {
-        a &= memory.readByte(anAddress);
-        
-        carry = a & 1; // old bit 0       
-        a >>= 1;
-        
-        not_zero = a;
-        negative = 0; 
+        opcode_AND(anAddress);
+        opcode_LSR_accumulator();
     }
  
     // AND followed by Copy N (bit 7) to C.  TODO not sure about this
     private final void opcode_ANC(int anAddress)
     {
-    	 a &= memory.readByte(anAddress);
-         setNZFlag(a);
-         
-         carry = (a >> 7) & 1;
+        opcode_AND(anAddress); 
+
+        carry = (a >> 7) & 1;
     }
     
     // Logical AND
@@ -790,21 +784,14 @@ public final class MOS6502
     // DEC value then CMP value
     private void opcode_DCP(int anAddress)
     {
-        int _value = memory.readByte(anAddress) - 1;
-        
-        memory.writeByte(_value, anAddress);
-        
-        int _temp = a - _value;
-        
-        carry = (_temp >= 0 ? 1:0);
-        setNZFlag(_temp);
+        opcode_DEC(anAddress);
+        opcode_CMP(anAddress);
     }
 
     // Decrement Memory
     private void opcode_DEC(int anAddress)
     {
         int _value = memory.readByte(anAddress) - 1;
-        
         memory.writeByte(_value, anAddress);
         
         setNZFlag(_value);
@@ -835,7 +822,6 @@ public final class MOS6502
     private void opcode_INC(int anAddress)
     {    
         int _value = memory.readByte(anAddress) + 1;
-        
         memory.writeByte(_value, anAddress);
         
         setNZFlag(_value);
@@ -858,18 +844,8 @@ public final class MOS6502
     // INC value then SBC value
     private void opcode_ISB(int anAddress)
     {
-        int _value = memory.readByte(anAddress) + 1;
-        
-        memory.writeByte(_value, anAddress);
-        
-        int _temp = a - _value - (1 - carry);
-        
-        // carry = _temp < 0 ? 0 : 1; // TODO removed to make test pass
-        overflow = ((((a ^ _temp) & 0x80) != 0 && ((a ^ _value) & 0x80) != 0) ? 1 : 0);
-        
-        setNZFlag(_temp);
-        
-        a = _temp & 0xFF;
+        opcode_INC(anAddress);
+        opcode_SBC(anAddress);
     }
     
     // Jump to target address
@@ -888,10 +864,8 @@ public final class MOS6502
     // Load Accumulator and X with memory
     private void opcode_LAX(int anAddress)
     {
-        a = memory.readByte(anAddress);
-        x = a;
-        
-        setNZFlag(a);
+        opcode_LDA(anAddress);
+        opcode_LDX(anAddress);
     }
     
     // Load Accumulator
@@ -991,18 +965,8 @@ public final class MOS6502
     // ROL value then AND value
     private void opcode_RLA(int anAddress)
     {
-        int _value = memory.readByte(anAddress);
-        int _add = carry;
-        
-        carry = (_value >> 7) &1;
-        
-        _value = ((_value << 1) & 0xFF) + _add;
-        
-        memory.writeByte(_value, anAddress);
-        
-        a &= _value;
-        
-        setNZFlag(a);
+        opcode_ROL(anAddress);
+        opcode_AND(anAddress);
     }
     
     // Rotate Left
@@ -1059,22 +1023,8 @@ public final class MOS6502
     // ROR value then ADC value
     private void opcode_RRA(int anAddress)
     {
-        int _value = memory.readByte(anAddress);
-        int _add = carry << 7;
-        
-        carry = _value & 1;
-        _value = (_value >> 1) + _add;
-        
-        memory.writeByte(_value, anAddress);
-        
-        int _temp = a + _value + carry;
-        
-        carry = _temp > 0xFF ? 1 : 0;
-        overflow = ((!(((a ^ _value) & 0x80) != 0) && (((a ^ _temp) & 0x80)) != 0) ? 1 : 0);
-        
-        setNZFlag(_temp);
-        
-        a = _temp & 0xFF;
+        opcode_ROR(anAddress);
+        opcode_ADC(anAddress);
     }
 
     // Return from Interrupt
@@ -1139,31 +1089,15 @@ public final class MOS6502
     // ASL value then ORA value
     private void opcode_SLO(int anAddress)
     {
-        int _value = memory.readByte(anAddress);
-        
-        carry = (_value >> 7) & 1;
-        _value = (_value << 1) & 0xFF;
-        
-        memory.writeByte(_value, anAddress);
-        
-        a |= _value;
-        
-        setNZFlag(a);
+        opcode_ASL(anAddress);
+        opcode_ORA(anAddress);
     }
     
     // Equivalent to LSR value then EOR value
     private void opcode_SRE(int anAddress)
     {
-        int _value = memory.readByte(anAddress);
-        
-        carry = _value & 1; // old bit 0       
-        _value >>= 1;
-        
-        memory.writeByte(_value, anAddress);
-        
-        a ^=  _value;
-        
-        setNZFlag(a);
+        opcode_LSR(anAddress);
+        opcode_EOR(anAddress);
     }
     
     // Store Accumulator
