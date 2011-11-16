@@ -118,9 +118,9 @@ public class TestInstructions
         
         String _message = getNullTerminatedString(_memory, 0x6004);
         System.out.println(_message);
-        Assert.assertTrue(_message.contains("Passed"));
         
         Assert.assertEquals(0x00, _memory.readByte(0x6000));
+        Assert.assertTrue(_message.contains("Passed"));
     }
     
     private boolean isTestFinished(Memory aMemory)
