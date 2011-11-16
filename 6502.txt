@@ -97,6 +97,20 @@ Lets begin shall we?
 
 ======================================================================
 
+
+   ARR  -  AND byte with accumulator, then rotate one bit right in accumulator and check bit 5 and 6:
+           (undocumented)
+						
+						Flags Affected:
+						---------------
+
+      Mnemonic   Addressing Mode       Opcode
+      ---------------------------------------
+
+      ARR        #aa                   6B
+      
+======================================================================
+
    ASL  -  Arithmatic Shift Left
    
 						Flags Affected:
@@ -114,6 +128,36 @@ Lets begin shall we?
       ASL        aaaa                  0E
       ASL        aaaa,X                1E
 
+======================================================================
+
+   ATX  -  AND byte with accumulator, then transfer accumulator to X register.
+           (undocumented)
+   
+						Flags Affected:
+						---------------
+
+      Mnemonic   Addressing Mode       Opcode
+      ---------------------------------------
+
+      ATX        #aa                   AB
+      
+
+======================================================================
+
+   AXS  -  AND X register with accumulator and store result in X register, then subtract byte 
+           from X register (without borrow).
+           (undocumented)
+   
+						Flags Affected:
+						---------------
+						N,Z,C
+						
+
+      Mnemonic   Addressing Mode       Opcode
+      ---------------------------------------
+
+      AXS        #aa                   CB
+            
 ======================================================================
 
    BCC  -  Branch on Carry Clear
@@ -1002,6 +1046,36 @@ N.B. CMP, CPX, and CPY all set flags according to:
       STY        $aa,X                 94
       STY        $aaaa                 8C
 
+======================================================================
+
+   SXA  -  AND X register with the high byte of the target address of the argument + 1. Store the result in memory.
+
+           M = X AND HIGH(arg) + 1
+           
+           (undocumented)
+   
+						Flags Affected:
+						---------------
+      Mnemonic   Addressing Mode       Opcode
+      ---------------------------------------
+
+      SXA        $aaaa,Y               9E
+      
+======================================================================
+
+   SYA  -  AND Y register with the high byte of the target address of the argument + 1. Store the result in memory.
+
+           M = Y AND HIGH(arg) + 1
+           
+           (undocumented)
+   
+						Flags Affected:
+						---------------
+      Mnemonic   Addressing Mode       Opcode
+      ---------------------------------------
+
+      SYA        $aaaa,X               9C
+      
 ======================================================================
 
    TAX  -  Transfer Accumulator to X

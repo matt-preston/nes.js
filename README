@@ -3,6 +3,7 @@ Simple NES emulator implemented in JavaScript
 http://www.obelisk.demon.co.uk/6502/registers.html
 
 http://wiki.nesdev.com/w/index.php/Programming_with_unofficial_opcodes
+http://members.chello.nl/taf.offenga/illopc31.txt
 
 Testing:
 

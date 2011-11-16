@@ -46,7 +46,7 @@ public class GenerateDispatch
         {
             System.out.printf("private final void %s\n", getDefinitionMethodName(_next));
             System.out.printf("{\n");
-            System.out.printf("    throw new RuntimeException(\"opcode not implemented [%s]);\n", _next.getMnemonic());
+            System.out.printf("    throw new RuntimeException(\"opcode not implemented [%s]\");\n", _next.getMnemonic());
             System.out.printf("}\n");
             System.out.println("");
         }
