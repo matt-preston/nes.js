@@ -556,7 +556,8 @@ public final class MOS6502
 
     private final void push(int aByte)
     {
-        memory.writeByte(aByte, s--);
+        memory.writeByte(aByte, s);
+        s = 0x0100 | (--s & 0xFF);
     }
     
     private final int pop()
@@ -918,7 +919,7 @@ public final class MOS6502
         a >>= 1;
         
         not_zero = a;
-        negative = 0;        
+        negative = 0;
     }
 
     // Logical Shift Right
