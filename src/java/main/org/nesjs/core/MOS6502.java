@@ -1,8 +1,6 @@
 package org.nesjs.core;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 
 /**
@@ -27,19 +25,13 @@ public final class MOS6502
     private int a, x, y;
     private int s, pc;    
     private int carry, not_zero, interruptDisable, decimal, overflow, negative;
-    
-    private int step;
-    
+        
     private Memory memory;
-    
-    private FileWriter w;
-    
+        
     public MOS6502(Memory aMemory) throws IOException
     {
     	memory = aMemory;    	
     	memory.resetLowMemory();
-    	
-    	w = new FileWriter("cpu.trace");
     }
     
     public final void reset()
@@ -61,11 +53,7 @@ public final class MOS6502
          *       ON reset, the pc and p should be pushed onto the stack.
          */
         s = 0x01FF - 2;
-        pc = readWord(RESET_VECTOR);
-        
-        step = 0;
-        
-        System.out.println("reset");
+        pc = readWord(RESET_VECTOR);        
     }
     
     public final int getRegisterA()
@@ -107,12 +95,12 @@ public final class MOS6502
         pc = aPC;
     }
     
-    public final void step() throws IOException
+    public final void step()
     {
         execute(1);
     }
     
-    public final int execute(int aNumberOfCycles) throws IOException
+    public final int execute(int aNumberOfCycles)
     {
         int _clocksRemain = aNumberOfCycles;
 
@@ -120,19 +108,8 @@ public final class MOS6502
         {
             _clocksRemain--;
             
-            step++;
-
-            w.append("$" + Utils.toHexString(pc));
-
             int _opcode = memory.readByte(pc++);
 
-            w.append(":" + Utils.toHexString(_opcode) + " " + Opcodes.name(_opcode) + " ");
-            w.append("A:" + Utils.toHexString(a) + " ");
-            w.append("X:" + Utils.toHexString(x) + " ");
-            w.append("Y:" + Utils.toHexString(y) + " ");
-            w.append("S:" + Utils.toHexString(s & 0xFF) + " ");
-            w.append("P:" + ProcessorStatus.toString(getRegisterP()) + "\n");
-            
             switch(_opcode)
             {
                 case 0x69: opcode_ADC(immediate()); break;
@@ -374,7 +351,6 @@ public final class MOS6502
                 case 0x8A: opcode_TXA_implied(); break;
                 case 0x9A: opcode_TXS_implied(); break;
                 case 0x98: opcode_TYA_implied(); break;
-
 
                 default: throw new RuntimeException("Unhandled opcode [" + Utils.toHexString(_opcode) + "]");
             }
@@ -646,14 +622,14 @@ public final class MOS6502
         setNZFlag(_temp);
     }
     
-    // Equivalent to AND #i then LSR A.  TODO not sure about this
+    // Equivalent to AND #i then LSR A.
     private final void opcode_ALR(int anAddress)
     {
         opcode_AND(anAddress);
         opcode_LSR_accumulator();
     }
  
-    // AND followed by Copy N (bit 7) to C.  TODO not sure about this
+    // AND followed by Copy N (bit 7) to C.
     private final void opcode_ANC(int anAddress)
     {
         opcode_AND(anAddress); 
