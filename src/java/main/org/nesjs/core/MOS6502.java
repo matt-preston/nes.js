@@ -1,5 +1,9 @@
 package org.nesjs.core;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 
 /**
  * MOS Technology 6502 core
@@ -24,12 +28,18 @@ public final class MOS6502
     private int s, pc;    
     private int carry, not_zero, interruptDisable, decimal, overflow, negative;
     
+    private int step;
+    
     private Memory memory;
     
-    public MOS6502(Memory aMemory)
+    private FileWriter w;
+    
+    public MOS6502(Memory aMemory) throws IOException
     {
     	memory = aMemory;    	
     	memory.resetLowMemory();
+    	
+    	w = new FileWriter("cpu.trace");
     }
     
     public final void reset()
@@ -52,6 +62,10 @@ public final class MOS6502
          */
         s = 0x01FF - 2;
         pc = readWord(RESET_VECTOR);
+        
+        step = 0;
+        
+        System.out.println("reset");
     }
     
     public final int getRegisterA()
@@ -93,24 +107,31 @@ public final class MOS6502
         pc = aPC;
     }
     
-    public final void step()
+    public final void step() throws IOException
     {
         execute(1);
     }
     
-    public final int execute(int aNumberOfCycles)
+    public final int execute(int aNumberOfCycles) throws IOException
     {
         int _clocksRemain = aNumberOfCycles;
 
         while(_clocksRemain > 0)
         {
             _clocksRemain--;
+            
+            step++;
 
-            //System.out.print(Utils.toHexString(pc));
+            w.append("$" + Utils.toHexString(pc));
 
             int _opcode = memory.readByte(pc++);
 
-            //System.out.printf(": %s [%s]\n", Utils.toHexString(_opcode), Opcodes.name(_opcode));
+            w.append(":" + Utils.toHexString(_opcode) + " " + Opcodes.name(_opcode) + " ");
+            w.append("A:" + Utils.toHexString(a) + " ");
+            w.append("X:" + Utils.toHexString(x) + " ");
+            w.append("Y:" + Utils.toHexString(y) + " ");
+            w.append("S:" + Utils.toHexString(s & 0xFF) + " ");
+            w.append("P:" + ProcessorStatus.toString(getRegisterP()) + "\n");
             
             switch(_opcode)
             {
@@ -710,7 +731,8 @@ public final class MOS6502
         negative = (_value >> 7) & 1;
         overflow = (_value >> 6) & 1;
         _value &= a;
-        not_zero = _value;     
+        
+        not_zero = _value;
     }
 
     // Branch if Minus
