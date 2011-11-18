@@ -99,6 +99,10 @@ Lets begin shall we?
 
 
    ARR  -  AND byte with accumulator, then rotate one bit right in accumulator and check bit 5 and 6:
+             If both bits are 1: set C, clear V.
+             If both bits are 0: clear C and V.
+             If only bit 5 is 1: set V, clear C.
+             If only bit 6 is 1: set C and V.
            (undocumented)
 						
 						Flags Affected:

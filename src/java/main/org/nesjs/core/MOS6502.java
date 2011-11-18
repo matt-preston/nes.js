@@ -2,6 +2,8 @@ package org.nesjs.core;
 
 import java.io.*;
 
+import sun.misc.*;
+
 
 /**
  * MOS Technology 6502 core
@@ -644,9 +646,35 @@ public final class MOS6502
         setNZFlag(a);
     }
 
+    // AND byte with accumulator, then rotate one bit right in accumulator
     private final void opcode_ARR(int anAddress)
     {
-        // TODO
+        opcode_AND(anAddress);
+        opcode_ROR_accumulator();
+        
+        int _bit5 = (a >> 5) & 1;
+        int _bit6 = (a >> 6) & 1;
+        
+        if(_bit5 == 1 && _bit6 == 1)
+        {
+            carry = 1;
+            overflow = 0;
+        }
+        else if(_bit5 == 0 && _bit6 == 0)
+        {
+            carry = 0;
+            overflow = 0;
+        }
+        else if(_bit5 == 1)
+        {
+            carry = 0;
+            overflow = 1;
+        }
+        else if(_bit6 == 1)
+        {
+            carry = 1;
+            overflow = 1;
+        }  
     }
     
     // Arithmetic Shift Left
