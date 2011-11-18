@@ -699,9 +699,12 @@ public final class MOS6502
         setNZFlag(_value);
     }
  
+    // AND byte with accumulator, then transfer accumulator to X register.
     private final void opcode_ATX(int anAddress)
     {
-        // TODO
+        a = 0xFF;
+        opcode_AND(anAddress);
+        x = a;
     }
     
     private final void opcode_AXS(int anAddress)
