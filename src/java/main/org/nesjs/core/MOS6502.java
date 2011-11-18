@@ -702,14 +702,19 @@ public final class MOS6502
     // AND byte with accumulator, then transfer accumulator to X register.
     private final void opcode_ATX(int anAddress)
     {
-        a = 0xFF;
+        a = 0xFF; // TODO not sure about this, maybe |= value from anAddress? 
         opcode_AND(anAddress);
         x = a;
     }
     
+    // AND X register with accumulator and store result in X register, then subtract byte from X register (without borrow).
     private final void opcode_AXS(int anAddress)
     {
-        // TODO
+        int _value = memory.readByte(anAddress);
+        x = (a & x) - _value;
+        
+        carry = x < 0 ? 0 : 1;
+        setNZFlag(x);
     }
     
     // Branch if Carry Clear
