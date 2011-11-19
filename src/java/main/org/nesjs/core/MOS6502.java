@@ -1178,21 +1178,31 @@ public final class MOS6502
     // AND X register with the high byte of the target address of the argument + 1.
     private final void opcode_SXA(int anAddress)
     {
-        //ST_ABY(_X&(((A-_Y)>>8)+1));
+        int _value = (x & ((anAddress >> 8) + 1)) & 0xFF;
         
-        int _result = (x & (((anAddress - y) >> 8) + 1));
-                
-        memory.writeByte(_result, anAddress);
+        /**
+         * Ignore the write on page boundary crosses.
+         * http://nesdev.parodius.com/bbs/viewtopic.php?t=8107
+         */
+        if((y + memory.readByte(pc - 2)) <= 0xFF)
+        {
+            memory.writeByte(_value, anAddress);
+        }
     }
     
     // AND Y register with the high byte of the target address of the argument + 1.
     private final void opcode_SYA(int anAddress)
     {
-        //ST_ABX(_Y&(((A-_X)>>8)+1));
+        int _result = (y & (((anAddress) >> 8) + 1)) & 0xFF;
         
-        int _result = (y & (((anAddress - x) >> 8) + 1));
-        
-        memory.writeByte(_result, anAddress);
+        /**
+         * Ignore the write on page boundary crosses.
+         * http://nesdev.parodius.com/bbs/viewtopic.php?t=8107
+         */
+        if((x + memory.readByte(pc - 2)) <= 0xFF)
+        {
+            memory.writeByte(_result, anAddress);
+        }
     }
 
     // Transfer Accumulator to X
