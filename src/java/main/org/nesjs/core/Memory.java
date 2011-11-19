@@ -70,7 +70,7 @@ public class Memory
     
     public final void writeByte(int aByte, int anAddress)
     {
-        assert aByte <= 0xFF;
+        assert aByte < 0x0100; // Should only be a single byte
         
         if (anAddress < 0x2000)
         {

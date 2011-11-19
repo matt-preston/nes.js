@@ -2,8 +2,6 @@ package org.nesjs.core;
 
 import java.io.*;
 
-import sun.misc.*;
-
 
 /**
  * MOS Technology 6502 core
@@ -711,9 +709,11 @@ public final class MOS6502
     private final void opcode_AXS(int anAddress)
     {
         int _value = memory.readByte(anAddress);
-        x = (a & x) - _value;
+        int _temp = (a & x) - _value;
         
-        carry = x < 0 ? 0 : 1;
+        carry = _temp < 0 ? 0 : 1;
+        
+        x = _temp & 0xFF;
         setNZFlag(x);
     }
     
@@ -848,7 +848,7 @@ public final class MOS6502
     // Decrement Memory
     private void opcode_DEC(int anAddress)
     {
-        int _value = memory.readByte(anAddress) - 1;
+        int _value = (memory.readByte(anAddress) - 1) & 0xFF;
         memory.writeByte(_value, anAddress);
         
         setNZFlag(_value);
@@ -878,7 +878,7 @@ public final class MOS6502
     // Increment Memory
     private void opcode_INC(int anAddress)
     {    
-        int _value = memory.readByte(anAddress) + 1;
+        int _value = (memory.readByte(anAddress) + 1) & 0xFF;
         memory.writeByte(_value, anAddress);
         
         setNZFlag(_value);
@@ -1175,14 +1175,24 @@ public final class MOS6502
         memory.writeByte(y, anAddress);        
     }
 
+    // AND X register with the high byte of the target address of the argument + 1.
     private final void opcode_SXA(int anAddress)
     {
-        // TODO
+        //ST_ABY(_X&(((A-_Y)>>8)+1));
+        
+        int _result = (x & (((anAddress - y) >> 8) + 1));
+                
+        memory.writeByte(_result, anAddress);
     }
     
+    // AND Y register with the high byte of the target address of the argument + 1.
     private final void opcode_SYA(int anAddress)
     {
-        // TODO
+        //ST_ABX(_Y&(((A-_X)>>8)+1));
+        
+        int _result = (y & (((anAddress - x) >> 8) + 1));
+        
+        memory.writeByte(_result, anAddress);
     }
 
     // Transfer Accumulator to X

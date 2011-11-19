@@ -15,6 +15,9 @@ public class Opcodes
             case 0x79:
             case 0x61:
             case 0x71: return "ADC";
+            case 0x4B: return "ALR";
+            case 0x0B:
+            case 0x2B: return "ANC";
             case 0x29:
             case 0x25:
             case 0x35:
@@ -23,11 +26,14 @@ public class Opcodes
             case 0x39:
             case 0x21:
             case 0x31: return "AND";
+            case 0x6B: return "ARR";
             case 0x0A:
             case 0x06:
             case 0x16:
             case 0x0E:
             case 0x1E: return "ASL";
+            case 0xAB: return "ATX";
+            case 0xCB: return "AXS";
             case 0x90: return "BCC";
             case 0xB0: return "BCS";
             case 0xF0: return "BEQ";
@@ -131,6 +137,10 @@ public class Opcodes
             case 0xDA:
             case 0xFA:
             case 0x80:
+            case 0x82:
+            case 0x89:
+            case 0xC2:
+            case 0xE2:
             case 0x04:
             case 0x44:
             case 0x64:
@@ -228,6 +238,8 @@ public class Opcodes
             case 0x84:
             case 0x94:
             case 0x8C: return "STY";
+            case 0x9E: return "SXA";
+            case 0x9C: return "SYA";
             case 0xAA: return "TAX";
             case 0xA8: return "TAY";
             case 0xBA: return "TSX";
