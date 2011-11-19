@@ -1147,7 +1147,7 @@ public final class MOS6502
     // Store Accumulator
     private void opcode_STA(int anAddress)
     {
-        memory.writeByte(a, anAddress);        
+        memory.writeByte(a, anAddress & 0xFFFF);  // TODO consider wrapping to 0xFFFF in the addressing methods        
     }
 
     // Store X register
