@@ -650,30 +650,17 @@ public final class MOS6502
         opcode_AND(anAddress);
         opcode_ROR_accumulator();
         
-        int _bit5 = (a >> 5) & 1;
-        int _bit6 = (a >> 6) & 1;
-        
-        if(_bit5 == 1 && _bit6 == 1)
-        {
-            carry = 1;
-            overflow = 0;
+        /**
+         * Adapted from http://nesdev.parodius.com/bbs/viewtopic.php?t=3831&postdays=0&postorder=asc&start=15
+         */
+        switch (a & 0x60) 
+        { 
+            case 0x00: carry = 0; overflow = 0; break; // bit 5 and bit 6 clear
+            case 0x20: carry = 0; overflow = 1; break; // bit 5 set, bit 6 clear
+            case 0x40: carry = 1; overflow = 1; break; // bit 6 set, bit 5 clear
+            case 0x60: carry = 1; overflow = 0; break; // bit 5 and bit 6 set
         }
-        else if(_bit5 == 0 && _bit6 == 0)
-        {
-            carry = 0;
-            overflow = 0;
-        }
-        else if(_bit5 == 1)
-        {
-            carry = 0;
-            overflow = 1;
-        }
-        else if(_bit6 == 1)
-        {
-            carry = 1;
-            overflow = 1;
-        }  
-    }
+    }    
     
     // Arithmetic Shift Left
     private void opcode_ASL_accumulator()
