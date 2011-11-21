@@ -18,7 +18,7 @@ public class TestMiscInstructions extends BlarggTestCase
     }
 
     /*
-     * Does not work at all yet, creates an infinite loop
+     * Does not work at all yet, creates an infinite loop, needs a working PPU status
     @Test
     public void test03DummyReads() throws Exception
     {
