@@ -28,13 +28,17 @@ public final class MOS6502
         
     private Memory memory;
         
-    public MOS6502(Memory aMemory) throws IOException
+    //FileWriter w;
+    
+    public MOS6502(Memory aMemory)// throws IOException
     {
     	memory = aMemory;    	
     	memory.resetLowMemory();
+    	
+    	//w = new FileWriter("dummy.txt");
     }
     
-    public final void reset()
+    public final void reset()// throws IOException
     {
         a = 0;
         x = 0;
@@ -53,7 +57,9 @@ public final class MOS6502
          *       ON reset, the pc and p should be pushed onto the stack.
          */
         s = 0x01FF - 2;
-        pc = readWord(RESET_VECTOR);        
+        pc = readWord(RESET_VECTOR);
+        
+        //w.append("start\n");
     }
     
     public final int getRegisterA()
@@ -95,12 +101,12 @@ public final class MOS6502
         pc = aPC;
     }
     
-    public final void step()
+    public final void step()// throws IOException
     {
         execute(1);
     }
     
-    public final int execute(int aNumberOfCycles)
+    public final int execute(int aNumberOfCycles)// throws IOException
     {
         int _clocksRemain = aNumberOfCycles;
 
@@ -108,8 +114,12 @@ public final class MOS6502
         {
             _clocksRemain--;
             
+            //w.append(Utils.toHexString(pc));
+            
             int _opcode = memory.readByte(pc++);
 
+            //w.append(": " + Opcodes.name(_opcode) + "\n");
+            
             switch(_opcode)
             {
                 case 0x69: opcode_ADC(immediate()); break;
@@ -357,6 +367,13 @@ public final class MOS6502
             
             // Mask to 16 bit
             pc &= 0xFFFF;
+            
+            assert a >= 0 && a <= 0xFF        : "A out of bounds";
+            assert x >= 0 && x <= 0xFF        : "X out of bounds";
+            assert y >= 0 && y <= 0xFF        : "Y out of bounds";
+            assert s >= 0x0100 && s <= 0x01FF : "S out of bounds";
+            
+            //w.flush();
         }
         
         return _clocksRemain;
