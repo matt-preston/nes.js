@@ -14,8 +14,6 @@ public class BlarggTestCase
          
          MOS6502 _6502 = new MOS6502(_memory);
          
-         _6502.reset();
-
          boolean _hasTestResetCPU = false;
          
          do

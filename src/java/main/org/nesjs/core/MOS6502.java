@@ -1,6 +1,5 @@
 package org.nesjs.core;
 
-import java.io.*;
 
 
 /**
@@ -25,22 +24,16 @@ public final class MOS6502
     private int a, x, y;
     private int s, pc;    
     private int carry, not_zero, interruptDisable, decimal, overflow, negative;
-        
-    private Memory memory;
-        
-    //FileWriter w;
+    private boolean resetIRQ;
     
-    public MOS6502(Memory aMemory)// throws IOException
+    private Memory memory;
+
+    public MOS6502(Memory aMemory)
     {
     	memory = aMemory;    	
     	memory.resetLowMemory();
     	
-    	//w = new FileWriter("dummy.txt");
-    }
-    
-    public final void reset()// throws IOException
-    {
-        a = 0;
+    	a = 0;
         x = 0;
         y = 0;
 
@@ -51,15 +44,17 @@ public final class MOS6502
         decimal          = 0;
         overflow         = 0;
         negative         = 0;
-
-        /**
-         * TODO, stack pointer should run between 0x0100 and 0x01FF, using only the lower 8 bits.
-         *       ON reset, the pc and p should be pushed onto the stack.
-         */
+        
+        resetIRQ = false;
+        
         s = 0x01FF - 2;
         pc = readWord(RESET_VECTOR);
-        
-        //w.append("start\n");
+    }
+    
+    public final void reset()
+    {
+        interruptDisable = 1;
+        resetIRQ = true;       
     }
     
     public final int getRegisterA()
@@ -101,25 +96,35 @@ public final class MOS6502
         pc = aPC;
     }
     
-    public final void step()// throws IOException
+    public final void step()
     {
         execute(1);
     }
     
-    public final int execute(int aNumberOfCycles)// throws IOException
+    public final int execute(int aNumberOfCycles)
     {
         int _clocksRemain = aNumberOfCycles;
 
         while(_clocksRemain > 0)
         {
-            _clocksRemain--;
+            if(resetIRQ)
+            {
+                resetIRQ = false;
+                
+                pc = readWord(RESET_VECTOR);
+                
+                /**
+                 * On reset, pc (2 bytes) and p are pushed onto the stack.  But the values should not actually
+                 * be written to memory.
+                 */
+                s -= 3;
+            }
             
-            //w.append(Utils.toHexString(pc));
+            
+            _clocksRemain--;
             
             int _opcode = memory.readByte(pc++);
 
-            //w.append(": " + Opcodes.name(_opcode) + "\n");
-            
             switch(_opcode)
             {
                 case 0x69: opcode_ADC(immediate()); break;
@@ -372,8 +377,6 @@ public final class MOS6502
             assert x >= 0 && x <= 0xFF        : "X out of bounds";
             assert y >= 0 && y <= 0xFF        : "Y out of bounds";
             assert s >= 0x0100 && s <= 0x01FF : "S out of bounds";
-            
-            //w.flush();
         }
         
         return _clocksRemain;

@@ -19,8 +19,7 @@ public class TestNestest
     	Memory _memory = ROM.memoryWithROMInputStream(_in);
     	
         MOS6502 _6502 = new MOS6502(_memory);
-        
-        _6502.reset();        
+            
         _6502.setRegisterPC(0xC000);
 
         int _stepCount = 0;
