@@ -70,7 +70,7 @@ public class Memory
     
     public final void writeByte(int aByte, int anAddress)
     {
-        assert aByte < 0x0100; // Should only be a single byte
+        assert aByte < 0x0100 : "Attempting to write out of range byte";
         
         if (anAddress < 0x2000)
         {
@@ -104,10 +104,10 @@ public class Memory
     
     private final int byteAtIndex(int[] aMemory, int anIndex)
     {
-        /**
-         * Mask to the lowest byte
-         * TODO - do this during ROM loading instead?
-         */
-        return aMemory[anIndex] & 0xFF;
+        int _byte = aMemory[anIndex];
+        
+        assert _byte < 0x0100 : "read byte out of range";
+        
+        return _byte;
     }
 }
