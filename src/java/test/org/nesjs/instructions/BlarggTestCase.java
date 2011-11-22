@@ -16,9 +16,28 @@ public class BlarggTestCase
          
          _6502.reset();
 
+         boolean _hasTestResetCPU = false;
+         
          do
          {
              _6502.step();
+             
+             if(isTestNeedsReset(_memory) && !_hasTestResetCPU)
+             {
+                 _hasTestResetCPU = true;
+                 
+                 String _message = getNullTerminatedString(_memory, 0x6004);
+                 System.out.println(_message);
+                 
+                 // Reset after 100ms, so just spin the CPU for a bit
+                 for(int _index = 0; _index < 10000; _index++)
+                 {
+                     _6502.step();
+                 }
+                 
+                 _6502.reset();
+                 System.out.println("RESET");
+             }            
          }
          while(!isTestFinished(_memory));
          
@@ -33,28 +52,44 @@ public class BlarggTestCase
 // Private methods
 //-----------------------------------     
      
+     private boolean isTestNeedsReset(Memory aMemory)
+     {
+         if(isTestRunning(aMemory))
+         {
+             int _6000 = aMemory.readByte(0x6000);
+             
+             if(_6000 == 0x81)
+             {
+                 // Test needs reset after at least 100ms
+                 return true;
+             }
+         }
+         
+         return false;
+     }
+     
      private boolean isTestFinished(Memory aMemory)
+     {
+         if(isTestRunning(aMemory))
+         {
+             int _6000 = aMemory.readByte(0x6000);
+             
+             if(_6000 < 0x80)
+             {
+                 return true;
+             }            
+         }
+         
+         return false;
+     }
+     
+     private boolean isTestRunning(Memory aMemory)
      {
          int _6001 = aMemory.readByte(0x6001);
          int _6002 = aMemory.readByte(0x6002);
          int _6003 = aMemory.readByte(0x6003);
          
-         boolean _testRunning = _6001 == 0xDE && _6002 == 0xB0 && _6003 == 0x61;  
-         
-         if(_testRunning)
-         {
-             int _6000 = aMemory.readByte(0x6000);
-             
-             if(_6000 == 0x80)
-             {
-                 // Test in progress
-                 return false;
-             }
-             
-             return true;
-         }
-         
-         return false;
+         return _6001 == 0xDE && _6002 == 0xB0 && _6003 == 0x61;
      }
      
      private String getNullTerminatedString(Memory aMemory, int aStartAddress)
