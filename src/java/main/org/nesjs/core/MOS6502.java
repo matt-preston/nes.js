@@ -502,7 +502,7 @@ public final class MOS6502
     {
         int _result = readWord(pc) + x;
         pc += 2;
-        return _result;
+        return _result & 0xFFFF;
     }
     
     /**
@@ -513,7 +513,7 @@ public final class MOS6502
     {
         int _result = readWord(pc) + y;
         pc += 2;
-        return _result;
+        return _result & 0xFFFF;
     }
         
     /**
@@ -1167,7 +1167,7 @@ public final class MOS6502
     // Store Accumulator
     private void opcode_STA(int anAddress)
     {
-        memory.writeByte(a, anAddress & 0xFFFF);  // TODO consider wrapping to 0xFFFF in the addressing methods        
+        memory.writeByte(a, anAddress);        
     }
 
     // Store X register
