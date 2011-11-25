@@ -159,7 +159,7 @@ public final class MOS6502
                 case 0x16: opcode_ASL(zeroPageX()); addCycles(6); break;
                 case 0x0E: opcode_ASL(absolute()); addCycles(6); break;
                 case 0x1E: opcode_ASL(absoluteX()); addCycles(7); break;
-                case 0xAB: opcode_ATX(immediate()); addCycles(0); break; // Unofficial
+                case 0xAB: opcode_ATX(immediate()); addCycles(2); break; // Unofficial
                 case 0xCB: opcode_AXS(immediate()); addCycles(2); break; // Unofficial
                 case 0x90: opcode_BCC_relative(); addCycles(2); break;
                 case 0xB0: opcode_BCS_relative(); addCycles(2); break;
@@ -270,20 +270,20 @@ public final class MOS6502
                 case 0xE2: opcode_NOP(immediate()); addCycles(2); break; // Unofficial
                 case 0x04:
                 case 0x44:
-                case 0x64: opcode_NOP(zeroPage()); addCycles(0); break; // Unofficial
-                case 0x0C: opcode_NOP(absolute()); addCycles(0); break; // Unofficial
+                case 0x64: opcode_NOP(zeroPage()); addCycles(3); break; // Unofficial
+                case 0x0C: opcode_NOP(absolute()); addCycles(4); break; // Unofficial
                 case 0x1C:
                 case 0x3C:
                 case 0x5C:
                 case 0x7C:
                 case 0xDC:
-                case 0xFC: opcode_NOP(absoluteX()); addCycles(0); break; // Unofficial
+                case 0xFC: opcode_NOP(absoluteX()); addCycles(4); break; // Unofficial
                 case 0x14:
                 case 0x34:
                 case 0x54:
                 case 0x74:
                 case 0xD4:
-                case 0xF4: opcode_NOP(zeroPageX()); addCycles(0); break; // Unofficial
+                case 0xF4: opcode_NOP(zeroPageX()); addCycles(4); break; // Unofficial
                 case 0x09: opcode_ORA(immediate()); addCycles(2); break;
                 case 0x05: opcode_ORA(zeroPage()); addCycles(3); break;
                 case 0x15: opcode_ORA(zeroPageX()); addCycles(4); break;
@@ -365,8 +365,8 @@ public final class MOS6502
                 case 0x84: opcode_STY(zeroPage()); addCycles(3); break;
                 case 0x94: opcode_STY(zeroPageX()); addCycles(4); break;
                 case 0x8C: opcode_STY(absolute()); addCycles(4); break;
-                case 0x9E: opcode_SXA(absoluteY()); addCycles(0); break; // Unofficial
-                case 0x9C: opcode_SYA(absoluteX()); addCycles(0); break; // Unofficial
+                case 0x9E: opcode_SXA(absoluteY()); addCycles(5); break; // Unofficial
+                case 0x9C: opcode_SYA(absoluteX()); addCycles(5); break; // Unofficial
                 case 0xAA: opcode_TAX_implied(); addCycles(2); break;
                 case 0xA8: opcode_TAY_implied(); addCycles(2); break;
                 case 0xBA: opcode_TSX_implied(); addCycles(2); break;

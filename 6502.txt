@@ -144,7 +144,7 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      ATX*       #aa                   AB
+      ATX*       #aa                   AB        2
       
 
 ======================================================================
@@ -689,22 +689,22 @@ N.B. CMP, CPX, and CPY all set flags according to:
       NOP*       #aa                   89        2
       NOP*       #aa                   C2        2
       NOP*       #aa                   E2        2
-      NOP*       $aa                   04
-      NOP*       $aa                   44
-      NOP*       $aa                   64
-      NOP*       $aaaa                 0C
-      NOP*       $aaaa,X               1C
-      NOP*       $aaaa,X               3C
-      NOP*       $aaaa,X               5C
-      NOP*       $aaaa,X               7C
-      NOP*       $aaaa,X               DC
-      NOP*       $aaaa,X               FC
-      NOP*       $aa,X                 14
-      NOP*       $aa,X                 34
-      NOP*       $aa,X                 54
-      NOP*       $aa,X                 74
-      NOP*       $aa,X                 D4
-      NOP*       $aa,X                 F4
+      NOP*       $aa                   04        3
+      NOP*       $aa                   44        3
+      NOP*       $aa                   64        3
+      NOP*       $aaaa                 0C        4
+      NOP*       $aaaa,X               1C        4
+      NOP*       $aaaa,X               3C        4
+      NOP*       $aaaa,X               5C        4
+      NOP*       $aaaa,X               7C        4
+      NOP*       $aaaa,X               DC        4
+      NOP*       $aaaa,X               FC        4
+      NOP*       $aa,X                 14        4
+      NOP*       $aa,X                 34        4
+      NOP*       $aa,X                 54        4
+      NOP*       $aa,X                 74        4
+      NOP*       $aa,X                 D4        4
+      NOP*       $aa,X                 F4        4
 
 ======================================================================
 
@@ -1059,7 +1059,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      SXA*       $aaaa,Y               9E
+      SXA*       $aaaa,Y               9E        5
       
 ======================================================================
 
@@ -1075,7 +1075,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      SYA*       $aaaa,X               9C
+      SYA*       $aaaa,X               9C        5
       
 ======================================================================
 
