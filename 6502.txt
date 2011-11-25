@@ -160,7 +160,7 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      AXS*       #aa                   CB
+      AXS*       #aa                   CB        2
             
 ======================================================================
 
@@ -412,13 +412,13 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      DCP*       aa                    C7
-      DCP*       aa,X                  D7
-      DCP*       aaaa                  CF
-      DCP*       aaaa,X                DF
-      DCP*       aaaa,Y                DB
-      DCP*       (aa,X)                C3
-      DCP*       (aa),Y                D3
+      DCP*       aa                    C7        5
+      DCP*       aa,X                  D7        6
+      DCP*       aaaa                  CF        6
+      DCP*       aaaa,X                DF        6
+      DCP*       aaaa,Y                DB        7
+      DCP*       (aa,X)                C3        8
+      DCP*       (aa),Y                D3        8
       
 ======================================================================
 
@@ -539,13 +539,13 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      ISB*       $aa                   E7
-      ISB*       $aa,X                 F7
-      ISB*       $aaaa                 EF
-      ISB*       $aaaa,X               FF
-      ISB*       $aaaa,Y               FB
-      ISB*       ($aa,X)               E3
-      ISB*       ($aa),Y               F3
+      ISB*       $aa                   E7        5
+      ISB*       $aa,X                 F7        6
+      ISB*       $aaaa                 EF        6
+      ISB*       $aaaa,X               FF        7
+      ISB*       $aaaa,Y               FB        7
+      ISB*       ($aa,X)               E3        8
+      ISB*       ($aa),Y               F3        8
       
 ======================================================================
 
@@ -585,12 +585,12 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
       
-      LAX*       $aa                   A7
-      LAX*       $aa,Y                 B7
-      LAX*       $aaaa                 AF
-      LAX*       $aaaa,Y               BF
-      LAX*       ($aa,X)               A3      
-      LAX*       ($aa),Y               B3
+      LAX*       $aa                   A7        3
+      LAX*       $aa,Y                 B7        4
+      LAX*       $aaaa                 AF        4
+      LAX*       $aaaa,Y               BF        4
+      LAX*       ($aa,X)               A3        6
+      LAX*       ($aa),Y               B3        5
       
 
 ======================================================================
@@ -678,17 +678,17 @@ N.B. CMP, CPX, and CPY all set flags according to:
       ----------------------------------------------------
 
       NOP                              EA        2
-      NOP*                             1A
-      NOP*                             3A
-      NOP*                             5A
-      NOP*                             7A
-      NOP*                             DA
-      NOP*                             FA
-      NOP*       #aa                   80
-      NOP*       #aa                   82
-      NOP*       #aa                   89
-      NOP*       #aa                   C2
-      NOP*       #aa                   E2
+      NOP*                             1A        2
+      NOP*                             3A        2
+      NOP*                             5A        2
+      NOP*                             7A        2
+      NOP*                             DA        2
+      NOP*                             FA        2
+      NOP*       #aa                   80        2
+      NOP*       #aa                   82        2
+      NOP*       #aa                   89        2
+      NOP*       #aa                   C2        2
+      NOP*       #aa                   E2        2
       NOP*       $aa                   04
       NOP*       $aa                   44
       NOP*       $aa                   64
@@ -788,13 +788,13 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      RLA*       $aa                   27
-      RLA*       $aa,X                 37
-      RLA*       $aaaa                 2F
-      RLA*       $aaaa,X               3F
-      RLA*       $aaaa,Y               3B
-      RLA*       ($aa,X)               23
-      RLA*       ($aa),Y               33
+      RLA*       $aa                   27        5
+      RLA*       $aa,X                 37        6
+      RLA*       $aaaa                 2F        6
+      RLA*       $aaaa,X               3F        7
+      RLA*       $aaaa,Y               3B        7
+      RLA*       ($aa,X)               23        8
+      RLA*       ($aa),Y               33        8
       
 ======================================================================
 
@@ -846,13 +846,13 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      RRA*       $aa                   67
-      RRA*       $aa,X                 77
-      RRA*       $aaaa                 6F
-      RRA*       $aaaa,X               7F
-      RRA*       $aaaa,Y               7B
-      RRA*       ($aa,X)               63
-      RRA*       ($aa),Y               73
+      RRA*       $aa                   67        5
+      RRA*       $aa,X                 77        6
+      RRA*       $aaaa                 6F        6
+      RRA*       $aaaa,X               7F        7
+      RRA*       $aaaa,Y               7B        7
+      RRA*       ($aa,X)               63        8
+      RRA*       ($aa),Y               73        8
       
 ======================================================================
 
@@ -892,10 +892,10 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      SAX*       $aa                   87
-      SAX*       $aa,Y                 97
-      SAX*       $aaaa                 8F
-      SAX*       ($aa,X)               83      
+      SAX*       $aa                   87        3
+      SAX*       $aa,Y                 97        4
+      SAX*       $aaaa                 8F        4
+      SAX*       ($aa,X)               83        6
       
 ======================================================================
 
@@ -973,13 +973,13 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      SLO*       aa                    07
-      SLO*       aa,X                  17
-      SLO*       aaaa                  0F
-      SLO*       aaaa,X                1F
-      SLO*       aaaa,Y                1B
-      SLO*       (aa,X)                03
-      SLO*       (aa),Y                13
+      SLO*       aa                    07        5
+      SLO*       aa,X                  17        6
+      SLO*       aaaa                  0F        6
+      SLO*       aaaa,X                1F        7
+      SLO*       aaaa,Y                1B        7
+      SLO*       (aa,X)                03        8
+      SLO*       (aa),Y                13        8
       
 ======================================================================
 
@@ -991,13 +991,13 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      SRE*       $aa                   47
-      SRE*       $aa,X                 57
-      SRE*       $aaaa                 4F
-      SRE*       $aaaa,X               5F
-      SRE*       $aaaa,Y               5B
-      SRE*       ($aa,X)               43
-      SRE*       ($aa),Y               53
+      SRE*       $aa                   47        5
+      SRE*       $aa,X                 57        6
+      SRE*       $aaaa                 4F        6
+      SRE*       $aaaa,X               5F        7
+      SRE*       $aaaa,Y               5B        7
+      SRE*       ($aa,X)               43        8
+      SRE*       ($aa),Y               53        8
       
 ======================================================================
 

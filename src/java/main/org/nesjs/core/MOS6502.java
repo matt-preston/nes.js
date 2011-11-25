@@ -160,7 +160,7 @@ public final class MOS6502
                 case 0x0E: opcode_ASL(absolute()); addCycles(6); break;
                 case 0x1E: opcode_ASL(absoluteX()); addCycles(7); break;
                 case 0xAB: opcode_ATX(immediate()); addCycles(0); break; // Unofficial
-                case 0xCB: opcode_AXS(immediate()); addCycles(0); break; // Unofficial
+                case 0xCB: opcode_AXS(immediate()); addCycles(2); break; // Unofficial
                 case 0x90: opcode_BCC_relative(); addCycles(2); break;
                 case 0xB0: opcode_BCS_relative(); addCycles(2); break;
                 case 0xF0: opcode_BEQ_relative(); addCycles(2); break;
@@ -190,13 +190,13 @@ public final class MOS6502
                 case 0xC0: opcode_CPY(immediate()); addCycles(2); break;
                 case 0xC4: opcode_CPY(zeroPage()); addCycles(3); break;
                 case 0xCC: opcode_CPY(absolute()); addCycles(4); break;
-                case 0xC7: opcode_DCP(zeroPage()); addCycles(0); break; // Unofficial
-                case 0xD7: opcode_DCP(zeroPageX()); addCycles(0); break; // Unofficial
-                case 0xCF: opcode_DCP(absolute()); addCycles(0); break; // Unofficial
-                case 0xDF: opcode_DCP(absoluteX()); addCycles(0); break; // Unofficial
-                case 0xDB: opcode_DCP(absoluteY()); addCycles(0); break; // Unofficial
-                case 0xC3: opcode_DCP(indirectX()); addCycles(0); break; // Unofficial
-                case 0xD3: opcode_DCP(indirectY()); addCycles(0); break; // Unofficial
+                case 0xC7: opcode_DCP(zeroPage()); addCycles(5); break; // Unofficial
+                case 0xD7: opcode_DCP(zeroPageX()); addCycles(6); break; // Unofficial
+                case 0xCF: opcode_DCP(absolute()); addCycles(6); break; // Unofficial
+                case 0xDF: opcode_DCP(absoluteX()); addCycles(6); break; // Unofficial
+                case 0xDB: opcode_DCP(absoluteY()); addCycles(7); break; // Unofficial
+                case 0xC3: opcode_DCP(indirectX()); addCycles(8); break; // Unofficial
+                case 0xD3: opcode_DCP(indirectY()); addCycles(8); break; // Unofficial
                 case 0xC6: opcode_DEC(zeroPage()); addCycles(5); break;
                 case 0xD6: opcode_DEC(zeroPageX()); addCycles(6); break;
                 case 0xCE: opcode_DEC(absolute()); addCycles(6); break;
@@ -217,22 +217,22 @@ public final class MOS6502
                 case 0xFE: opcode_INC(absoluteX()); addCycles(7); break;
                 case 0xE8: opcode_INX_implied(); addCycles(2); break;
                 case 0xC8: opcode_INY_implied(); addCycles(2); break;
-                case 0xE7: opcode_ISB(zeroPage()); addCycles(0); break; // Unofficial
-                case 0xF7: opcode_ISB(zeroPageX()); addCycles(0); break; // Unofficial
-                case 0xEF: opcode_ISB(absolute()); addCycles(0); break; // Unofficial
-                case 0xFF: opcode_ISB(absoluteX()); addCycles(0); break; // Unofficial
-                case 0xFB: opcode_ISB(absoluteY()); addCycles(0); break; // Unofficial
-                case 0xE3: opcode_ISB(indirectX()); addCycles(0); break; // Unofficial
-                case 0xF3: opcode_ISB(indirectY()); addCycles(0); break; // Unofficial
+                case 0xE7: opcode_ISB(zeroPage()); addCycles(5); break; // Unofficial
+                case 0xF7: opcode_ISB(zeroPageX()); addCycles(6); break; // Unofficial
+                case 0xEF: opcode_ISB(absolute()); addCycles(6); break; // Unofficial
+                case 0xFF: opcode_ISB(absoluteX()); addCycles(7); break; // Unofficial
+                case 0xFB: opcode_ISB(absoluteY()); addCycles(7); break; // Unofficial
+                case 0xE3: opcode_ISB(indirectX()); addCycles(8); break; // Unofficial
+                case 0xF3: opcode_ISB(indirectY()); addCycles(8); break; // Unofficial
                 case 0x4C: opcode_JMP(absolute()); addCycles(3); break;
                 case 0x6C: opcode_JMP(indirect()); addCycles(5); break;
                 case 0x20: opcode_JSR(absolute()); addCycles(6); break;
-                case 0xA7: opcode_LAX(zeroPage()); addCycles(0); break; // Unofficial
-                case 0xB7: opcode_LAX(zeroPageY()); addCycles(0); break; // Unofficial
-                case 0xAF: opcode_LAX(absolute()); addCycles(0); break; // Unofficial
-                case 0xBF: opcode_LAX(absoluteY()); addCycles(0); break; // Unofficial
-                case 0xA3: opcode_LAX(indirectX()); addCycles(0); break; // Unofficial
-                case 0xB3: opcode_LAX(indirectY()); addCycles(0); break; // Unofficial
+                case 0xA7: opcode_LAX(zeroPage()); addCycles(3); break; // Unofficial
+                case 0xB7: opcode_LAX(zeroPageY()); addCycles(4); break; // Unofficial
+                case 0xAF: opcode_LAX(absolute()); addCycles(4); break; // Unofficial
+                case 0xBF: opcode_LAX(absoluteY()); addCycles(4); break; // Unofficial
+                case 0xA3: opcode_LAX(indirectX()); addCycles(6); break; // Unofficial
+                case 0xB3: opcode_LAX(indirectY()); addCycles(5); break; // Unofficial
                 case 0xA9: opcode_LDA(immediate()); addCycles(2); break;
                 case 0xA5: opcode_LDA(zeroPage()); addCycles(3); break;
                 case 0xB5: opcode_LDA(zeroPageX()); addCycles(4); break;
@@ -262,12 +262,12 @@ public final class MOS6502
                 case 0x5A:
                 case 0x7A:
                 case 0xDA:
-                case 0xFA: opcode_NOP_implied(); addCycles(0); break; // Unofficial
+                case 0xFA: opcode_NOP_implied(); addCycles(2); break; // Unofficial
                 case 0x80:
                 case 0x82:
                 case 0x89:
                 case 0xC2:
-                case 0xE2: opcode_NOP(immediate()); addCycles(0); break; // Unofficial
+                case 0xE2: opcode_NOP(immediate()); addCycles(2); break; // Unofficial
                 case 0x04:
                 case 0x44:
                 case 0x64: opcode_NOP(zeroPage()); addCycles(0); break; // Unofficial
@@ -296,13 +296,13 @@ public final class MOS6502
                 case 0x08: opcode_PHP_implied(); addCycles(3); break;
                 case 0x68: opcode_PLA_implied(); addCycles(4); break;
                 case 0x28: opcode_PLP_implied(); addCycles(4); break;
-                case 0x27: opcode_RLA(zeroPage()); addCycles(0); break; // Unofficial
-                case 0x37: opcode_RLA(zeroPageX()); addCycles(0); break; // Unofficial
-                case 0x2F: opcode_RLA(absolute()); addCycles(0); break; // Unofficial
-                case 0x3F: opcode_RLA(absoluteX()); addCycles(0); break; // Unofficial
-                case 0x3B: opcode_RLA(absoluteY()); addCycles(0); break; // Unofficial
-                case 0x23: opcode_RLA(indirectX()); addCycles(0); break; // Unofficial
-                case 0x33: opcode_RLA(indirectY()); addCycles(0); break; // Unofficial
+                case 0x27: opcode_RLA(zeroPage()); addCycles(5); break; // Unofficial
+                case 0x37: opcode_RLA(zeroPageX()); addCycles(6); break; // Unofficial
+                case 0x2F: opcode_RLA(absolute()); addCycles(6); break; // Unofficial
+                case 0x3F: opcode_RLA(absoluteX()); addCycles(7); break; // Unofficial
+                case 0x3B: opcode_RLA(absoluteY()); addCycles(7); break; // Unofficial
+                case 0x23: opcode_RLA(indirectX()); addCycles(8); break; // Unofficial
+                case 0x33: opcode_RLA(indirectY()); addCycles(8); break; // Unofficial
                 case 0x2A: opcode_ROL_accumulator(); addCycles(2); break;
                 case 0x26: opcode_ROL(zeroPage()); addCycles(5); break;
                 case 0x36: opcode_ROL(zeroPageX()); addCycles(6); break;
@@ -313,19 +313,19 @@ public final class MOS6502
                 case 0x76: opcode_ROR(zeroPageX()); addCycles(6); break;
                 case 0x6E: opcode_ROR(absolute()); addCycles(6); break;
                 case 0x7E: opcode_ROR(absoluteX()); addCycles(7); break;
-                case 0x67: opcode_RRA(zeroPage()); addCycles(0); break; // Unofficial
-                case 0x77: opcode_RRA(zeroPageX()); addCycles(0); break; // Unofficial
-                case 0x6F: opcode_RRA(absolute()); addCycles(0); break; // Unofficial
-                case 0x7F: opcode_RRA(absoluteX()); addCycles(0); break; // Unofficial
-                case 0x7B: opcode_RRA(absoluteY()); addCycles(0); break; // Unofficial
-                case 0x63: opcode_RRA(indirectX()); addCycles(0); break; // Unofficial
-                case 0x73: opcode_RRA(indirectY()); addCycles(0); break; // Unofficial
+                case 0x67: opcode_RRA(zeroPage()); addCycles(5); break; // Unofficial
+                case 0x77: opcode_RRA(zeroPageX()); addCycles(6); break; // Unofficial
+                case 0x6F: opcode_RRA(absolute()); addCycles(6); break; // Unofficial
+                case 0x7F: opcode_RRA(absoluteX()); addCycles(7); break; // Unofficial
+                case 0x7B: opcode_RRA(absoluteY()); addCycles(7); break; // Unofficial
+                case 0x63: opcode_RRA(indirectX()); addCycles(8); break; // Unofficial
+                case 0x73: opcode_RRA(indirectY()); addCycles(8); break; // Unofficial
                 case 0x40: opcode_RTI_implied(); addCycles(6); break;
                 case 0x60: opcode_RTS_implied(); addCycles(6); break;
-                case 0x87: opcode_SAX(zeroPage()); addCycles(0); break; // Unofficial
-                case 0x97: opcode_SAX(zeroPageY()); addCycles(0); break; // Unofficial
-                case 0x8F: opcode_SAX(absolute()); addCycles(0); break; // Unofficial
-                case 0x83: opcode_SAX(indirectX()); addCycles(0); break; // Unofficial
+                case 0x87: opcode_SAX(zeroPage()); addCycles(3); break; // Unofficial
+                case 0x97: opcode_SAX(zeroPageY()); addCycles(4); break; // Unofficial
+                case 0x8F: opcode_SAX(absolute()); addCycles(4); break; // Unofficial
+                case 0x83: opcode_SAX(indirectX()); addCycles(6); break; // Unofficial
                 case 0xE9:
                 case 0xEB: opcode_SBC(immediate()); addCycles(2); break; // Unofficial
                 case 0xE5: opcode_SBC(zeroPage()); addCycles(3); break;
@@ -338,20 +338,20 @@ public final class MOS6502
                 case 0x38: opcode_SEC_implied(); addCycles(2); break;
                 case 0xF8: opcode_SED_implied(); addCycles(2); break;
                 case 0x78: opcode_SEI_implied(); addCycles(2); break;
-                case 0x07: opcode_SLO(zeroPage()); addCycles(0); break; // Unofficial
-                case 0x17: opcode_SLO(zeroPageX()); addCycles(0); break; // Unofficial
-                case 0x0F: opcode_SLO(absolute()); addCycles(0); break; // Unofficial
-                case 0x1F: opcode_SLO(absoluteX()); addCycles(0); break; // Unofficial
-                case 0x1B: opcode_SLO(absoluteY()); addCycles(0); break; // Unofficial
-                case 0x03: opcode_SLO(indirectX()); addCycles(0); break; // Unofficial
-                case 0x13: opcode_SLO(indirectY()); addCycles(0); break; // Unofficial
-                case 0x47: opcode_SRE(zeroPage()); addCycles(0); break; // Unofficial
-                case 0x57: opcode_SRE(zeroPageX()); addCycles(0); break; // Unofficial
-                case 0x4F: opcode_SRE(absolute()); addCycles(0); break; // Unofficial
-                case 0x5F: opcode_SRE(absoluteX()); addCycles(0); break; // Unofficial
-                case 0x5B: opcode_SRE(absoluteY()); addCycles(0); break; // Unofficial
-                case 0x43: opcode_SRE(indirectX()); addCycles(0); break; // Unofficial
-                case 0x53: opcode_SRE(indirectY()); addCycles(0); break; // Unofficial
+                case 0x07: opcode_SLO(zeroPage()); addCycles(5); break; // Unofficial
+                case 0x17: opcode_SLO(zeroPageX()); addCycles(6); break; // Unofficial
+                case 0x0F: opcode_SLO(absolute()); addCycles(6); break; // Unofficial
+                case 0x1F: opcode_SLO(absoluteX()); addCycles(7); break; // Unofficial
+                case 0x1B: opcode_SLO(absoluteY()); addCycles(7); break; // Unofficial
+                case 0x03: opcode_SLO(indirectX()); addCycles(8); break; // Unofficial
+                case 0x13: opcode_SLO(indirectY()); addCycles(8); break; // Unofficial
+                case 0x47: opcode_SRE(zeroPage()); addCycles(5); break; // Unofficial
+                case 0x57: opcode_SRE(zeroPageX()); addCycles(6); break; // Unofficial
+                case 0x4F: opcode_SRE(absolute()); addCycles(6); break; // Unofficial
+                case 0x5F: opcode_SRE(absoluteX()); addCycles(7); break; // Unofficial
+                case 0x5B: opcode_SRE(absoluteY()); addCycles(7); break; // Unofficial
+                case 0x43: opcode_SRE(indirectX()); addCycles(8); break; // Unofficial
+                case 0x53: opcode_SRE(indirectY()); addCycles(8); break; // Unofficial
                 case 0x85: opcode_STA(zeroPage()); addCycles(3); break;
                 case 0x95: opcode_STA(zeroPageX()); addCycles(4); break;
                 case 0x8D: opcode_STA(absolute()); addCycles(4); break;
