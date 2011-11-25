@@ -1,10 +1,15 @@
 package org.nesjs.codegen;
 
-import java.io.*;
-import java.util.*;
-import java.util.regex.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.nesjs.core.*;
+import org.nesjs.core.Utils;
 
 enum AddressingMode
 {
@@ -27,7 +32,7 @@ public class OpcodeDefinitionReader
 {
 	private BufferedReader reader;
 	
-	private Pattern pattern = Pattern.compile("^(\\w{3})\\s+.*\\s+(\\w{2})$", Pattern.DOTALL);
+	private Pattern pattern = Pattern.compile("^(\\w{3})\\*?\\s+.*\\s+(\\w{2})\\s*(\\d)?$", Pattern.DOTALL);
 	
 	public OpcodeDefinitionReader() throws IOException
 	{		
@@ -51,12 +56,21 @@ public class OpcodeDefinitionReader
             {
                 String _mnemonic = _matcher.group(1);
                 String _opcodeString = _matcher.group(2);
+                String _cyclesString = _matcher.group(3);
+                
+                if(_cyclesString == null)
+                {
+                	_cyclesString = "-1";
+                }
                 
                 int _opcode = Integer.parseInt(_opcodeString, 16);
+                int _cycles = Integer.parseInt(_cyclesString);
                 
                 AddressingMode _addressingMode = getAddressingMode(_line);
                 
-                return new OpcodeDefinition(_opcode, _mnemonic, _addressingMode, true);
+                boolean _official = !_line.contains("*");
+                
+                return new OpcodeDefinition(_opcode, _mnemonic, _addressingMode, _official, _cycles);
             }
         }
         
@@ -146,6 +160,18 @@ public class OpcodeDefinitionReader
     	
     	return AddressingMode.IMPLIED;
     }
+    
+    public static void main(String[] anArgs) throws Exception 
+	{
+        OpcodeDefinitionReader _r = new OpcodeDefinitionReader();
+	       
+        List<OpcodeDefinition> _opcodes = _r.allOpcodeDefinitions();
+	     
+	    for (OpcodeDefinition _def : _opcodes) 
+	    {
+            System.out.println(_def);   		
+        }
+	}
 }
 
 class OpcodeDefinition
@@ -154,13 +180,15 @@ class OpcodeDefinition
     private String mnemonic;
     private AddressingMode addressingMode;
     private boolean official;
+    private int cycles;
     
-    public OpcodeDefinition(int anOpcode, String aMnemonic, AddressingMode anAddressingMode, boolean isOfficial) 
+    public OpcodeDefinition(int anOpcode, String aMnemonic, AddressingMode anAddressingMode, boolean isOfficial, int aCycles) 
     {
 		opcode = anOpcode;
 		mnemonic = aMnemonic;
 		addressingMode = anAddressingMode;
 		official = isOfficial;
+		cycles = aCycles;
 	}
 
 	public int getOpcode() 
@@ -183,12 +211,17 @@ class OpcodeDefinition
 		return official;
 	}
 	
+	public int getCycles() 
+	{
+		return cycles;
+	}
+	
 	@Override
 	public String toString() 
 	{
 		if(official)
-		    return String.format("%s [%s] official:   %s", Utils.toHexString(getOpcode()), getMnemonic(), getAddressingMode().name());
+		    return String.format("%s [%s] official:   %s [%d]", Utils.toHexString(getOpcode()), getMnemonic(), getAddressingMode().name(), getCycles());
 		else
-			return String.format("%s [%s] unofficial: %s", Utils.toHexString(getOpcode()), getMnemonic(), getAddressingMode().name());
+			return String.format("%s [%s] unofficial: %s [%d]", Utils.toHexString(getOpcode()), getMnemonic(), getAddressingMode().name(), getCycles());
 	}
 }
