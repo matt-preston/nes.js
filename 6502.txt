@@ -173,7 +173,7 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      BCC        ~aa                   90
+      BCC        ~aa                   90        2
 
 ======================================================================
 
@@ -186,7 +186,7 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      BCS        ~aa                   B0
+      BCS        ~aa                   B0        2
 
 ======================================================================
 
@@ -199,7 +199,7 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      BEQ        ~aa                   F0
+      BEQ        ~aa                   F0        2
 
 ======================================================================
 
@@ -212,8 +212,8 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      BIT        aa                    24
-      BIT        aaaa                  2C
+      BIT        aa                    24        3
+      BIT        aaaa                  2C        4
 
 ======================================================================
 
@@ -226,7 +226,7 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      BMI        ~aa                   30
+      BMI        ~aa                   30        2
 
 ======================================================================
 
@@ -239,7 +239,7 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      BNE        ~aa                   D0
+      BNE        ~aa                   D0        2
 
 ======================================================================
 
@@ -252,7 +252,7 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      BPL        ~aa                   10
+      BPL        ~aa                   10        2
 
 ======================================================================
 
@@ -265,7 +265,7 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      BRK                              00
+      BRK                              00        7
 
 ======================================================================
 
@@ -278,7 +278,7 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      BVC        ~aa                   50
+      BVC        ~aa                   50        2
 
 ======================================================================
 
@@ -291,7 +291,7 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      BVS        ~a                    70
+      BVS        ~a                    70        2
 
 ======================================================================
 
@@ -304,7 +304,7 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      CLC                              18
+      CLC                              18        2
 
 ======================================================================
 
@@ -317,7 +317,7 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      CLD                              D8
+      CLD                              D8        2
 
 ======================================================================
  
@@ -330,7 +330,7 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      CLI                              58
+      CLI                              58        2
 
 ======================================================================
 
@@ -343,7 +343,7 @@ Lets begin shall we?
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      CLV                              B8
+      CLV                              B8        2
 
 ======================================================================
 
@@ -362,14 +362,14 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      CMP        #aa                   C9
-      CMP        aa                    C5
-      CMP        aa,X                  D5
-      CMP        aaaa                  CD
-      CMP        aaaa,X                DD
-      CMP        aaaa,Y                D9
-      CMP        (aa,X)                C1
-      CMP        (aa),Y                D1
+      CMP        #aa                   C9        2
+      CMP        aa                    C5        3
+      CMP        aa,X                  D5        4
+      CMP        aaaa                  CD        4
+      CMP        aaaa,X                DD        4
+      CMP        aaaa,Y                D9        4
+      CMP        (aa,X)                C1        6
+      CMP        (aa),Y                D1        5
 
 
    CPX  -  Compare Memory and X register
@@ -381,9 +381,9 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      CPX        #aa                   E0
-      CPX        aa                    E4
-      CPX        aaaa                  EC
+      CPX        #aa                   E0        2
+      CPX        aa                    E4        3
+      CPX        aaaa                  EC        4
 
 
    CPY  -  Compare Memory and Y register
@@ -395,9 +395,9 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      CPY        #aa                   C0
-      CPY        aa                    C4
-      CPY        aaaa                  CC
+      CPY        #aa                   C0        2
+      CPY        aa                    C4        3
+      CPY        aaaa                  CC        4
 
 ======================================================================
 
@@ -431,10 +431,10 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      DEC        aa                    C6
-      DEC        aa,X                  D6
-      DEC        aaaa                  CE
-      DEC        aaaa,X                DE
+      DEC        aa                    C6        5
+      DEC        aa,X                  D6        6
+      DEC        aaaa                  CE        6
+      DEC        aaaa,X                DE        7
 
 ======================================================================
 
@@ -447,7 +447,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      DEX                              CA
+      DEX                              CA        2
 
 ======================================================================
 
@@ -460,7 +460,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      DEY                              88
+      DEY                              88        2
 
 
 ======================================================================
@@ -474,14 +474,14 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      EOR        #aa                   49
-      EOR        $aa                   45
-      EOR        $aa,X                 55
-      EOR        $aaaa                 4D
-      EOR        $aaaa,X               5D
-      EOR        $aaaa,Y               59
-      EOR        ($aa,X)               41
-      EOR        ($aa),Y               51
+      EOR        #aa                   49        2
+      EOR        $aa                   45        2
+      EOR        $aa,X                 55        2
+      EOR        $aaaa                 4D        3
+      EOR        $aaaa,X               5D        3
+      EOR        $aaaa,Y               59        3
+      EOR        ($aa,X)               41        2
+      EOR        ($aa),Y               51        2
 
 ======================================================================
 
@@ -494,10 +494,10 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      INC        $aa                    E6
-      INC        $aa,X                  F6
-      INC        $aaaa                  EE
-      INC        $aaaa,X                FE
+      INC        $aa                    E6       5
+      INC        $aa,X                  F6       6
+      INC        $aaaa                  EE       6
+      INC        $aaaa,X                FE       7
 
 ======================================================================
 
@@ -510,7 +510,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      INX                              E8
+      INX                              E8        2
 
 ======================================================================
 
@@ -523,7 +523,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      INY                              C8
+      INY                              C8        2
 
 ======================================================================
 
@@ -558,8 +558,8 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      JMP        $aaaa                 4C
-      JMP        ($aaaa)               6C
+      JMP        $aaaa                 4C        3
+      JMP        ($aaaa)               6C        5
 
 ======================================================================
 
@@ -572,7 +572,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      JSR        $aaaa                 20
+      JSR        $aaaa                 20        6
 
 ======================================================================
 
@@ -604,14 +604,14 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      LDA        #aa                   A9
-      LDA        $aa                   A5
-      LDA        $aa,X                 B5
-      LDA        $aaaa                 AD
-      LDA        $aaaa,X               BD
-      LDA        $aaaa,Y               B9
-      LDA        ($aa,X)               A1
-      LDA        ($aa),Y               B1
+      LDA        #aa                   A9        2
+      LDA        $aa                   A5        3
+      LDA        $aa,X                 B5        4
+      LDA        $aaaa                 AD        4
+      LDA        $aaaa,X               BD        4
+      LDA        $aaaa,Y               B9        4
+      LDA        ($aa,X)               A1        6
+      LDA        ($aa),Y               B1        5
 
 ======================================================================
 
@@ -624,11 +624,11 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      LDX        #aa                   A2
-      LDX        $aa                   A6
-      LDX        $aa,Y                 B6
-      LDX        $aaaa                 AE
-      LDX        $aaaa,Y               BE
+      LDX        #aa                   A2        2
+      LDX        $aa                   A6        3
+      LDX        $aa,Y                 B6        4
+      LDX        $aaaa                 AE        4
+      LDX        $aaaa,Y               BE        4
 
 ======================================================================
 
@@ -641,11 +641,11 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      LDY        #aa                   A0
-      LDY        $aa                   A4
-      LDY        $aa,X                 B4
-      LDY        $aaaa                 AC
-      LDY        $aaaa,X               BC
+      LDY        #aa                   A0        2
+      LDY        $aa                   A4        3
+      LDY        $aa,X                 B4        4
+      LDY        $aaaa                 AC        4
+      LDY        $aaaa,X               BC        4
 
 ======================================================================
 
@@ -660,11 +660,11 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      LSR        A                     4A
-      LSR        $aa                   46
-      LSR        $aa,X                 56
-      LSR        $aaaa                 4E
-      LSR        $aaaa,X               5E
+      LSR        A                     4A        2
+      LSR        $aa                   46        5
+      LSR        $aa,X                 56        6
+      LSR        $aaaa                 4E        6
+      LSR        $aaaa,X               5E        7
 
 ======================================================================
 
@@ -677,7 +677,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      NOP                              EA      
+      NOP                              EA        2
       NOP*                             1A
       NOP*                             3A
       NOP*                             5A
@@ -717,14 +717,14 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      ORA        #aa                   09
-      ORA        $aa                   05
-      ORA        $aa,X                 15
-      ORA        $aaaa                 0D
-      ORA        $aaaa,X               1D
-      ORA        $aaaa,Y               19
-      ORA        ($aa,X)               01
-      ORA        ($aa),Y               11
+      ORA        #aa                   09        2
+      ORA        $aa                   05        3
+      ORA        $aa,X                 15        4
+      ORA        $aaaa                 0D        4
+      ORA        $aaaa,X               1D        4
+      ORA        $aaaa,Y               19        4
+      ORA        ($aa,X)               01        6
+      ORA        ($aa),Y               11        5
 
 ======================================================================
 
@@ -737,7 +737,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      PHA                              48
+      PHA                              48        3
 
 ======================================================================
 
@@ -750,7 +750,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      PHP                              08
+      PHP                              08        3
 
 ======================================================================
 
@@ -763,7 +763,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      PLA                              68
+      PLA                              68        4
 
 ======================================================================
 
@@ -776,7 +776,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      PLP                              28
+      PLP                              28        4
 
 ======================================================================
 
@@ -809,11 +809,11 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      ROL        A                     2A
-      ROL        $aa                   26
-      ROL        $aa,X                 36
-      ROL        $aaaa                 2E
-      ROL        $aaaa,X               3E
+      ROL        A                     2A        2
+      ROL        $aa                   26        5
+      ROL        $aa,X                 36        6
+      ROL        $aaaa                 2E        6
+      ROL        $aaaa,X               3E        7
 
 ======================================================================
 
@@ -828,11 +828,11 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      ROR        A                     6A
-      ROR        $aa                   66
-      ROR        $aa,X                 76
-      ROR        $aaaa                 6E
-      ROR        $aaaa,X               7E
+      ROR        A                     6A        2
+      ROR        $aa                   66        5
+      ROR        $aa,X                 76        6
+      ROR        $aaaa                 6E        6
+      ROR        $aaaa,X               7E        7
 
 ======================================================================
 
@@ -865,7 +865,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      RTI                              40
+      RTI                              40        6
 
 ======================================================================
 
@@ -878,7 +878,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      RTS                              60
+      RTS                              60        6
       
 ======================================================================
 
@@ -932,7 +932,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      SEC                              38
+      SEC                              38        2
 
 ======================================================================
 
@@ -944,7 +944,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      SED                              F8
+      SED                              F8        2
 
 ======================================================================
 
@@ -956,7 +956,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      SEI                              78
+      SEI                              78        2
 
 ======================================================================
 
@@ -1009,13 +1009,13 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      STA        $aa                   85
-      STA        $aa,X                 95
-      STA        $aaaa                 8D
-      STA        $aaaa,X               9D
-      STA        $aaaa,Y               99
-      STA        ($aa,X)               81
-      STA        ($aa),Y               91
+      STA        $aa                   85        3
+      STA        $aa,X                 95        4
+      STA        $aaaa                 8D        4
+      STA        $aaaa,X               9D        5
+      STA        $aaaa,Y               99        5
+      STA        ($aa,X)               81        6
+      STA        ($aa),Y               91        6
 
 ======================================================================
 
@@ -1027,9 +1027,9 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      STX        $aa                   86
-      STX        $aa,Y                 96
-      STX        $aaaa                 8E
+      STX        $aa                   86        3
+      STX        $aa,Y                 96        4
+      STX        $aaaa                 8E        4
 
 ======================================================================
 
@@ -1041,9 +1041,9 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      STY        $aa                   84
-      STY        $aa,X                 94
-      STY        $aaaa                 8C
+      STY        $aa                   84        3
+      STY        $aa,X                 94        4
+      STY        $aaaa                 8C        4
 
 ======================================================================
 
@@ -1088,7 +1088,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      TAX                              AA
+      TAX                              AA        2
 
 ======================================================================
 
@@ -1101,7 +1101,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      TAY                              A8
+      TAY                              A8        2
 
 ======================================================================
 
@@ -1114,7 +1114,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      TSX                              BA
+      TSX                              BA        2
 
 ======================================================================
 
@@ -1127,7 +1127,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      TXA                              8A
+      TXA                              8A        2
 
 ======================================================================
 
@@ -1140,7 +1140,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      TXS                              9A
+      TXS                              9A        2
 
 ======================================================================
 
@@ -1153,7 +1153,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       Mnemonic   Addressing Mode       Opcode    Cycles
       ----------------------------------------------------
 
-      TYA                              98
+      TYA                              98        2
 
   END OF FILE
 

@@ -26,12 +26,12 @@ public class GenerateDispatch
                 }
                 else
                 {
-                    System.out.printf("case %s: %s; break;\n", Utils.toHexString(_next.getOpcode()), getCallMethodName(_next));    
+                    printCaseStatement(_next);    
                 }
             }
             else
             {
-                System.out.printf("case %s: %s; break;\n", Utils.toHexString(_next.getOpcode()), getCallMethodName(_next));
+                printCaseStatement(_next);
             }
         }
         
@@ -53,6 +53,18 @@ public class GenerateDispatch
         
         _r.close();
     }    
+    
+    private static void printCaseStatement(OpcodeDefinition anOpcode)
+    {
+        String _comment = "";
+        
+        if(!anOpcode.isOfficial())
+        {
+            _comment = " // Unofficial";
+        }
+        
+        System.out.printf("case %s: %s; addCycles(%d); break;%s\n", Utils.toHexString(anOpcode.getOpcode()), getCallMethodName(anOpcode), anOpcode.getCycles(), _comment);        
+    }
     
     private static String getCallMethodName(OpcodeDefinition anOpcode)
     {

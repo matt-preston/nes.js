@@ -60,7 +60,7 @@ public class OpcodeDefinitionReader
                 
                 if(_cyclesString == null)
                 {
-                	_cyclesString = "-1";
+                	_cyclesString = "0";
                 }
                 
                 int _opcode = Integer.parseInt(_opcodeString, 16);
