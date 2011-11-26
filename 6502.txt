@@ -475,13 +475,13 @@ N.B. CMP, CPX, and CPY all set flags according to:
       ----------------------------------------------------
 
       EOR        #aa                   49        2
-      EOR        $aa                   45        2
-      EOR        $aa,X                 55        2
-      EOR        $aaaa                 4D        3
-      EOR        $aaaa,X               5D        3
-      EOR        $aaaa,Y               59        3
-      EOR        ($aa,X)               41        2
-      EOR        ($aa),Y               51        2
+      EOR        $aa                   45        3
+      EOR        $aa,X                 55        4
+      EOR        $aaaa                 4D        4
+      EOR        $aaaa,X               5D        4
+      EOR        $aaaa,Y               59        4
+      EOR        ($aa,X)               41        6
+      EOR        ($aa),Y               51        5
 
 ======================================================================
 

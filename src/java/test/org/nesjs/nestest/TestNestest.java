@@ -36,6 +36,8 @@ public class TestNestest
             
             _cycles += (_6502.getCycles() * 3); // it's comparing to PPU cycles, where 1 CPU clock = 3 PPU clocks
             
+            _cycles = _cycles % 341; // Each scanline is 341 PPU cycles long
+            
             Assert.assertEquals("Cycles not valid at step [" + _stepCount + "]", _state.cycles, _cycles);
             
             _6502.step();            

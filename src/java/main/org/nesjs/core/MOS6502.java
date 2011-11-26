@@ -204,13 +204,13 @@ public final class MOS6502
                 case 0xCA: opcode_DEX_implied(); addCycles(2); break;
                 case 0x88: opcode_DEY_implied(); addCycles(2); break;
                 case 0x49: opcode_EOR(immediate()); addCycles(2); break;
-                case 0x45: opcode_EOR(zeroPage()); addCycles(2); break;
-                case 0x55: opcode_EOR(zeroPageX()); addCycles(2); break;
-                case 0x4D: opcode_EOR(absolute()); addCycles(3); break;
-                case 0x5D: opcode_EOR(absoluteX()); addCycles(3); break;
-                case 0x59: opcode_EOR(absoluteY()); addCycles(3); break;
-                case 0x41: opcode_EOR(indirectX()); addCycles(2); break;
-                case 0x51: opcode_EOR(indirectY()); addCycles(2); break;
+                case 0x45: opcode_EOR(zeroPage()); addCycles(3); break;
+                case 0x55: opcode_EOR(zeroPageX()); addCycles(4); break;
+                case 0x4D: opcode_EOR(absolute()); addCycles(4); break;
+                case 0x5D: opcode_EOR(absoluteX()); addCycles(4); break;
+                case 0x59: opcode_EOR(absoluteY()); addCycles(4); break;
+                case 0x41: opcode_EOR(indirectX()); addCycles(6); break;
+                case 0x51: opcode_EOR(indirectY()); addCycles(5); break;
                 case 0xE6: opcode_INC(zeroPage()); addCycles(5); break;
                 case 0xF6: opcode_INC(zeroPageX()); addCycles(6); break;
                 case 0xEE: opcode_INC(absolute()); addCycles(6); break;
@@ -629,6 +629,8 @@ public final class MOS6502
             int _value = memory.readByte(_address);
             int _signedByte = _value < 0x80 ? _value : _value - 256;
             pc += _signedByte;
+            
+            addCycles(1);
         }
     }
     
