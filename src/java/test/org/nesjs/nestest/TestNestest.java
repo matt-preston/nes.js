@@ -22,7 +22,8 @@ public class TestNestest
             
         _6502.setRegisterPC(0xC000);
 
-        int _stepCount = 0;
+        int _cycles = 0;
+        int _stepCount = 1;
         
         for (CPUState _state : getExpectedCpuStates())
         {
@@ -32,6 +33,10 @@ public class TestNestest
             assertHexEquals("Y not valid at step [" + _stepCount + "]", _state.y, _6502.getRegisterY());
             assertPEquals("P not valid at step [" + _stepCount + "]", _state.p, _6502.getRegisterP());
             assertHexEquals("SP not valid at step [" + _stepCount + "]", _state.s, _6502.getRegisterS());
+            
+            _cycles += (_6502.getCycles() * 3); // it's comparing to PPU cycles, where 1 CPU clock = 3 PPU clocks
+            
+            Assert.assertEquals("Cycles not valid at step [" + _stepCount + "]", _state.cycles, _cycles);
             
             _6502.step();            
             _stepCount++;
@@ -69,7 +74,7 @@ public class TestNestest
     
     private List<CPUState> getExpectedCpuStates() throws Exception
     {
-        InputStream _in = getClass().getResourceAsStream("nestest-simple.log");
+        InputStream _in = getClass().getResourceAsStream("nestest-full.log");
         Scanner _scanner = new Scanner(_in, "UTF-8");
         
         List<CPUState> _states = new ArrayList<CPUState>();
@@ -79,7 +84,7 @@ public class TestNestest
             int _pc = _scanner.nextInt(16);        
             int _op = _scanner.nextInt(16);
             
-            _scanner.skip("\\s+A:");
+            _scanner.skip("[^:]+:");
             int _a = _scanner.nextInt(16);
             
             _scanner.skip("\\s+X:");
@@ -92,14 +97,18 @@ public class TestNestest
             int _p = _scanner.nextInt(16);
             
             _scanner.skip("\\s+SP:");
-            int _s = _scanner.nextInt(16);
+            int _s = _scanner.nextInt(16) + 0x0100;
             
-            _states.add(new CPUState(_pc, _op, _s, _a, _x, _y, _p));
+            _scanner.skip("\\s+CYC:");
+            int _cycles = _scanner.nextInt();
+            
+            _states.add(new CPUState(_pc, _op, _s, _a, _x, _y, _p, _cycles));
+            
+            _scanner.nextLine(); // skip to the end of the line
         }
         
         return _states;
     }
-    
     
     private class CPUState
     {
@@ -110,8 +119,9 @@ public class TestNestest
         public int x;
         public int y;
         public int p;
+        public int cycles;
         
-        public CPUState(int aPc, int aOpcode, int aS, int aA, int aX, int aY, int aP)
+        public CPUState(int aPc, int aOpcode, int aS, int aA, int aX, int aY, int aP, int aCycles)
         {
             pc = aPc;            
             s = aS;
@@ -119,6 +129,7 @@ public class TestNestest
             x = aX;
             y = aY;
             p = aP;
+            cycles = aCycles;
         }        
     }
 }
