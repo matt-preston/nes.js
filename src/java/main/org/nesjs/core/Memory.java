@@ -29,6 +29,8 @@ public class Memory
     
     public final int readByte(int anAddress)
     {
+        assert anAddress >= 0 && anAddress <= 0xFFFF : "Tried to read an out of range address";
+        
         // Mask to 16 bit
         int _address = anAddress & 0xFFFF;
 
@@ -70,6 +72,7 @@ public class Memory
     
     public final void writeByte(int aByte, int anAddress)
     {
+        assert anAddress >= 0 && anAddress <= 0xFFFF : "Tried to write an out of range address";
         assert aByte < 0x0100 : "Attempting to write out of range byte";
         
         if (anAddress < 0x2000)

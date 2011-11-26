@@ -571,9 +571,18 @@ public final class MOS6502
     private final int indirectY()
     {
         int _address = memory.readByte(pc++);
-        return readWordZeroPageWrap(_address) + y;        
+        int _temp = readWordZeroPageWrap(_address);        
+        int _result = _temp + y;
+        
+        if(isPageCrossed(_temp, _result))
+        {
+            addCycles(1);            
+            _result &= 0xFFFF;
+        }
+        
+        return _result;
     }    
-    
+        
 //-------------------------------------------------------------
 // Stack
 //-------------------------------------------------------------    
@@ -637,6 +646,11 @@ public final class MOS6502
     private final void addCycles(int aCycles)
     {
         cycles += aCycles;
+    }
+    
+    public final boolean isPageCrossed(int anAddress1, int anAddress) 
+    { 
+        return (((anAddress1 ^ anAddress) & 0xFF00) != 0x0000);        
     }
     
 //-------------------------------------------------------------
