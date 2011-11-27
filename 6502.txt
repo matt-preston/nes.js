@@ -415,7 +415,7 @@ N.B. CMP, CPX, and CPY all set flags according to:
       DCP*       aa                    C7        5
       DCP*       aa,X                  D7        6
       DCP*       aaaa                  CF        6
-      DCP*       aaaa,X                DF        6
+      DCP*       aaaa,X                DF        7
       DCP*       aaaa,Y                DB        7
       DCP*       (aa,X)                C3        8
       DCP*       (aa),Y                D3        8

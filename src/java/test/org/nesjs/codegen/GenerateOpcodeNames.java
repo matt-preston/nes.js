@@ -12,9 +12,13 @@ public class GenerateOpcodeNames
         
         List<OpcodeDefinition> _opcodes = _r.allOpcodeDefinitions();
         
+        SortedSet<String> _mnemonics = new TreeSet<String>();
+        
         for(int _index = 0; _index < _opcodes.size(); _index++)
         {
             OpcodeDefinition _next = _opcodes.get(_index);
+            
+            _mnemonics.add(_next.getMnemonic());
             
             if(_index < _opcodes.size() - 2)
             {
@@ -26,15 +30,22 @@ public class GenerateOpcodeNames
                 }
                 else
                 {
-                    System.out.printf("case %s: return \"%s\";\n", Utils.toHexString(_next.getOpcode()), _next.getMnemonic());    
+                    System.out.printf("case %s: return %s.name();\n", Utils.toHexString(_next.getOpcode()), _next.getMnemonic());    
                 }
             }
             else
             {
-                System.out.printf("case %s: return \"%s\";\n", Utils.toHexString(_next.getOpcode()), _next.getMnemonic());
+                System.out.printf("case %s: return %s.name();\n", Utils.toHexString(_next.getOpcode()), _next.getMnemonic());
             }
         }
         
-        _r.close();        
+        _r.close();
+        
+        System.out.println("\n\n\n\n\n");
+        
+        for (String _mnemonic : _mnemonics)
+        {
+            System.out.println(_mnemonic + ",");
+        }        
     }
 }

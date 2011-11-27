@@ -134,38 +134,38 @@ public final class MOS6502
 
             switch(_opcode)
             {
-                case 0x69: opcode_ADC(immediate()); addCycles(2); break;
-                case 0x65: opcode_ADC(zeroPage()); addCycles(3); break;
-                case 0x75: opcode_ADC(zeroPageX()); addCycles(4); break;
-                case 0x6D: opcode_ADC(absolute()); addCycles(4); break;
-                case 0x7D: opcode_ADC(absoluteX()); addCycles(4); break;
-                case 0x79: opcode_ADC(absoluteY()); addCycles(4); break;
-                case 0x61: opcode_ADC(indirectX()); addCycles(6); break;
-                case 0x71: opcode_ADC(indirectY()); addCycles(5); break;
-                case 0x4B: opcode_ALR(immediate()); addCycles(2); break; // Unofficial
+                case 0x69: opcode_ADC(immediate_R()); addCycles(2); break;
+                case 0x65: opcode_ADC(zeroPage_R()); addCycles(3); break;
+                case 0x75: opcode_ADC(zeroPageX_R()); addCycles(4); break;
+                case 0x6D: opcode_ADC(absolute_R()); addCycles(4); break;
+                case 0x7D: opcode_ADC(absoluteX_R()); addCycles(4); break;
+                case 0x79: opcode_ADC(absoluteY_R()); addCycles(4); break;
+                case 0x61: opcode_ADC(indirectX_R()); addCycles(6); break;
+                case 0x71: opcode_ADC(indirectY_R()); addCycles(5); break;
+                case 0x4B: opcode_ALR(immediate_R()); addCycles(2); break; // Unofficial
                 case 0x0B:
-                case 0x2B: opcode_ANC(immediate()); addCycles(2); break; // Unofficial
-                case 0x29: opcode_AND(immediate()); addCycles(2); break;
-                case 0x25: opcode_AND(zeroPage()); addCycles(3); break;
-                case 0x35: opcode_AND(zeroPageX()); addCycles(4); break;
-                case 0x2D: opcode_AND(absolute()); addCycles(4); break;
-                case 0x3D: opcode_AND(absoluteX()); addCycles(4); break;
-                case 0x39: opcode_AND(absoluteY()); addCycles(4); break;
-                case 0x21: opcode_AND(indirectX()); addCycles(6); break;
-                case 0x31: opcode_AND(indirectY()); addCycles(5); break;
-                case 0x6B: opcode_ARR(immediate()); addCycles(2); break; // Unofficial
+                case 0x2B: opcode_ANC(immediate_R()); addCycles(2); break; // Unofficial
+                case 0x29: opcode_AND(immediate_R()); addCycles(2); break;
+                case 0x25: opcode_AND(zeroPage_R()); addCycles(3); break;
+                case 0x35: opcode_AND(zeroPageX_R()); addCycles(4); break;
+                case 0x2D: opcode_AND(absolute_R()); addCycles(4); break;
+                case 0x3D: opcode_AND(absoluteX_R()); addCycles(4); break;
+                case 0x39: opcode_AND(absoluteY_R()); addCycles(4); break;
+                case 0x21: opcode_AND(indirectX_R()); addCycles(6); break;
+                case 0x31: opcode_AND(indirectY_R()); addCycles(5); break;
+                case 0x6B: opcode_ARR(immediate_R()); addCycles(2); break; // Unofficial
                 case 0x0A: opcode_ASL_accumulator(); addCycles(2); break;
-                case 0x06: opcode_ASL(zeroPage()); addCycles(5); break;
-                case 0x16: opcode_ASL(zeroPageX()); addCycles(6); break;
-                case 0x0E: opcode_ASL(absolute()); addCycles(6); break;
-                case 0x1E: opcode_ASL(absoluteX()); addCycles(7); break;
-                case 0xAB: opcode_ATX(immediate()); addCycles(2); break; // Unofficial
-                case 0xCB: opcode_AXS(immediate()); addCycles(2); break; // Unofficial
+                case 0x06: opcode_ASL(zeroPage_RMW()); addCycles(5); break;
+                case 0x16: opcode_ASL(zeroPageX_RMW()); addCycles(6); break;
+                case 0x0E: opcode_ASL(absolute_RMW()); addCycles(6); break;
+                case 0x1E: opcode_ASL(absoluteX_RMW()); addCycles(7); break;
+                case 0xAB: opcode_ATX(immediate_R()); addCycles(2); break; // Unofficial
+                case 0xCB: opcode_AXS(immediate_R()); addCycles(2); break; // Unofficial
                 case 0x90: opcode_BCC_relative(); addCycles(2); break;
                 case 0xB0: opcode_BCS_relative(); addCycles(2); break;
                 case 0xF0: opcode_BEQ_relative(); addCycles(2); break;
-                case 0x24: opcode_BIT(zeroPage()); addCycles(3); break;
-                case 0x2C: opcode_BIT(absolute()); addCycles(4); break;
+                case 0x24: opcode_BIT(zeroPage_R()); addCycles(3); break;
+                case 0x2C: opcode_BIT(absolute_R()); addCycles(4); break;
                 case 0x30: opcode_BMI_relative(); addCycles(2); break;
                 case 0xD0: opcode_BNE_relative(); addCycles(2); break;
                 case 0x10: opcode_BPL_relative(); addCycles(2); break;
@@ -176,86 +176,86 @@ public final class MOS6502
                 case 0xD8: opcode_CLD_implied(); addCycles(2); break;
                 case 0x58: opcode_CLI_implied(); addCycles(2); break;
                 case 0xB8: opcode_CLV_implied(); addCycles(2); break;
-                case 0xC9: opcode_CMP(immediate()); addCycles(2); break;
-                case 0xC5: opcode_CMP(zeroPage()); addCycles(3); break;
-                case 0xD5: opcode_CMP(zeroPageX()); addCycles(4); break;
-                case 0xCD: opcode_CMP(absolute()); addCycles(4); break;
-                case 0xDD: opcode_CMP(absoluteX()); addCycles(4); break;
-                case 0xD9: opcode_CMP(absoluteY()); addCycles(4); break;
-                case 0xC1: opcode_CMP(indirectX()); addCycles(6); break;
-                case 0xD1: opcode_CMP(indirectY()); addCycles(5); break;
-                case 0xE0: opcode_CPX(immediate()); addCycles(2); break;
-                case 0xE4: opcode_CPX(zeroPage()); addCycles(3); break;
-                case 0xEC: opcode_CPX(absolute()); addCycles(4); break;
-                case 0xC0: opcode_CPY(immediate()); addCycles(2); break;
-                case 0xC4: opcode_CPY(zeroPage()); addCycles(3); break;
-                case 0xCC: opcode_CPY(absolute()); addCycles(4); break;
-                case 0xC7: opcode_DCP(zeroPage()); addCycles(5); break; // Unofficial
-                case 0xD7: opcode_DCP(zeroPageX()); addCycles(6); break; // Unofficial
-                case 0xCF: opcode_DCP(absolute()); addCycles(6); break; // Unofficial
-                case 0xDF: opcode_DCP(absoluteX()); addCycles(6); break; // Unofficial
-                case 0xDB: opcode_DCP(absoluteY()); addCycles(7); break; // Unofficial
-                case 0xC3: opcode_DCP(indirectX()); addCycles(8); break; // Unofficial
-                case 0xD3: opcode_DCP(indirectY()); addCycles(8); break; // Unofficial
-                case 0xC6: opcode_DEC(zeroPage()); addCycles(5); break;
-                case 0xD6: opcode_DEC(zeroPageX()); addCycles(6); break;
-                case 0xCE: opcode_DEC(absolute()); addCycles(6); break;
-                case 0xDE: opcode_DEC(absoluteX()); addCycles(7); break;
+                case 0xC9: opcode_CMP(immediate_R()); addCycles(2); break;
+                case 0xC5: opcode_CMP(zeroPage_R()); addCycles(3); break;
+                case 0xD5: opcode_CMP(zeroPageX_R()); addCycles(4); break;
+                case 0xCD: opcode_CMP(absolute_R()); addCycles(4); break;
+                case 0xDD: opcode_CMP(absoluteX_R()); addCycles(4); break;
+                case 0xD9: opcode_CMP(absoluteY_R()); addCycles(4); break;
+                case 0xC1: opcode_CMP(indirectX_R()); addCycles(6); break;
+                case 0xD1: opcode_CMP(indirectY_R()); addCycles(5); break;
+                case 0xE0: opcode_CPX(immediate_R()); addCycles(2); break;
+                case 0xE4: opcode_CPX(zeroPage_R()); addCycles(3); break;
+                case 0xEC: opcode_CPX(absolute_R()); addCycles(4); break;
+                case 0xC0: opcode_CPY(immediate_R()); addCycles(2); break;
+                case 0xC4: opcode_CPY(zeroPage_R()); addCycles(3); break;
+                case 0xCC: opcode_CPY(absolute_R()); addCycles(4); break;
+                case 0xC7: opcode_DCP(zeroPage_RMW()); addCycles(5); break; // Unofficial
+                case 0xD7: opcode_DCP(zeroPageX_RMW()); addCycles(6); break; // Unofficial
+                case 0xCF: opcode_DCP(absolute_RMW()); addCycles(6); break; // Unofficial
+                case 0xDF: opcode_DCP(absoluteX_RMW()); addCycles(7); break; // Unofficial
+                case 0xDB: opcode_DCP(absoluteY_RMW()); addCycles(7); break; // Unofficial
+                case 0xC3: opcode_DCP(indirectX_RMW()); addCycles(8); break; // Unofficial
+                case 0xD3: opcode_DCP(indirectY_RMW()); addCycles(8); break; // Unofficial
+                case 0xC6: opcode_DEC(zeroPage_RMW()); addCycles(5); break;
+                case 0xD6: opcode_DEC(zeroPageX_RMW()); addCycles(6); break;
+                case 0xCE: opcode_DEC(absolute_RMW()); addCycles(6); break;
+                case 0xDE: opcode_DEC(absoluteX_RMW()); addCycles(7); break;
                 case 0xCA: opcode_DEX_implied(); addCycles(2); break;
                 case 0x88: opcode_DEY_implied(); addCycles(2); break;
-                case 0x49: opcode_EOR(immediate()); addCycles(2); break;
-                case 0x45: opcode_EOR(zeroPage()); addCycles(3); break;
-                case 0x55: opcode_EOR(zeroPageX()); addCycles(4); break;
-                case 0x4D: opcode_EOR(absolute()); addCycles(4); break;
-                case 0x5D: opcode_EOR(absoluteX()); addCycles(4); break;
-                case 0x59: opcode_EOR(absoluteY()); addCycles(4); break;
-                case 0x41: opcode_EOR(indirectX()); addCycles(6); break;
-                case 0x51: opcode_EOR(indirectY()); addCycles(5); break;
-                case 0xE6: opcode_INC(zeroPage()); addCycles(5); break;
-                case 0xF6: opcode_INC(zeroPageX()); addCycles(6); break;
-                case 0xEE: opcode_INC(absolute()); addCycles(6); break;
-                case 0xFE: opcode_INC(absoluteX()); addCycles(7); break;
+                case 0x49: opcode_EOR(immediate_R()); addCycles(2); break;
+                case 0x45: opcode_EOR(zeroPage_R()); addCycles(3); break;
+                case 0x55: opcode_EOR(zeroPageX_R()); addCycles(4); break;
+                case 0x4D: opcode_EOR(absolute_R()); addCycles(4); break;
+                case 0x5D: opcode_EOR(absoluteX_R()); addCycles(4); break;
+                case 0x59: opcode_EOR(absoluteY_R()); addCycles(4); break;
+                case 0x41: opcode_EOR(indirectX_R()); addCycles(6); break;
+                case 0x51: opcode_EOR(indirectY_R()); addCycles(5); break;
+                case 0xE6: opcode_INC(zeroPage_RMW()); addCycles(5); break;
+                case 0xF6: opcode_INC(zeroPageX_RMW()); addCycles(6); break;
+                case 0xEE: opcode_INC(absolute_RMW()); addCycles(6); break;
+                case 0xFE: opcode_INC(absoluteX_RMW()); addCycles(7); break;
                 case 0xE8: opcode_INX_implied(); addCycles(2); break;
                 case 0xC8: opcode_INY_implied(); addCycles(2); break;
-                case 0xE7: opcode_ISB(zeroPage()); addCycles(5); break; // Unofficial
-                case 0xF7: opcode_ISB(zeroPageX()); addCycles(6); break; // Unofficial
-                case 0xEF: opcode_ISB(absolute()); addCycles(6); break; // Unofficial
-                case 0xFF: opcode_ISB(absoluteX()); addCycles(7); break; // Unofficial
-                case 0xFB: opcode_ISB(absoluteY()); addCycles(7); break; // Unofficial
-                case 0xE3: opcode_ISB(indirectX()); addCycles(8); break; // Unofficial
-                case 0xF3: opcode_ISB(indirectY()); addCycles(8); break; // Unofficial
-                case 0x4C: opcode_JMP(absolute()); addCycles(3); break;
+                case 0xE7: opcode_ISB(zeroPage_RMW()); addCycles(5); break; // Unofficial
+                case 0xF7: opcode_ISB(zeroPageX_RMW()); addCycles(6); break; // Unofficial
+                case 0xEF: opcode_ISB(absolute_RMW()); addCycles(6); break; // Unofficial
+                case 0xFF: opcode_ISB(absoluteX_RMW()); addCycles(7); break; // Unofficial
+                case 0xFB: opcode_ISB(absoluteY_RMW()); addCycles(7); break; // Unofficial
+                case 0xE3: opcode_ISB(indirectX_RMW()); addCycles(8); break; // Unofficial
+                case 0xF3: opcode_ISB(indirectY_RMW()); addCycles(8); break; // Unofficial
+                case 0x4C: opcode_JMP(absolute_R()); addCycles(3); break;
                 case 0x6C: opcode_JMP(indirect()); addCycles(5); break;
-                case 0x20: opcode_JSR(absolute()); addCycles(6); break;
-                case 0xA7: opcode_LAX(zeroPage()); addCycles(3); break; // Unofficial
-                case 0xB7: opcode_LAX(zeroPageY()); addCycles(4); break; // Unofficial
-                case 0xAF: opcode_LAX(absolute()); addCycles(4); break; // Unofficial
-                case 0xBF: opcode_LAX(absoluteY()); addCycles(4); break; // Unofficial
-                case 0xA3: opcode_LAX(indirectX()); addCycles(6); break; // Unofficial
-                case 0xB3: opcode_LAX(indirectY()); addCycles(5); break; // Unofficial
-                case 0xA9: opcode_LDA(immediate()); addCycles(2); break;
-                case 0xA5: opcode_LDA(zeroPage()); addCycles(3); break;
-                case 0xB5: opcode_LDA(zeroPageX()); addCycles(4); break;
-                case 0xAD: opcode_LDA(absolute()); addCycles(4); break;
-                case 0xBD: opcode_LDA(absoluteX()); addCycles(4); break;
-                case 0xB9: opcode_LDA(absoluteY()); addCycles(4); break;
-                case 0xA1: opcode_LDA(indirectX()); addCycles(6); break;
-                case 0xB1: opcode_LDA(indirectY()); addCycles(5); break;
-                case 0xA2: opcode_LDX(immediate()); addCycles(2); break;
-                case 0xA6: opcode_LDX(zeroPage()); addCycles(3); break;
-                case 0xB6: opcode_LDX(zeroPageY()); addCycles(4); break;
-                case 0xAE: opcode_LDX(absolute()); addCycles(4); break;
-                case 0xBE: opcode_LDX(absoluteY()); addCycles(4); break;
-                case 0xA0: opcode_LDY(immediate()); addCycles(2); break;
-                case 0xA4: opcode_LDY(zeroPage()); addCycles(3); break;
-                case 0xB4: opcode_LDY(zeroPageX()); addCycles(4); break;
-                case 0xAC: opcode_LDY(absolute()); addCycles(4); break;
-                case 0xBC: opcode_LDY(absoluteX()); addCycles(4); break;
+                case 0x20: opcode_JSR(absolute_R()); addCycles(6); break;
+                case 0xA7: opcode_LAX(zeroPage_R()); addCycles(3); break; // Unofficial
+                case 0xB7: opcode_LAX(zeroPageY_R()); addCycles(4); break; // Unofficial
+                case 0xAF: opcode_LAX(absolute_R()); addCycles(4); break; // Unofficial
+                case 0xBF: opcode_LAX(absoluteY_R()); addCycles(4); break; // Unofficial
+                case 0xA3: opcode_LAX(indirectX_R()); addCycles(6); break; // Unofficial
+                case 0xB3: opcode_LAX(indirectY_R()); addCycles(5); break; // Unofficial
+                case 0xA9: opcode_LDA(immediate_R()); addCycles(2); break;
+                case 0xA5: opcode_LDA(zeroPage_R()); addCycles(3); break;
+                case 0xB5: opcode_LDA(zeroPageX_R()); addCycles(4); break;
+                case 0xAD: opcode_LDA(absolute_R()); addCycles(4); break;
+                case 0xBD: opcode_LDA(absoluteX_R()); addCycles(4); break;
+                case 0xB9: opcode_LDA(absoluteY_R()); addCycles(4); break;
+                case 0xA1: opcode_LDA(indirectX_R()); addCycles(6); break;
+                case 0xB1: opcode_LDA(indirectY_R()); addCycles(5); break;
+                case 0xA2: opcode_LDX(immediate_R()); addCycles(2); break;
+                case 0xA6: opcode_LDX(zeroPage_R()); addCycles(3); break;
+                case 0xB6: opcode_LDX(zeroPageY_R()); addCycles(4); break;
+                case 0xAE: opcode_LDX(absolute_R()); addCycles(4); break;
+                case 0xBE: opcode_LDX(absoluteY_R()); addCycles(4); break;
+                case 0xA0: opcode_LDY(immediate_R()); addCycles(2); break;
+                case 0xA4: opcode_LDY(zeroPage_R()); addCycles(3); break;
+                case 0xB4: opcode_LDY(zeroPageX_R()); addCycles(4); break;
+                case 0xAC: opcode_LDY(absolute_R()); addCycles(4); break;
+                case 0xBC: opcode_LDY(absoluteX_R()); addCycles(4); break;
                 case 0x4A: opcode_LSR_accumulator(); addCycles(2); break;
-                case 0x46: opcode_LSR(zeroPage()); addCycles(5); break;
-                case 0x56: opcode_LSR(zeroPageX()); addCycles(6); break;
-                case 0x4E: opcode_LSR(absolute()); addCycles(6); break;
-                case 0x5E: opcode_LSR(absoluteX()); addCycles(7); break;
+                case 0x46: opcode_LSR(zeroPage_RMW()); addCycles(5); break;
+                case 0x56: opcode_LSR(zeroPageX_RMW()); addCycles(6); break;
+                case 0x4E: opcode_LSR(absolute_RMW()); addCycles(6); break;
+                case 0x5E: opcode_LSR(absoluteX_RMW()); addCycles(7); break;
                 case 0xEA:
                 case 0x1A:
                 case 0x3A:
@@ -267,106 +267,106 @@ public final class MOS6502
                 case 0x82:
                 case 0x89:
                 case 0xC2:
-                case 0xE2: opcode_NOP(immediate()); addCycles(2); break; // Unofficial
+                case 0xE2: opcode_NOP(immediate_R()); addCycles(2); break; // Unofficial
                 case 0x04:
                 case 0x44:
-                case 0x64: opcode_NOP(zeroPage()); addCycles(3); break; // Unofficial
-                case 0x0C: opcode_NOP(absolute()); addCycles(4); break; // Unofficial
+                case 0x64: opcode_NOP(zeroPage_R()); addCycles(3); break; // Unofficial
+                case 0x0C: opcode_NOP(absolute_R()); addCycles(4); break; // Unofficial
                 case 0x1C:
                 case 0x3C:
                 case 0x5C:
                 case 0x7C:
                 case 0xDC:
-                case 0xFC: opcode_NOP(absoluteX()); addCycles(4); break; // Unofficial
+                case 0xFC: opcode_NOP(absoluteX_R()); addCycles(4); break; // Unofficial
                 case 0x14:
                 case 0x34:
                 case 0x54:
                 case 0x74:
                 case 0xD4:
-                case 0xF4: opcode_NOP(zeroPageX()); addCycles(4); break; // Unofficial
-                case 0x09: opcode_ORA(immediate()); addCycles(2); break;
-                case 0x05: opcode_ORA(zeroPage()); addCycles(3); break;
-                case 0x15: opcode_ORA(zeroPageX()); addCycles(4); break;
-                case 0x0D: opcode_ORA(absolute()); addCycles(4); break;
-                case 0x1D: opcode_ORA(absoluteX()); addCycles(4); break;
-                case 0x19: opcode_ORA(absoluteY()); addCycles(4); break;
-                case 0x01: opcode_ORA(indirectX()); addCycles(6); break;
-                case 0x11: opcode_ORA(indirectY()); addCycles(5); break;
+                case 0xF4: opcode_NOP(zeroPageX_R()); addCycles(4); break; // Unofficial
+                case 0x09: opcode_ORA(immediate_R()); addCycles(2); break;
+                case 0x05: opcode_ORA(zeroPage_R()); addCycles(3); break;
+                case 0x15: opcode_ORA(zeroPageX_R()); addCycles(4); break;
+                case 0x0D: opcode_ORA(absolute_R()); addCycles(4); break;
+                case 0x1D: opcode_ORA(absoluteX_R()); addCycles(4); break;
+                case 0x19: opcode_ORA(absoluteY_R()); addCycles(4); break;
+                case 0x01: opcode_ORA(indirectX_R()); addCycles(6); break;
+                case 0x11: opcode_ORA(indirectY_R()); addCycles(5); break;
                 case 0x48: opcode_PHA_implied(); addCycles(3); break;
                 case 0x08: opcode_PHP_implied(); addCycles(3); break;
                 case 0x68: opcode_PLA_implied(); addCycles(4); break;
                 case 0x28: opcode_PLP_implied(); addCycles(4); break;
-                case 0x27: opcode_RLA(zeroPage()); addCycles(5); break; // Unofficial
-                case 0x37: opcode_RLA(zeroPageX()); addCycles(6); break; // Unofficial
-                case 0x2F: opcode_RLA(absolute()); addCycles(6); break; // Unofficial
-                case 0x3F: opcode_RLA(absoluteX()); addCycles(7); break; // Unofficial
-                case 0x3B: opcode_RLA(absoluteY()); addCycles(7); break; // Unofficial
-                case 0x23: opcode_RLA(indirectX()); addCycles(8); break; // Unofficial
-                case 0x33: opcode_RLA(indirectY()); addCycles(8); break; // Unofficial
+                case 0x27: opcode_RLA(zeroPage_RMW()); addCycles(5); break; // Unofficial
+                case 0x37: opcode_RLA(zeroPageX_RMW()); addCycles(6); break; // Unofficial
+                case 0x2F: opcode_RLA(absolute_RMW()); addCycles(6); break; // Unofficial
+                case 0x3F: opcode_RLA(absoluteX_RMW()); addCycles(7); break; // Unofficial
+                case 0x3B: opcode_RLA(absoluteY_RMW()); addCycles(7); break; // Unofficial
+                case 0x23: opcode_RLA(indirectX_RMW()); addCycles(8); break; // Unofficial
+                case 0x33: opcode_RLA(indirectY_RMW()); addCycles(8); break; // Unofficial
                 case 0x2A: opcode_ROL_accumulator(); addCycles(2); break;
-                case 0x26: opcode_ROL(zeroPage()); addCycles(5); break;
-                case 0x36: opcode_ROL(zeroPageX()); addCycles(6); break;
-                case 0x2E: opcode_ROL(absolute()); addCycles(6); break;
-                case 0x3E: opcode_ROL(absoluteX()); addCycles(7); break;
+                case 0x26: opcode_ROL(zeroPage_RMW()); addCycles(5); break;
+                case 0x36: opcode_ROL(zeroPageX_RMW()); addCycles(6); break;
+                case 0x2E: opcode_ROL(absolute_RMW()); addCycles(6); break;
+                case 0x3E: opcode_ROL(absoluteX_RMW()); addCycles(7); break;
                 case 0x6A: opcode_ROR_accumulator(); addCycles(2); break;
-                case 0x66: opcode_ROR(zeroPage()); addCycles(5); break;
-                case 0x76: opcode_ROR(zeroPageX()); addCycles(6); break;
-                case 0x6E: opcode_ROR(absolute()); addCycles(6); break;
-                case 0x7E: opcode_ROR(absoluteX()); addCycles(7); break;
-                case 0x67: opcode_RRA(zeroPage()); addCycles(5); break; // Unofficial
-                case 0x77: opcode_RRA(zeroPageX()); addCycles(6); break; // Unofficial
-                case 0x6F: opcode_RRA(absolute()); addCycles(6); break; // Unofficial
-                case 0x7F: opcode_RRA(absoluteX()); addCycles(7); break; // Unofficial
-                case 0x7B: opcode_RRA(absoluteY()); addCycles(7); break; // Unofficial
-                case 0x63: opcode_RRA(indirectX()); addCycles(8); break; // Unofficial
-                case 0x73: opcode_RRA(indirectY()); addCycles(8); break; // Unofficial
+                case 0x66: opcode_ROR(zeroPage_RMW()); addCycles(5); break;
+                case 0x76: opcode_ROR(zeroPageX_RMW()); addCycles(6); break;
+                case 0x6E: opcode_ROR(absolute_RMW()); addCycles(6); break;
+                case 0x7E: opcode_ROR(absoluteX_RMW()); addCycles(7); break;
+                case 0x67: opcode_RRA(zeroPage_RMW()); addCycles(5); break; // Unofficial
+                case 0x77: opcode_RRA(zeroPageX_RMW()); addCycles(6); break; // Unofficial
+                case 0x6F: opcode_RRA(absolute_RMW()); addCycles(6); break; // Unofficial
+                case 0x7F: opcode_RRA(absoluteX_RMW()); addCycles(7); break; // Unofficial
+                case 0x7B: opcode_RRA(absoluteY_RMW()); addCycles(7); break; // Unofficial
+                case 0x63: opcode_RRA(indirectX_RMW()); addCycles(8); break; // Unofficial
+                case 0x73: opcode_RRA(indirectY_RMW()); addCycles(8); break; // Unofficial
                 case 0x40: opcode_RTI_implied(); addCycles(6); break;
                 case 0x60: opcode_RTS_implied(); addCycles(6); break;
-                case 0x87: opcode_SAX(zeroPage()); addCycles(3); break; // Unofficial
-                case 0x97: opcode_SAX(zeroPageY()); addCycles(4); break; // Unofficial
-                case 0x8F: opcode_SAX(absolute()); addCycles(4); break; // Unofficial
-                case 0x83: opcode_SAX(indirectX()); addCycles(6); break; // Unofficial
+                case 0x87: opcode_SAX(zeroPage_W()); addCycles(3); break; // Unofficial
+                case 0x97: opcode_SAX(zeroPageY_W()); addCycles(4); break; // Unofficial
+                case 0x8F: opcode_SAX(absolute_W()); addCycles(4); break; // Unofficial
+                case 0x83: opcode_SAX(indirectX_W()); addCycles(6); break; // Unofficial
                 case 0xE9:
-                case 0xEB: opcode_SBC(immediate()); addCycles(2); break; // Unofficial
-                case 0xE5: opcode_SBC(zeroPage()); addCycles(3); break;
-                case 0xF5: opcode_SBC(zeroPageX()); addCycles(4); break;
-                case 0xED: opcode_SBC(absolute()); addCycles(4); break;
-                case 0xFD: opcode_SBC(absoluteX()); addCycles(4); break;
-                case 0xF9: opcode_SBC(absoluteY()); addCycles(4); break;
-                case 0xE1: opcode_SBC(indirectX()); addCycles(6); break;
-                case 0xF1: opcode_SBC(indirectY()); addCycles(5); break;
+                case 0xEB: opcode_SBC(immediate_R()); addCycles(2); break; // Unofficial
+                case 0xE5: opcode_SBC(zeroPage_R()); addCycles(3); break;
+                case 0xF5: opcode_SBC(zeroPageX_R()); addCycles(4); break;
+                case 0xED: opcode_SBC(absolute_R()); addCycles(4); break;
+                case 0xFD: opcode_SBC(absoluteX_R()); addCycles(4); break;
+                case 0xF9: opcode_SBC(absoluteY_R()); addCycles(4); break;
+                case 0xE1: opcode_SBC(indirectX_R()); addCycles(6); break;
+                case 0xF1: opcode_SBC(indirectY_R()); addCycles(5); break;
                 case 0x38: opcode_SEC_implied(); addCycles(2); break;
                 case 0xF8: opcode_SED_implied(); addCycles(2); break;
                 case 0x78: opcode_SEI_implied(); addCycles(2); break;
-                case 0x07: opcode_SLO(zeroPage()); addCycles(5); break; // Unofficial
-                case 0x17: opcode_SLO(zeroPageX()); addCycles(6); break; // Unofficial
-                case 0x0F: opcode_SLO(absolute()); addCycles(6); break; // Unofficial
-                case 0x1F: opcode_SLO(absoluteX()); addCycles(7); break; // Unofficial
-                case 0x1B: opcode_SLO(absoluteY()); addCycles(7); break; // Unofficial
-                case 0x03: opcode_SLO(indirectX()); addCycles(8); break; // Unofficial
-                case 0x13: opcode_SLO(indirectY()); addCycles(8); break; // Unofficial
-                case 0x47: opcode_SRE(zeroPage()); addCycles(5); break; // Unofficial
-                case 0x57: opcode_SRE(zeroPageX()); addCycles(6); break; // Unofficial
-                case 0x4F: opcode_SRE(absolute()); addCycles(6); break; // Unofficial
-                case 0x5F: opcode_SRE(absoluteX()); addCycles(7); break; // Unofficial
-                case 0x5B: opcode_SRE(absoluteY()); addCycles(7); break; // Unofficial
-                case 0x43: opcode_SRE(indirectX()); addCycles(8); break; // Unofficial
-                case 0x53: opcode_SRE(indirectY()); addCycles(8); break; // Unofficial
-                case 0x85: opcode_STA(zeroPage()); addCycles(3); break;
-                case 0x95: opcode_STA(zeroPageX()); addCycles(4); break;
-                case 0x8D: opcode_STA(absolute()); addCycles(4); break;
-                case 0x9D: opcode_STA(absoluteX()); addCycles(5); break;
-                case 0x99: opcode_STA(absoluteY()); addCycles(5); break;
-                case 0x81: opcode_STA(indirectX()); addCycles(6); break;
-                case 0x91: opcode_STA(indirectY()); addCycles(6); break;
-                case 0x86: opcode_STX(zeroPage()); addCycles(3); break;
-                case 0x96: opcode_STX(zeroPageY()); addCycles(4); break;
-                case 0x8E: opcode_STX(absolute()); addCycles(4); break;
-                case 0x84: opcode_STY(zeroPage()); addCycles(3); break;
-                case 0x94: opcode_STY(zeroPageX()); addCycles(4); break;
-                case 0x8C: opcode_STY(absolute()); addCycles(4); break;
-                case 0x9E: opcode_SXA(absoluteY()); addCycles(5); break; // Unofficial
-                case 0x9C: opcode_SYA(absoluteX()); addCycles(5); break; // Unofficial
+                case 0x07: opcode_SLO(zeroPage_RMW()); addCycles(5); break; // Unofficial
+                case 0x17: opcode_SLO(zeroPageX_RMW()); addCycles(6); break; // Unofficial
+                case 0x0F: opcode_SLO(absolute_RMW()); addCycles(6); break; // Unofficial
+                case 0x1F: opcode_SLO(absoluteX_RMW()); addCycles(7); break; // Unofficial
+                case 0x1B: opcode_SLO(absoluteY_RMW()); addCycles(7); break; // Unofficial
+                case 0x03: opcode_SLO(indirectX_RMW()); addCycles(8); break; // Unofficial
+                case 0x13: opcode_SLO(indirectY_RMW()); addCycles(8); break; // Unofficial
+                case 0x47: opcode_SRE(zeroPage_RMW()); addCycles(5); break; // Unofficial
+                case 0x57: opcode_SRE(zeroPageX_RMW()); addCycles(6); break; // Unofficial
+                case 0x4F: opcode_SRE(absolute_RMW()); addCycles(6); break; // Unofficial
+                case 0x5F: opcode_SRE(absoluteX_RMW()); addCycles(7); break; // Unofficial
+                case 0x5B: opcode_SRE(absoluteY_RMW()); addCycles(7); break; // Unofficial
+                case 0x43: opcode_SRE(indirectX_RMW()); addCycles(8); break; // Unofficial
+                case 0x53: opcode_SRE(indirectY_RMW()); addCycles(8); break; // Unofficial
+                case 0x85: opcode_STA(zeroPage_W()); addCycles(3); break;
+                case 0x95: opcode_STA(zeroPageX_W()); addCycles(4); break;
+                case 0x8D: opcode_STA(absolute_W()); addCycles(4); break;
+                case 0x9D: opcode_STA(absoluteX_W()); addCycles(5); break;
+                case 0x99: opcode_STA(absoluteY_W()); addCycles(5); break;
+                case 0x81: opcode_STA(indirectX_W()); addCycles(6); break;
+                case 0x91: opcode_STA(indirectY_W()); addCycles(6); break;
+                case 0x86: opcode_STX(zeroPage_W()); addCycles(3); break;
+                case 0x96: opcode_STX(zeroPageY_W()); addCycles(4); break;
+                case 0x8E: opcode_STX(absolute_W()); addCycles(4); break;
+                case 0x84: opcode_STY(zeroPage_W()); addCycles(3); break;
+                case 0x94: opcode_STY(zeroPageX_W()); addCycles(4); break;
+                case 0x8C: opcode_STY(absolute_W()); addCycles(4); break;
+                case 0x9E: opcode_SXA(absoluteY_W()); addCycles(5); break; // Unofficial
+                case 0x9C: opcode_SYA(absoluteX_W()); addCycles(5); break; // Unofficial
                 case 0xAA: opcode_TAX_implied(); addCycles(2); break;
                 case 0xA8: opcode_TAY_implied(); addCycles(2); break;
                 case 0xBA: opcode_TSX_implied(); addCycles(2); break;
@@ -431,111 +431,142 @@ public final class MOS6502
 // Addressing
 //-------------------------------------------------------------    
     
-    /**
-     * Immediate addressing allows the programmer to directly specify an 8 bit constant within the instruction. 
-     */
-    private final int immediate()
+    private final int immediate_R()
     {
         return pc++;
     }
     
-    /**
-     * An instruction using zero page addressing mode has only an 8 bit address operand. This limits it to addressing 
-     * only the first 256 bytes of memory (e.g. $0000 to $00FF) where the most significant byte of the address is always 
-     * zero. In zero page mode only the least significant byte of the address is held in the instruction making it 
-     * shorter by one byte (important for space saving) and one less memory fetch during execution (important for speed).
-     * 
-     * An assembler will automatically select zero page addressing mode if the operand evaluates to a zero page address
-     * and the instruction supports the mode (not all do).
-     */
-    private final int zeroPage()
+// Zero page
+    
+    private final int zeroPage_R()
     {        
         return memory.readByte(pc++);
     }
     
-    /**
-     * The address to be accessed by an instruction using indexed zero page addressing is calculated by taking the 8 bit 
-     * zero page address from the instruction and adding the current value of the X register to it. For example if the X 
-     * register contains $0F and the instruction LDA $80,X is executed then the accumulator will be loaded from $008F 
-     * (e.g. $80 + $0F => $8F).
-     * 
-     * NB:
-     * The address calculation wraps around if the sum of the base address and the register exceed $FF. If we repeat the 
-     * last example but with $FF in the X register then the accumulator will be loaded from $007F (e.g. $80 + $FF => $7F) 
-     * and not $017F.
-     */
-    private final int zeroPageX()
-    {
-        return (memory.readByte(pc++) + x) & 0xFF;        
+    private final int zeroPage_W()
+    {        
+        return zeroPage_R();
+    }
+
+    private final int zeroPage_RMW()
+    {        
+        return zeroPage_R();
     }
     
-    /**
-     * The address to be accessed by an instruction using indexed zero page addressing is calculated by  taking the 8 bit 
-     * zero page address from the instruction and adding the current value of the Y register to it. This mode can only be 
-     * used with the LDX and STX instructions.
-     */
-    private final int zeroPageY()
+// Zero page X
+    
+    private final int zeroPageX_R()
     {
-        return (memory.readByte(pc++) + y) & 0xFF;        
+        return zeroPageIndexed(x);        
     }
     
-    /**
-     * Relative addressing mode is used by branch instructions (e.g. BEQ, BNE, etc.) which contain a signed 8 bit relative 
-     * offset (e.g. -128 to +127) which is added to program counter if the condition is true. As the program counter itself 
-     * is incremented during instruction execution by two the effective address range for the target instruction must be 
-     * with -126 to +129 bytes of the branch.
-     */
+    private final int zeroPageX_W()
+    {
+        return zeroPageX_R();        
+    }
+
+    private final int zeroPageX_RMW()
+    {
+        return zeroPageX_R();        
+    }
+    
+// Zero page Y    
+    
+    private final int zeroPageY_R()
+    {
+        return zeroPageIndexed(y);        
+    }
+    
+    private final int zeroPageY_W()
+    {
+        return zeroPageY_R();        
+    }
+    
+// Zero page Indexed helper    
+    
+    private final int zeroPageIndexed(int aRegister)
+    {
+        return (memory.readByte(pc++) + aRegister) & 0xFF;        
+    } 
+
+// Relative    
+    
     private final int relative()
     {
         return pc++; 
     }
+
+// Absolute    
     
-    /**
-     * Instructions using absolute addressing contain a full 16 bit address to identify the target location.
-     */
-    private final int absolute()
+    private final int absolute_R()
     {
         int _result = readWord(pc);
         pc += 2;
         return _result;
     }
     
-    /**
-     * The address to be accessed by an instruction using X register indexed absolute addressing is computed by taking 
-     * the 16 bit address from the instruction and added the contents of the X register. For example if X contains $92 
-     * then an STA $2000,X instruction will store the accumulator at $2092 (e.g. $2000 + $92).
-     */
-    private final int absoluteX()
+    private final int absolute_W()
     {
-        int _result = readWord(pc) + x;
-        pc += 2;
-        return _result & 0xFFFF;
+        return absolute_R();
+    }
+
+    private final int absolute_RMW()
+    {
+        return absolute_R();
     }
     
-    /**
-     * The Y register indexed absolute addressing mode is the same as the previous mode only with the contents of the Y 
-     * register added to the 16 bit address from the instruction.
-     */
-    private final int absoluteY()
+// Absolute X
+    
+    private final int absoluteX_R()
     {
-        int _result = readWord(pc) + y;
+        return absoluteIndexed(x, true);
+    }
+
+    private final int absoluteX_W()
+    {
+        return absoluteIndexed(x, false);
+    }
+    
+    private final int absoluteX_RMW()
+    {
+        return absoluteX_W();
+    }
+    
+// Absolute Y  
+
+    private final int absoluteY_R()
+    {
+        return absoluteIndexed(y, true);
+    }
+    
+    private final int absoluteY_W()
+    {
+        return absoluteIndexed(y, false);
+    }
+
+    private final int absoluteY_RMW()
+    {
+        return absoluteY_W();
+    }
+    
+// Absolute indexed helper    
+    
+    private final int absoluteIndexed(int aRegister, boolean isPageBoundaryCyclePenalty)
+    {
+        int _temp = readWord(pc);
+        int _result = _temp + aRegister;
+        
+        if(isPageBoundaryCyclePenalty && isPageCrossed(_temp,_result))
+        {
+            addCycles(1);
+        }
+        
         pc += 2;
         return _result & 0xFFFF;
     }
-        
-    /**
-     * JMP is the only 6502 instruction to support indirection. The instruction contains a 16 bit address which identifies 
-     * the location of the least significant byte of another 16 bit memory address which is the real target of the instruction.
-     * 
-     * For example if location $0120 contains $FC and location $0121 contains $BA then the instruction JMP ($0120) will cause 
-     * the next instruction execution to occur at $BAFC (e.g. the contents of $0120 and $0121).
-     * 
-     * N.B.
-     * An original 6502 has does not correctly fetch the target address if the indirect vector falls on a page boundary 
-     * (e.g. $xxFF where xx is and value from $00 to $FF). In this case fetches the LSB from $xxFF as expected but takes 
-     * the MSB from $xx00. This is fixed in some later chips like the 65SC02 so for compatibility always ensure the indirect 
-     * vector is not at the end of the page.
-     */
+
+// Indirect    
+    
     private final int indirect()
     {
         int _address = readWord(pc++);
@@ -551,38 +582,56 @@ public final class MOS6502
             return readWord(_address);    
         }
     }    
+
+// Indirect X
     
-    /**
-     * Indexed indirect addressing is normally used in conjunction with a table of address held on zero page. The address 
-     * of the table is taken from the instruction and the X register added to it (with zero page wrap around) to give the 
-     * location of the least significant byte of the target address.
-     */
-    private final int indirectX()
+    private final int indirectX_R()
     {
         int _address = (memory.readByte(pc++) + x) & 0xFF;       
         return readWordZeroPageWrap(_address);
     }
     
-    /**
-     * Indirect indirect addressing is the most common indirection mode used on the 6502. In instruction contains the zero 
-     * page location of the least significant byte of 16 bit address. The Y register is dynamically added to this value 
-     * to generated the actual target address for operation.
-     */
-    private final int indirectY()
+    private final int indirectX_W()
+    {
+        return indirectX_R();
+    }
+    
+    private final int indirectX_RMW()
+    {
+        return indirectX_R();
+    }
+    
+// Indirect Y
+    
+    private final int indirectY_R()
+    {
+        return indirectY(true);
+    }
+    
+    private final int indirectY_W()
+    {
+        return indirectY(false);
+    }
+    
+    private final int indirectY_RMW()
+    {
+        return indirectY_W();
+    }
+    
+    private final int indirectY(boolean isPageBoundaryCyclePenalty)
     {
         int _address = memory.readByte(pc++);
         int _temp = readWordZeroPageWrap(_address);        
         int _result = _temp + y;
         
-        if(isPageCrossed(_temp, _result))
+        if(isPageBoundaryCyclePenalty && isPageCrossed(_temp, _result))
         {
             addCycles(1);            
-            _result &= 0xFFFF;
         }
         
-        return _result;
-    }    
-        
+        return _result & 0xFFFF;
+    }
+    
 //-------------------------------------------------------------
 // Stack
 //-------------------------------------------------------------    
@@ -631,15 +680,22 @@ public final class MOS6502
     }
     
     private final void branchOnCondition(boolean isBranch)
-    {
+    {        
         int _address = relative();
         if(isBranch)
         {
+            addCycles(1);
+            
             int _value = memory.readByte(_address);
             int _signedByte = _value < 0x80 ? _value : _value - 256;
+            
+            int _temp = pc;
             pc += _signedByte;
             
-            addCycles(1);
+            if(isPageCrossed(_temp, pc))
+            {
+                addCycles(1);
+            }            
         }
     }
     
@@ -650,7 +706,9 @@ public final class MOS6502
     
     public final boolean isPageCrossed(int anAddress1, int anAddress) 
     { 
-        return (((anAddress1 ^ anAddress) & 0xFF00) != 0x0000);        
+        //return ((anAddress1 ^ anAddress) & 0x0100) != 0;
+
+        return (((anAddress1 ^ anAddress) & 0xFF00) != 0);
     }
     
 //-------------------------------------------------------------

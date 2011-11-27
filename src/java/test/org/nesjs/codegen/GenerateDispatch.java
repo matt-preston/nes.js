@@ -72,7 +72,9 @@ public class GenerateDispatch
         
         if(isMethodRequiresAddressParameter(_mode))
         {
-            return String.format("opcode_%s(%s())", anOpcode.getMnemonic(), getAddressingMethod(anOpcode.getAddressingMode()));
+            OpcodeType _type = OpcodeType.getOpcodeType(anOpcode.getMnemonic());
+            
+            return String.format("opcode_%s(%s())", anOpcode.getMnemonic(), getAddressingMethod(anOpcode.getAddressingMode(), _type));
         }
         else
         {
@@ -104,23 +106,40 @@ public class GenerateDispatch
     }
     
     
-    private static String getAddressingMethod(AddressingMode anAddressingMode)
+    private static String getAddressingMethod(AddressingMode anAddressingMode, OpcodeType anOpcodeType)
     {
-        switch(anAddressingMode)
+        if(anAddressingMode == AddressingMode.INDIRECT)
         {
-            case IMMEDIATE:   return "immediate";
-            case ZERO_PAGE:   return "zeroPage";
-            case ZERO_PAGE_X: return "zeroPageX";
-            case ZERO_PAGE_Y: return "zeroPageY";
-            case RELATIVE:    return "relative";
-            case ABSOLUTE:    return "absolute";
-            case ABSOLUTE_X:  return "absoluteX";
-            case ABSOLUTE_Y:  return "absoluteY";
-            case INDIRECT:    return "indirect";
-            case INDIRECT_X:  return "indirectX";
-            case INDIRECT_Y:  return "indirectY";
+            return "indirect"; // JMP is the only opcode to support this mode 
         }
         
-        throw new RuntimeException("Unhandled mode: " + anAddressingMode);
+        
+        String _suffix = "";
+        
+        switch(anOpcodeType)
+        {
+           case READ:              _suffix = "_R";   break;
+           case WRITE:             _suffix = "_W";   break;
+           case READ_MODIFY_WRITE: _suffix = "_RMW"; break;
+           case DEFAULT:           _suffix = "_GAAAAAH"; break;
+        }
+        
+        String _prefix = "";
+        
+        switch(anAddressingMode)
+        {
+            case IMMEDIATE:   _prefix = "immediate"; break;
+            case ZERO_PAGE:   _prefix = "zeroPage";  break;
+            case ZERO_PAGE_X: _prefix = "zeroPageX"; break;
+            case ZERO_PAGE_Y: _prefix = "zeroPageY"; break;
+            case RELATIVE:    _prefix = "relative";  break;
+            case ABSOLUTE:    _prefix = "absolute";  break;
+            case ABSOLUTE_X:  _prefix = "absoluteX"; break;
+            case ABSOLUTE_Y:  _prefix = "absoluteY"; break;
+            case INDIRECT_X:  _prefix = "indirectX"; break;
+            case INDIRECT_Y:  _prefix = "indirectY"; break;
+        }
+        
+        return _prefix + _suffix;
     }    
 }
