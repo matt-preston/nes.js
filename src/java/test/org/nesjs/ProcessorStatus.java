@@ -1,4 +1,4 @@
-package org.nesjs.core;
+package org.nesjs;
 
 public class ProcessorStatus
 {

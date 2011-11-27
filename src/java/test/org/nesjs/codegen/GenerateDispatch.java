@@ -72,7 +72,7 @@ public class GenerateDispatch
         
         if(isMethodRequiresAddressParameter(_mode))
         {
-            OpcodeType _type = OpcodeType.getOpcodeType(anOpcode.getMnemonic());
+            InstructionType _type = InstructionType.getInstructionType(anOpcode.getMnemonic());
             
             return String.format("opcode_%s(%s())", anOpcode.getMnemonic(), getAddressingMethod(anOpcode.getAddressingMode(), _type));
         }
@@ -106,22 +106,20 @@ public class GenerateDispatch
     }
     
     
-    private static String getAddressingMethod(AddressingMode anAddressingMode, OpcodeType anOpcodeType)
+    private static String getAddressingMethod(AddressingMode anAddressingMode, InstructionType anInstructionType)
     {
         if(anAddressingMode == AddressingMode.INDIRECT)
         {
             return "indirect"; // JMP is the only opcode to support this mode 
         }
         
-        
         String _suffix = "";
         
-        switch(anOpcodeType)
+        switch(anInstructionType)
         {
            case READ:              _suffix = "_R";   break;
            case WRITE:             _suffix = "_W";   break;
            case READ_MODIFY_WRITE: _suffix = "_RMW"; break;
-           case DEFAULT:           _suffix = "_GAAAAAH"; break;
         }
         
         String _prefix = "";

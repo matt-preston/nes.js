@@ -1,6 +1,6 @@
 package org.nesjs.core;
 
-import static org.nesjs.core.OpcodeMnemomic.*;
+import static org.nesjs.core.Instruction.*;
 
 // Debug only, not needed for actual emulation 
 public class OpcodeNames

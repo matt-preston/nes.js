@@ -127,8 +127,8 @@ public final class MOS6502
                 s -= 3;
             }
             
-            cycles = 0;
             _clocksRemain--;
+            cycles = 0;
             
             int _opcode = memory.readByte(pc++);
 

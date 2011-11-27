@@ -6,6 +6,7 @@ import java.util.*;
 import junit.framework.ComparisonFailure;
 
 import org.junit.*;
+import org.nesjs.*;
 import org.nesjs.core.*;
 import static org.nesjs.core.Utils.*;
 

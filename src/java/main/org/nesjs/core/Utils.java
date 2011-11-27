@@ -1,5 +1,10 @@
 package org.nesjs.core;
 
+/**
+ * Only used for debugging
+ * 
+ * @author Matt
+ */
 public class Utils
 {
     public static final String toHexString(int aValue)

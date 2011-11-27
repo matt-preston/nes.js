@@ -1,7 +1,13 @@
 package org.nesjs.core;
 
-// All opcode mnemonics implemented in the CPU emulator
-public enum OpcodeMnemomic
+/**
+ * All instructions implemented in the CPU emulator
+ * 
+ * Not needed or used at runtime.
+ * 
+ * @author Matt
+ */
+public enum Instruction
 {
     ADC, ALR, ANC, AND, ARR, ASL, ATX, AXS, BCC, BCS, BEQ, BIT, BMI, BNE, BPL, BRK,
     BVC, BVS, CLC, CLD, CLI, CLV, CMP, CPX, CPY, DCP, DEC, DEX, DEY, EOR, INC, INX,
