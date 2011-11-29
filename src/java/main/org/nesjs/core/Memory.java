@@ -12,7 +12,14 @@ public class Memory
 {
     public final int[] lowMem = new int[0x0800];
     public final int[] prom   = new int[0x10000];
-        
+    
+    private APU apu;
+    
+    public void setAPU(APU anAPU)
+    {
+        apu = anAPU;
+    }
+    
     public void resetLowMemory() 
     {
         for (int _index = 0; _index < lowMem.length; _index++) 
@@ -60,16 +67,14 @@ public class Memory
         }
         else
         {
-            // Must be between 0x4000 and 0x4018
-            assert anAddress > 0x3FFF && anAddress < 0x4018;
+            // Must be between 0x4000 and 0x4018, but the only readable register is 0x4015
+            assert anAddress == 0x4015;
             
-            // NES APU and I/O registers            
-            //System.out.printf("Don't know how to read from APU and I/O registers [%s]\n", Utils.toHexString(anAddress));
-            
-            return 0; // TODO
+            return apu.getStatusRegister();
         }        
     }
     
+    // TODO, switch parameter order
     public final void writeByte(int aByte, int anAddress)
     {
         assert anAddress >= 0 && anAddress <= 0xFFFF : "Tried to write an out of range address";
@@ -98,7 +103,9 @@ public class Memory
         else
         {
             // Must be between 0x4000 and 0x4018
-            assert anAddress > 0x3FFF && anAddress < 0x4018;
+            assert anAddress > 0x3FFF && anAddress < 0x4018 : "Address out of range for APU";
+            
+            apu.writeRegister(anAddress, aByte);
             
             // NES APU and I/O registers            
             //System.out.printf("Don't know how to write [%s] to APU and I/O registers [%s]\n", Utils.toHexString(aByte), Utils.toHexString(anAddress));

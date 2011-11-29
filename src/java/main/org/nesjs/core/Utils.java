@@ -1,5 +1,6 @@
 package org.nesjs.core;
 
+
 /**
  * Only used for debugging
  * 
@@ -9,15 +10,27 @@ public class Utils
 {
     public static final String toHexString(int aValue)
     {
-        String _hex = Integer.toHexString(aValue).toUpperCase();
-        
-        if(_hex.length() % 2 == 0)
+        if(aValue < 0x0100)
         {
-            return "0x" + _hex;
+            return String.format("0x%02X", aValue);
         }
         else
         {
-            return "0x0" + _hex;
+            return String.format("0x%04X", aValue);
         }
+    }
+    
+    public static final String toBinaryString(int aByte)
+    {
+        assert aByte < 0x0100;
+        
+        String _result = Integer.toBinaryString(aByte);
+        
+        while(_result.length() < 8)
+        {
+            _result = "0" + _result;
+        }
+        
+        return _result;
     }
 }

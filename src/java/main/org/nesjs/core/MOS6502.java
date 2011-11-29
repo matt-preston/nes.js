@@ -29,11 +29,15 @@ public final class MOS6502
     private int cycles;
     
     private Memory memory;
+    private APU apu;
 
     public MOS6502(Memory aMemory)
     {
     	memory = aMemory;    	
     	memory.resetLowMemory();
+    	
+    	apu = new APU();    	
+    	memory.setAPU(apu);
     	
     	a = 0;
         x = 0;
@@ -384,6 +388,8 @@ public final class MOS6502
             assert x >= 0 && x <= 0xFF        : "X out of bounds";
             assert y >= 0 && y <= 0xFF        : "Y out of bounds";
             assert s >= 0x0100 && s <= 0x01FF : "S out of bounds";
+            
+            apu.clock(cycles);
         }
         
         return _clocksRemain;
