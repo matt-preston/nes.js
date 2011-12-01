@@ -5,6 +5,8 @@ public class APU
 {
     private boolean frameSequencerIRQDisabled;
     
+    private int frameSequencerMode;
+    
     private int frameSequencerDividerPeriod;
     private int frameSequencerDividerCounter;
     
@@ -51,10 +53,10 @@ public class APU
         {
             frameInterruptFlag = false;
             
-            int _frameSequencerMode = (aByte >> 7) & 1;
+            frameSequencerMode = (aByte >> 7) & 1;
             frameSequencerIRQDisabled = ((aByte >> 6) & 1) == 1;
             
-            if(_frameSequencerMode == 0)
+            if(frameSequencerMode == 0)
             {
                 // 4 step sequence
                 frameCounterMax = 4;
@@ -83,23 +85,34 @@ public class APU
         return 0;
     }
     
-    /**
-     * TODO, currently only the 4 step sequence is supported!
-     */
     private void frameSequencerClock()
     {
-        if(frameCounter == 1 || frameCounter == 3)
-        {
-            // clock length counters
-            //System.out.println("clock length counter");
-        }
-        
-        if(frameCounter == 3)
-        {
-            // set interrupt flag
-            frameInterruptFlag = true;
-        }
-        
+    	if(frameSequencerMode == 0)
+    	{
+    		// 4 Step sequence
+    		if(frameCounter == 1 || frameCounter == 3)
+            {
+                // clock length counters
+                //System.out.println("clock length counter");
+            }
+            
+            // 4 Step sequence
+            if(frameCounter == 3)
+            {
+                // set interrupt flag
+                frameInterruptFlag = true;
+            }
+    	}
+    	else
+    	{
+    		// 5 Step sequence
+    		if(frameCounter == 0 || frameCounter == 2)
+            {
+                // clock length counters
+                //System.out.println("clock length counter");
+            }
+    	}
+    	        
         frameCounter++;
         if (frameCounter >= frameCounterMax) 
         {
