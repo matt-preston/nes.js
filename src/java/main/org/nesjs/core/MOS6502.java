@@ -378,7 +378,7 @@ public final class MOS6502
                 case 0x9A: opcode_TXS_implied(); addCycles(2); break;
                 case 0x98: opcode_TYA_implied(); addCycles(2); break;
 
-                default: throw new RuntimeException("Unhandled opcode [" + Utils.toHexString(_opcode) + "]");
+                default: throw new RuntimeException("Unhandled opcode [" + Utils.toHexString(_opcode) + "], at [" + Utils.toHexString(pc - 1) + "]");
             }
             
             // Mask to 16 bit

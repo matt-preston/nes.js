@@ -1,6 +1,10 @@
 package org.nesjs.core;
 
-
+/**
+ * Minimal implementation to get the length counter for the first square channel working
+ * 
+ * @author Matt
+ */
 public class APU
 {
     private boolean frameSequencerIRQDisabled;
@@ -15,6 +19,8 @@ public class APU
     
     private boolean frameInterruptFlag;
     
+    private SquareChannel1 square1;
+    
     public APU()
     {
         boolean _pal = false; // Kept as a reminder
@@ -27,6 +33,8 @@ public class APU
         frameCounterMax = 4;
         
         frameInterruptFlag = false;
+        
+        square1 = new SquareChannel1();
     }
     
     public void clock(int aCPUCycles)
@@ -49,7 +57,16 @@ public class APU
     
     public void writeRegister(int anAddress, int aByte)
     {
-        if(anAddress == 0x4017)
+        if (anAddress >= 0x4000 && anAddress < 0x4004) 
+        {
+            square1.writeRegister(anAddress, aByte);
+        }
+        else if (anAddress == 0x4015) 
+        {
+            // Update the enabled status of Square channel 1
+            square1.setEnabled((aByte & 1) != 0);
+        }
+        else if(anAddress == 0x4017)
         {
             frameInterruptFlag = false;
             
@@ -74,15 +91,22 @@ public class APU
         }
         else
         {
-            System.out.printf("Write to [%s] with [%s]\n", Utils.toHexString(anAddress), Utils.toBinaryString(aByte));    
+            //System.out.printf("APU: Write to [%s] with [%s]\n", Utils.toHexString(anAddress), Utils.toBinaryString(aByte));    
         }        
     }
-    
+
+    // Read from 0x4015
     public int getStatusRegister()
     {        
-        frameInterruptFlag = false;
+        int _frameInterrupt = (frameInterruptFlag && !frameSequencerIRQDisabled) ? 1 : 0;
         
-        return 0;
+        int _result = 0;
+        _result |= square1.getLengthStatus();
+        _result |= _frameInterrupt << 6;
+        
+        frameInterruptFlag = false;
+
+        return _result;
     }
     
     private void frameSequencerClock()
@@ -92,8 +116,7 @@ public class APU
     		// 4 Step sequence
     		if(frameCounter == 1 || frameCounter == 3)
             {
-                // clock length counters
-                //System.out.println("clock length counter");
+                square1.clockLengthCounter();
             }
             
             // 4 Step sequence
@@ -108,8 +131,7 @@ public class APU
     		// 5 Step sequence
     		if(frameCounter == 0 || frameCounter == 2)
             {
-                // clock length counters
-                //System.out.println("clock length counter");
+    		    square1.clockLengthCounter();
             }
     	}
     	        
