@@ -10,4 +10,10 @@ public class TestTiming extends BlarggTestCase
     {
         runTestROM("1-instr_timing.nes");
     }
+    
+    @Test
+    public void testBranchTiming() throws Exception
+    {
+        runTestROM("2-branch_timing.nes");
+    }
 }
