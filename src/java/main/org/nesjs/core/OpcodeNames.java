@@ -29,6 +29,7 @@ public class OpcodeNames
             case 0x39:
             case 0x21:
             case 0x31: return AND.name();
+            case 0x8B: return ANE.name();
             case 0x6B: return ARR.name();
             case 0x0A:
             case 0x06:
@@ -103,6 +104,7 @@ public class OpcodeNames
             case 0x4C:
             case 0x6C: return JMP.name();
             case 0x20: return JSR.name();
+            case 0xBB: return LAS.name();
             case 0xA7:
             case 0xB7:
             case 0xAF:
@@ -214,6 +216,9 @@ public class OpcodeNames
             case 0x38: return SEC.name();
             case 0xF8: return SED.name();
             case 0x78: return SEI.name();
+            case 0x93:
+            case 0x9F: return SHA.name();
+            case 0x9B: return SHS.name();
             case 0x07:
             case 0x17:
             case 0x0F:

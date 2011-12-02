@@ -157,6 +157,7 @@ public final class MOS6502
                 case 0x39: opcode_AND(absoluteY_R()); addCycles(4); break;
                 case 0x21: opcode_AND(indirectX_R()); addCycles(6); break;
                 case 0x31: opcode_AND(indirectY_R()); addCycles(5); break;
+                case 0x8B: opcode_ANE(immediate_R()); addCycles(2); break; // Unofficial
                 case 0x6B: opcode_ARR(immediate_R()); addCycles(2); break; // Unofficial
                 case 0x0A: opcode_ASL_accumulator(); addCycles(2); break;
                 case 0x06: opcode_ASL(zeroPage_RMW()); addCycles(5); break;
@@ -231,6 +232,7 @@ public final class MOS6502
                 case 0x4C: opcode_JMP(absolute_R()); addCycles(3); break;
                 case 0x6C: opcode_JMP(indirect()); addCycles(5); break;
                 case 0x20: opcode_JSR(absolute_R()); addCycles(6); break;
+                case 0xBB: opcode_LAS(absoluteY_R()); addCycles(4); break; // Unofficial
                 case 0xA7: opcode_LAX(zeroPage_R()); addCycles(3); break; // Unofficial
                 case 0xB7: opcode_LAX(zeroPageY_R()); addCycles(4); break; // Unofficial
                 case 0xAF: opcode_LAX(absolute_R()); addCycles(4); break; // Unofficial
@@ -342,6 +344,9 @@ public final class MOS6502
                 case 0x38: opcode_SEC_implied(); addCycles(2); break;
                 case 0xF8: opcode_SED_implied(); addCycles(2); break;
                 case 0x78: opcode_SEI_implied(); addCycles(2); break;
+                case 0x9F: opcode_SHA(absoluteY_W()); addCycles(5); break; // Unofficial
+                case 0x93: opcode_SHA(indirectY_W()); addCycles(6); break; // Unofficial
+                case 0x9B: opcode_SHS(absoluteY_W()); addCycles(5); break; // Unofficial
                 case 0x07: opcode_SLO(zeroPage_RMW()); addCycles(5); break; // Unofficial
                 case 0x17: opcode_SLO(zeroPageX_RMW()); addCycles(6); break; // Unofficial
                 case 0x0F: opcode_SLO(absolute_RMW()); addCycles(6); break; // Unofficial
@@ -377,7 +382,7 @@ public final class MOS6502
                 case 0x8A: opcode_TXA_implied(); addCycles(2); break;
                 case 0x9A: opcode_TXS_implied(); addCycles(2); break;
                 case 0x98: opcode_TYA_implied(); addCycles(2); break;
-
+                
                 default: throw new RuntimeException("Unhandled opcode [" + Utils.toHexString(_opcode) + "], at [" + Utils.toHexString(pc - 1) + "]");
             }
             
@@ -755,6 +760,11 @@ public final class MOS6502
         a &= memory.readByte(anAddress);
         setNZFlag(a);
     }
+    
+    private final void opcode_ANE(int anAddress)
+    {
+        // TODO Don't know what this does and don't have a test case for it besides timing
+    }
 
     // AND byte with accumulator, then rotate one bit right in accumulator
     private final void opcode_ARR(int anAddress)
@@ -1017,6 +1027,11 @@ public final class MOS6502
         pc = anAddress;
     }
 
+    private final void opcode_LAS(int anAddress)
+    {
+        // TODO Don't know what this does and don't have a test case for it besides timing
+    }
+    
     // Load Accumulator and X with memory
     private void opcode_LAX(int anAddress)
     {
@@ -1241,7 +1256,17 @@ public final class MOS6502
     {
         interruptDisable = 1;
     }
+    
+    private final void opcode_SHA(int anAddress)
+    {
+        // TODO Don't know what this does and don't have a test case for it besides timing
+    }
 
+    private final void opcode_SHS(int anAddress)
+    {
+        // TODO Don't know what this does and don't have a test case for it besides timing
+    }
+    
     // ASL value then ORA value
     private void opcode_SLO(int anAddress)
     {

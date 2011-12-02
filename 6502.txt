@@ -98,6 +98,18 @@ Lets begin shall we?
 
 ======================================================================
 
+   ANE  -  Not sure what this does (undocumented)
+           
+						Flags Affected:
+						---------------
+
+      Mnemonic   Addressing Mode       Opcode    Cycles
+      ----------------------------------------------------
+
+      ANE*       #aa                   8B        2
+      
+======================================================================
+
 
    ARR  -  AND byte with accumulator, then rotate one bit right in accumulator and check bit 5 and 6:
              If both bits are 1: set C, clear V.
@@ -576,6 +588,18 @@ N.B. CMP, CPX, and CPY all set flags according to:
 
 ======================================================================
 
+   LAS  -  Not sure what this does (undocumented)
+   
+						Flags Affected:
+						---------------
+						
+      Mnemonic   Addressing Mode       Opcode    Cycles
+      ----------------------------------------------------
+
+      LAS*       $aaaa,Y               BB        4
+
+======================================================================
+
    LAX  -  Load Accumulator and X with memory (Undocumented)
 
 						Flags Affected:
@@ -957,6 +981,31 @@ N.B. CMP, CPX, and CPY all set flags according to:
       ----------------------------------------------------
 
       SEI                              78        2
+
+======================================================================
+
+   SHA  -  Not sure what this does (undocumented)
+   
+						Flags Affected:
+						---------------
+						
+      Mnemonic   Addressing Mode       Opcode    Cycles
+      ----------------------------------------------------
+
+      SHA*       $aaaa,Y               9F        5
+      SHA*       $(aa),Y               93        6
+      
+======================================================================
+
+   SHS  -  Not sure what this does (undocumented)
+   
+						Flags Affected:
+						---------------
+						
+      Mnemonic   Addressing Mode       Opcode    Cycles
+      ----------------------------------------------------
+
+      SHS*       $aaaa,Y               9B        5
 
 ======================================================================
 

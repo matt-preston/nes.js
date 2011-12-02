@@ -9,8 +9,8 @@ import org.nesjs.core.*;
 public enum InstructionType
 {
     DEFAULT, 
-    READ(ADC, ALR, ANC, AND, ARR, ATX, AXS, BIT, CMP, CPX, CPY, EOR, JMP, JSR, LAX, LDA, LDX, LDY, NOP, ORA, SBC), 
-    WRITE(SAX, STA, STX, STY, SXA, SYA), 
+    READ(ADC, ALR, ANC, AND, ANE, ARR, ATX, AXS, BIT, CMP, CPX, CPY, EOR, JMP, JSR, LAS, LAX, LDA, LDX, LDY, NOP, ORA, SBC), 
+    WRITE(SAX, SHA, SHS, STA, STX, STY, SXA, SYA), 
     READ_MODIFY_WRITE(ASL, DCP, DEC, INC, ISB, LSR, RLA, ROL, ROR, RRA, SLO, SRE);
     
     private EnumSet<Instruction> instructions;
