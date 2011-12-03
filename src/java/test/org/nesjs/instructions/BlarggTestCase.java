@@ -3,14 +3,16 @@ package org.nesjs.instructions;
 import java.io.*;
 
 import org.junit.*;
+import org.nesjs.*;
 import org.nesjs.core.*;
 
 public class BlarggTestCase
 {
-     public void runTestROM(String aROMName) throws Exception
+     public void runTestROM(String aROMName) throws IOException
      {
-         InputStream _in = getClass().getResourceAsStream(aROMName);
-         Memory _memory = ROM.memoryWithROMInputStream(_in);
+         ROM _rom = ResourceROMLoader.loadROMResource(this.getClass(), aROMName);
+         
+         Memory _memory = _rom.toMemory();
          
          MOS6502 _6502 = new MOS6502(_memory);
          

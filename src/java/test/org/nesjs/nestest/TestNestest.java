@@ -8,6 +8,7 @@ import junit.framework.ComparisonFailure;
 import org.junit.*;
 import org.nesjs.*;
 import org.nesjs.core.*;
+
 import static org.nesjs.core.Utils.*;
 
 
@@ -16,8 +17,8 @@ public class TestNestest
     @Test
     public void testNestestRomAndCompareWithLog() throws Exception
     {
-        InputStream _in = getClass().getResourceAsStream("nestest.nes");
-    	Memory _memory = ROM.memoryWithROMInputStream(_in);
+        ROM _rom = ResourceROMLoader.loadROMResource(this.getClass(), "nestest.nes");
+        Memory _memory = _rom.toMemory();
     	
         MOS6502 _6502 = new MOS6502(_memory);
             
