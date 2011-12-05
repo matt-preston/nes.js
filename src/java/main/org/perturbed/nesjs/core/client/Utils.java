@@ -10,13 +10,15 @@ public class Utils
 {
     public static final String toHexString(int aValue)
     {
-        if(aValue < 0x0100)
+        String _hex = Integer.toHexString(aValue).toUpperCase();
+        
+        if(_hex.length() % 2 == 0)
         {
-            return String.format("0x%02X", aValue);
+            return "0x" + _hex;
         }
         else
         {
-            return String.format("0x%04X", aValue);
+            return "0x0" + _hex;
         }
     }
     

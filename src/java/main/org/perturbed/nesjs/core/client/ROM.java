@@ -4,9 +4,9 @@ import java.io.*;
 
 public class ROM
 {
-    private byte[] bytes;
+    private int[] bytes;
     
-    public ROM(byte[] aBytes)
+    public ROM(int[] aBytes)
     {
         bytes = aBytes;
     }
@@ -65,7 +65,7 @@ public class ROM
                     break;
                 }
 
-                _prom[_i][_j] = bytes[_offset + _j] & 0xFF;
+                _prom[_i][_j] = bytes[_offset + _j];
             }
             _offset += 16384;
         }

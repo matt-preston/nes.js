@@ -17,8 +17,16 @@ public class ResourceROMLoader
             _out.write(_next);
         }
         
-        _in.close();        
+        _in.close();
         
-        return new ROM(_out.toByteArray());
+        byte[] _buffer = _out.toByteArray();
+        int[] _bytes = new int[_buffer.length];
+        
+        for(int _index = 0; _index < _buffer.length; _index++)
+        {
+            _bytes[_index] = _buffer[_index] & 0xFF;
+        }
+        
+        return new ROM(_bytes);
     }
 }
