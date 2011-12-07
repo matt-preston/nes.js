@@ -9,6 +9,7 @@ import org.perturbed.nesjs.core.client.Memory;
 import org.perturbed.nesjs.core.client.ROM;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Window;
 
 public class Benchmark implements EntryPoint
@@ -59,10 +60,24 @@ public class Benchmark implements EntryPoint
         _6502.setRegisterPC(0xC000);
         
         long _start = System.currentTimeMillis();
-        _6502.execute(8990);
+        int _cycles = 0;
+        
+        for(int _index = 0; _index < 9000; _index++)
+        {
+        	_6502.step();
+        	_cycles += _6502.getCycles();
+        }
+        
         long _duration = System.currentTimeMillis() - _start;
         
-        Window.alert("Nestest took " + _duration + "ms");        
+        double _factor = 1000.0 / _duration;
+        
+        double _frequency = _factor * _cycles;
+    
+        String _c = NumberFormat.getDecimalFormat().format(_cycles);
+        String _f = NumberFormat.getDecimalFormat().format(_frequency);
+        
+        Window.alert("Nestest took " + _duration + "ms to execute " + _c + " clock cycles - > " + _f + " cycles per second");        
     }
     
     
