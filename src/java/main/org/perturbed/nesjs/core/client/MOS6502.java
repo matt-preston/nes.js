@@ -649,7 +649,7 @@ public final class MOS6502
 
     private final void push(int aByte)
     {
-        memory.writeByte(aByte, s);
+        memory.writeByte(s, aByte);
         s = 0x0100 | (--s & 0xFF);
     }
     
@@ -801,7 +801,7 @@ public final class MOS6502
         carry = (_value >> 7) & 1;
         _value = (_value << 1) & 0xFF;
         
-        memory.writeByte(_value, anAddress);
+        memory.writeByte(anAddress, _value);
         
         setNZFlag(_value);
     }
@@ -958,7 +958,7 @@ public final class MOS6502
     private void opcode_DEC(int anAddress)
     {
         int _value = (memory.readByte(anAddress) - 1) & 0xFF;
-        memory.writeByte(_value, anAddress);
+        memory.writeByte(anAddress, _value);
         
         setNZFlag(_value);
     }
@@ -988,7 +988,7 @@ public final class MOS6502
     private void opcode_INC(int anAddress)
     {    
         int _value = (memory.readByte(anAddress) + 1) & 0xFF;
-        memory.writeByte(_value, anAddress);
+        memory.writeByte(anAddress, _value);
         
         setNZFlag(_value);
     }
@@ -1078,7 +1078,7 @@ public final class MOS6502
         carry = _value & 1; // old bit 0       
         _value >>= 1;
         
-        memory.writeByte(_value, anAddress);
+        memory.writeByte(anAddress, _value);
         
         not_zero = _value;
         negative = 0;
@@ -1161,7 +1161,7 @@ public final class MOS6502
         carry = (_value >> 7) &1;
         _value = ((_value << 1) & 0xFF) + _add;
         
-        memory.writeByte(_value, anAddress);
+        memory.writeByte(anAddress, _value);
         
         setNZFlag(_value);
     }
@@ -1186,7 +1186,7 @@ public final class MOS6502
         carry = _value & 1;
         _value = (_value >> 1) + _add;
         
-        memory.writeByte(_value, anAddress);
+        memory.writeByte(anAddress, _value);
         
         setNZFlag(_value);
     }
@@ -1222,7 +1222,7 @@ public final class MOS6502
     // Store A and X bitwise
     private void opcode_SAX(int anAddress)
     {
-        memory.writeByte(a & x, anAddress);
+        memory.writeByte(anAddress, a & x);
     }
 
     // Subtract with Carry
@@ -1284,19 +1284,19 @@ public final class MOS6502
     // Store Accumulator
     private void opcode_STA(int anAddress)
     {
-        memory.writeByte(a, anAddress);        
+        memory.writeByte(anAddress, a);        
     }
 
     // Store X register
     private void opcode_STX(int anAddress)
     {
-        memory.writeByte(x, anAddress);
+        memory.writeByte(anAddress, x);
     }
 
     // Store Y Register
     private void opcode_STY(int anAddress)
     {
-        memory.writeByte(y, anAddress);        
+        memory.writeByte(anAddress, y);        
     }
 
     // AND X register with the high byte of the target address of the argument + 1.
@@ -1310,7 +1310,7 @@ public final class MOS6502
          */
         if((y + memory.readByte(pc - 2)) <= 0xFF)
         {
-            memory.writeByte(_value, anAddress);
+            memory.writeByte(anAddress, _value);
         }
     }
     
@@ -1325,7 +1325,7 @@ public final class MOS6502
          */
         if((x + memory.readByte(pc - 2)) <= 0xFF)
         {
-            memory.writeByte(_result, anAddress);
+            memory.writeByte(anAddress, _result);
         }
     }
 

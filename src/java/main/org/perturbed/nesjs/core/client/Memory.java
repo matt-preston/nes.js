@@ -14,10 +14,12 @@ public class Memory
     public final int[] prom   = new int[0x10000];
     
     private APU apu;
+    private PPU ppu;
     
     public void setAPU(APU anAPU)
     {
         apu = anAPU;
+        ppu = new PPU(); // TODO
     }
     
     public void resetLowMemory() 
@@ -54,16 +56,12 @@ public class Memory
         else if (anAddress < 0x2008)
         {
             // PPU registers
-            //System.out.printf("Don't know how to read from PPU registers [%s]\n", Utils.toHexString(anAddress));
-            
-            return 0; // TODO
+            return ppu.readRegister(anAddress);
         }
         else if (anAddress < 0x4000)
         {
-            // Mirrors of of 0x2000 every 8 bytes
-            //System.out.printf("Don't know how to read from PPU register mirrors [%s]\n", Utils.toHexString(anAddress));
-            
-            return 0; // TODO
+            // Mirrors of PPU registers (0x2000 -> 0x2007) every 8 bytes            
+            return ppu.readRegister(0x2000 + (anAddress & 0x7));
         }
         else
         {
@@ -74,8 +72,7 @@ public class Memory
         }        
     }
     
-    // TODO, switch parameter order
-    public final void writeByte(int aByte, int anAddress)
+    public final void writeByte(int anAddress, int aByte)
     {
         assert anAddress >= 0 && anAddress <= 0xFFFF : "Tried to write an out of range address";
         assert aByte < 0x0100 : "Attempting to write out of range byte";
@@ -93,22 +90,19 @@ public class Memory
         else if (anAddress < 0x2008)
         {
             // PPU registers
-            //System.out.printf("Don't know how to write [%s] to PPU registers [%s]\n", Utils.toHexString(aByte), Utils.toHexString(anAddress));
+            ppu.writeRegister(anAddress, aByte);            
         }
         else if (anAddress < 0x4000)
         {
-            // Mirrors of of 0x2000 every 8 bytes
-            //System.out.printf("Don't know how to write [%s] to PPU register mirrors [%s]\n", Utils.toHexString(aByte), Utils.toHexString(anAddress));
+            // Mirrors of PPU registers (0x2000 -> 0x2007) every 8 bytes
+            ppu.writeRegister(0x2000 + (anAddress & 0x7), aByte);
         }
         else
         {
             // Must be between 0x4000 and 0x4018
             assert anAddress > 0x3FFF && anAddress < 0x4018 : "Address out of range for APU";
             
-            apu.writeRegister(anAddress, aByte);
-            
-            // NES APU and I/O registers            
-            //System.out.printf("Don't know how to write [%s] to APU and I/O registers [%s]\n", Utils.toHexString(aByte), Utils.toHexString(anAddress));
+            apu.writeRegister(anAddress, aByte);            
         }
     }
     
