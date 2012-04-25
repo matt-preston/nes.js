@@ -2,6 +2,11 @@ package org.perturbed.nesjs.core.client;
 
 import java.io.*;
 
+/**
+ * Parser for the iNES ROM format
+ * 
+ * http://wiki.nesdev.com/w/index.php/INES
+ */
 public class ROM
 {
     private int[] bytes;
@@ -29,12 +34,17 @@ public class ROM
             throw new IOException("Invalid ROM header");
         }
         
-        int _romCount   = _header[4];
-        //int _vromCount  = _header[5] * 2;
+        // The number of 16 KB PRG ROM units
+        int _prgROMUnitCount   = _header[4];
+        
+        // The number of CHR ROM in 8 KB units (Value 0 means the board uses CHR RAM)
+        int _chrROMUnitCount  = _header[5];
+        
         //int _mirroring  = ((_header[6] & 1) != 0 ? 1 : 0);
         //boolean _batteryRam = (_header[6] & 2) != 0;
         //boolean _trainer    = (_header[6] & 4) != 0;
         //boolean _fourScreen = (_header[6] & 8) != 0;
+        
         int _mapperType = (_header[6] >> 4) | (_header[7] & 0xF0);
         
         if(_mapperType != 0)
@@ -45,49 +55,59 @@ public class ROM
         /**
          * Mapper 000 should only have 1 or 2 banks
          */
-        if(_romCount > 2)
+        if(_prgROMUnitCount > 2)
         {
-            throw new IOException("Don't know how to handle " + _romCount + " rom banks");
+            throw new IOException("Don't know how to handle " + _prgROMUnitCount + " PRG ROM units");
         }
         
-         // Load PRG-ROM banks:
-        int _offset = 16;
-        int _bufferLength = bytes.length;
-
-        int[][] _prom = new int[_romCount][16384];
-        
-        for (int _i = 0; _i < _romCount; _i++)
+        if(_chrROMUnitCount != 1)
         {
-            for (int _j = 0; _j < 16384; _j++)
-            {
-                if (_offset + _j >= _bufferLength)
-                {
-                    break;
-                }
-
-                _prom[_i][_j] = bytes[_offset + _j];
-            }
-            _offset += 16384;
+            throw new IOException("Don't know how to handle " + _prgROMUnitCount + " CHR ROM units");
         }
-
+        
+        // Load the PRG ROM
+        int[][] _prgROM = new int[_prgROMUnitCount][Constants._16K];
+        int _offset = 16; // Starts after the 16 byte header - TODO a trainer may be present before the PRG ROM
+        
+        for(int _index = 0; _index < _prgROMUnitCount; _index++)
+        {
+            copyBytes(_offset, Constants._16K, _prgROM[_index]);
+            _offset += Constants._16K;
+        }
+        
+        // Load the CHR ROM
+        int[] _chrROM = new int[Constants._8K];
+        copyBytes(_offset, Constants._8K, _chrROM);
+        
+        
         Memory _memory = new Memory();
         
-        if (_romCount > 1) 
+        if (_prgROMUnitCount > 1) 
         {
-            loadRomBank(_prom[0], _memory.prom, 0x8000);
-            loadRomBank(_prom[1], _memory.prom, 0xC000);
+            loadRomBank(_prgROM[0], _memory.prgMem, 0x8000);
+            loadRomBank(_prgROM[1], _memory.prgMem, 0xC000);
         }
         else
         {
-            loadRomBank(_prom[0], _memory.prom, 0x8000);
-            loadRomBank(_prom[0], _memory.prom, 0xC000);
+            loadRomBank(_prgROM[0], _memory.prgMem, 0x8000);
+            loadRomBank(_prgROM[0], _memory.prgMem, 0xC000);
         }
+        
+        loadRomBank(_chrROM, _memory.chrMem, 0x0000);
         
         return _memory;
     }
     
-    private void loadRomBank(int[] aBank, int[] aMemory, int anAddress)
+    private final void loadRomBank(int[] aBank, int[] aMemory, int anAddress)
     {
-        System.arraycopy(aBank, 0, aMemory, anAddress, 16384);
+        System.arraycopy(aBank, 0, aMemory, anAddress, aBank.length);
+    }
+    
+    private final void copyBytes(int anOffset, int aLength, int[] aTarget)
+    {
+        for(int _index = 0; _index < aLength; _index++)
+        {
+            aTarget[_index] = bytes[anOffset + _index];
+        }
     }
 }

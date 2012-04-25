@@ -10,8 +10,9 @@ package org.perturbed.nesjs.core.client;
  */
 public class Memory
 {
-    public final int[] lowMem = new int[0x0800];
-    public final int[] prom   = new int[0x10000];
+    public final int[] lowMem = new int[Constants._2K];
+    public final int[] prgMem = new int[Constants._64K];
+    public final int[] chrMem = new int[Constants._16K];
     
     private APU apu;
     private PPU ppu;
@@ -51,7 +52,7 @@ public class Memory
         else if (_address > 0x4017)
         {
             // Program ROM
-            return byteAtIndex(prom, _address);
+            return byteAtIndex(prgMem, _address);
         }
         else if (anAddress < 0x2008)
         {
@@ -85,7 +86,7 @@ public class Memory
         else if (anAddress > 0x4017)
         {
             // Program ROM
-            prom[anAddress] = aByte;
+            prgMem[anAddress] = aByte;
         }
         else if (anAddress < 0x2008)
         {
