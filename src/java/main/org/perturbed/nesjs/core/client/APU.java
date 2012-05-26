@@ -7,8 +7,6 @@ package org.perturbed.nesjs.core.client;
  */
 public class APU
 {
-    private boolean frameSequencerIRQDisabled;
-    
     private int frameSequencerMode;
     
     private int frameSequencerDividerPeriod;
@@ -17,9 +15,12 @@ public class APU
     private int frameCounter;
     private int frameCounterMax;
     
-    private boolean frameInterruptFlag;
+    private boolean frameSequencerInterruptFlag;
+    private boolean frameSequencerInterruptDisabled;
     
     private SquareChannel1 square1;
+    
+    private MOS6502 cpu;
     
     public APU()
     {
@@ -32,18 +33,23 @@ public class APU
         frameCounter = 0;
         frameCounterMax = 4;
         
-        frameInterruptFlag = false;
+        frameSequencerInterruptFlag = false;
+        frameSequencerInterruptDisabled = false;
         
         square1 = new SquareChannel1();
     }
     
+    public void setCPU(MOS6502 aCPU)
+    {
+        cpu = aCPU;
+    }
+    
     public void clock(int aCPUCycles)
     {
-        if (!frameSequencerIRQDisabled && frameInterruptFlag) 
+        if (!frameSequencerInterruptDisabled && frameSequencerInterruptFlag) 
         {
-            //System.out.println("Interrupt CPU");
+            cpu.requestIRQ();
         }
-        
         
         frameSequencerDividerCounter -= aCPUCycles * 48;
         
@@ -68,10 +74,10 @@ public class APU
         }
         else if(anAddress == 0x4017)
         {
-            frameInterruptFlag = false;
+            frameSequencerInterruptFlag = false;
             
             frameSequencerMode = (aByte >> 7) & 1;
-            frameSequencerIRQDisabled = ((aByte >> 6) & 1) == 1;
+            frameSequencerInterruptDisabled = ((aByte >> 6) & 1) == 1;
             
             if(frameSequencerMode == 0)
             {
@@ -98,13 +104,13 @@ public class APU
     // Read from 0x4015
     public int getStatusRegister()
     {        
-        int _frameInterrupt = (frameInterruptFlag && !frameSequencerIRQDisabled) ? 1 : 0;
+        int _frameInterrupt = (frameSequencerInterruptFlag && !frameSequencerInterruptDisabled) ? 1 : 0;
         
         int _result = 0;
         _result |= square1.getLengthStatus();
         _result |= _frameInterrupt << 6;
         
-        frameInterruptFlag = false;
+        frameSequencerInterruptFlag = false;
 
         return _result;
     }
@@ -123,7 +129,7 @@ public class APU
             if(frameCounter == 3)
             {
                 // set interrupt flag
-                frameInterruptFlag = true;
+                frameSequencerInterruptFlag = true;
             }
     	}
     	else
@@ -134,7 +140,8 @@ public class APU
     		    square1.clockLengthCounter();
             }
     	}
-    	        
+    	
+    	
         frameCounter++;
         if (frameCounter >= frameCounterMax) 
         {

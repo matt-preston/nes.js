@@ -41,54 +41,54 @@ public class PPU
 
     private int getPPUData()
     {
-        System.out.println("Read PPUDATA");
+//        System.out.println("Read PPUDATA");
         return 0;
     }
 
     private int getOAMData()
     {
-        System.out.println("Read OAMDATA");
+//        System.out.println("Read OAMDATA");
         return 0;
     }
 
     private int getPPUStatus()
     {
-        System.out.println("Read PPUSTATUS");
+//        System.out.println("Read PPUSTATUS");
         return 0;
     }
 
     private void setPPUCtrl(int aByte)
     {
-        System.out.println("Write PPUCTRL");
+//        System.out.println("Write PPUCTRL");
     }
 
     private void setPPUData(int aByte)
     {
-        System.out.println("Write PUDATA");
+//        System.out.println("Write PUDATA");
     }
 
     private void setPPUAddr(int aByte)
     {
-        System.out.println("Write PPUADDR");
+//        System.out.println("Write PPUADDR");
     }
 
     private void setPPUScroll(int aByte)
     {
-        System.out.println("Write PPUSCROLL");
+//        System.out.println("Write PPUSCROLL");
     }
 
     private void setOAMData(int aByte)
     {
-        System.out.println("Write OAMDATA");
+//        System.out.println("Write OAMDATA");
     }
 
     private void setOAMAddr(int aByte)
     {
-        System.out.println("Write OAMADDR");
+//        System.out.println("Write OAMADDR");
     }
 
     private void setPPUMask(int aByte)
     {
-        System.out.println("Write PPUMASK");
+//        System.out.println("Write PPUMASK");
     }
 }

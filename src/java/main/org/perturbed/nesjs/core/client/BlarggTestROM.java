@@ -45,7 +45,7 @@ public class BlarggTestROM
                 
                 // Reset after 100ms, so just spin the CPU for a bit
                 _6502.execute(10000);                
-                _6502.reset();
+                _6502.requestReset();
                 
                 aLogger.println("RESET");
             }            

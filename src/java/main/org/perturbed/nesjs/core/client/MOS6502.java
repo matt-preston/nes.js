@@ -17,14 +17,28 @@ package org.perturbed.nesjs.core.client;
  */
 public final class MOS6502
 {
-    private static final int NMI_VECTOR   = 0xFFFA;
-    private static final int RESET_VECTOR = 0xFFFC;
-    private static final int IRQ_VECTOR   = 0xFFFE;
+    enum Interrupt 
+    {
+        NMI(0xFFFA), RESET(0xFFFC), IRQ(0xFFFE);
+        
+        private int vector;
+        
+        private Interrupt(int aVector)
+        {
+            vector = aVector;
+        }
+        
+        public int getVector()
+        {
+            return vector;
+        }
+    }
     
     private int a, x, y;
     private int s, pc;    
     private int carry, not_zero, interruptDisable, decimal, overflow, negative;
-    private boolean resetIRQ;
+    
+    private Interrupt interruptRequested;
     
     private int cycles;
     
@@ -39,6 +53,8 @@ public final class MOS6502
     	apu = new APU();    	
     	memory.setAPU(apu);
     	
+    	apu.setCPU(this);
+    	
     	a = 0;
         x = 0;
         y = 0;
@@ -51,16 +67,24 @@ public final class MOS6502
         overflow         = 0;
         negative         = 0;
         
-        resetIRQ = false;
-        
         s = 0x01FF - 2;
-        pc = readWord(RESET_VECTOR);
+        pc = readWord(Interrupt.RESET.getVector());
     }
     
-    public final void reset()
+    public final void requestReset()
     {
-        interruptDisable = 1;
-        resetIRQ = true;       
+        interruptRequested = Interrupt.RESET;
+    }
+    
+    public final void requestIRQ()
+    {
+        interruptRequested = Interrupt.IRQ;
+    }
+    
+    public final void requestNMI()
+    {
+        // TODO
+        // interruptRequested = Interrupt.NMI;
     }
     
     public final int getRegisterA()
@@ -118,17 +142,31 @@ public final class MOS6502
 
         while(_clocksRemain > 0)
         {
-            if(resetIRQ)
+            // TODO - refactor out of this method
+            if(interruptRequested != null)
             {
-                resetIRQ = false;
+                if(interruptRequested == Interrupt.IRQ)
+                {
+                    // interruptDisable == 1 means only allow /NMI
+                    if(interruptDisable == 0)
+                    {
+                        pushWord(pc);
+                        push(getRegisterP(0));
+                        
+                        pc = readWord(Interrupt.IRQ.getVector());                        
+                    }
+                }
+                else if(interruptRequested == Interrupt.RESET)
+                {
+                    pc = readWord(Interrupt.RESET.getVector());
+                    
+                    // On reset, pc (2 bytes) and p are pushed onto the stack.  But the values 
+                    // should not actually be written to memory.
+                    s -= 3;
+                }
                 
-                pc = readWord(RESET_VECTOR);
-                
-                /**
-                 * On reset, pc (2 bytes) and p are pushed onto the stack.  But the values should not actually
-                 * be written to memory.
-                 */
-                s -= 3;
+                interruptRequested = null;
+                interruptDisable = 1;                
             }
             
             _clocksRemain--;
@@ -717,8 +755,6 @@ public final class MOS6502
     
     public final boolean isPageCrossed(int anAddress1, int anAddress) 
     { 
-        //return ((anAddress1 ^ anAddress) & 0x0100) != 0;
-
         return (((anAddress1 ^ anAddress) & 0xFF00) != 0);
     }
     
@@ -881,7 +917,7 @@ public final class MOS6502
         
         opcode_PHP_implied();
         opcode_SEI_implied();
-        opcode_JMP(readWord(IRQ_VECTOR));        
+        opcode_JMP(readWord(Interrupt.IRQ.getVector()));        
     }
 
     // Branch if Overflow Clear
