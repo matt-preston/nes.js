@@ -39,6 +39,7 @@ public final class MOS6502
     private int carry, not_zero, interruptDisable, decimal, overflow, negative;
     
     private Interrupt interruptRequested;
+    private boolean delayIRQVector;
     
     private int cycles;
     
@@ -145,15 +146,19 @@ public final class MOS6502
             // TODO - refactor out of this method
             if(interruptRequested != null)
             {
+                boolean _vectored = false;
+                
                 if(interruptRequested == Interrupt.IRQ)
                 {
                     // interruptDisable == 1 means only allow /NMI
-                    if(interruptDisable == 0)
+                    if(interruptDisable == 0 && !delayIRQVector)
                     {
                         pushWord(pc);
                         push(getRegisterP(0));
                         
-                        pc = readWord(Interrupt.IRQ.getVector());                        
+                        pc = readWord(Interrupt.IRQ.getVector());
+                        
+                        _vectored = true;
                     }
                 }
                 else if(interruptRequested == Interrupt.RESET)
@@ -163,11 +168,18 @@ public final class MOS6502
                     // On reset, pc (2 bytes) and p are pushed onto the stack.  But the values 
                     // should not actually be written to memory.
                     s -= 3;
+                    
+                    _vectored = true;
                 }
                 
-                interruptRequested = null;
-                interruptDisable = 1;                
+                if(_vectored)
+                {
+                    interruptRequested = null;
+                    interruptDisable = 1;
+                }
             }
+            
+            delayIRQVector = false;
             
             _clocksRemain--;
             cycles = 0;
@@ -948,6 +960,7 @@ public final class MOS6502
     private void opcode_CLI_implied()
     {
         interruptDisable = 0;
+        delayIRQVector = true;
     }
 
     // Clear Overflow Flag
