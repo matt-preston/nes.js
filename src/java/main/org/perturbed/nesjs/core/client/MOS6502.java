@@ -48,15 +48,15 @@ public final class MOS6502
 
     public MOS6502(Memory aMemory)
     {
-    	memory = aMemory;    	
-    	memory.resetLowMemory();
-    	
-    	apu = new APU();    	
-    	memory.setAPU(apu);
-    	
-    	apu.setCPU(this);
-    	
-    	a = 0;
+        memory = aMemory;
+        memory.resetLowMemory();
+        
+        apu = new APU();
+        memory.setAPU(apu);
+        
+        apu.setCPU(this);
+        
+        a = 0;
         x = 0;
         y = 0;
 
@@ -146,8 +146,6 @@ public final class MOS6502
             // TODO - refactor out of this method
             if(interruptRequested != null)
             {
-                boolean _vectored = false;
-                
                 if(interruptRequested == Interrupt.IRQ)
                 {
                     // interruptDisable == 1 means only allow /NMI
@@ -157,9 +155,13 @@ public final class MOS6502
                         push(getRegisterP(0));
                         
                         pc = readWord(Interrupt.IRQ.getVector());
-                        
-                        _vectored = true;
                     }
+
+                    if(!delayIRQVector)
+                    {
+                        interruptRequested = null;
+                        interruptDisable = 1;
+                    }                    
                 }
                 else if(interruptRequested == Interrupt.RESET)
                 {
@@ -169,11 +171,6 @@ public final class MOS6502
                     // should not actually be written to memory.
                     s -= 3;
                     
-                    _vectored = true;
-                }
-                
-                if(_vectored)
-                {
                     interruptRequested = null;
                     interruptDisable = 1;
                 }
@@ -1173,8 +1170,8 @@ public final class MOS6502
     private void opcode_PLP_implied()
     {
         int _temp = pop();
-    	
-    	carry            = (_temp) & 1;
+        
+        carry            = (_temp) & 1;
         not_zero         = ((_temp >> 1) & 1) == 1 ? 0 : 1;
         interruptDisable = (_temp >> 2) & 1;
         decimal          = (_temp >> 3) & 1; 
@@ -1192,13 +1189,13 @@ public final class MOS6502
     // Rotate Left
     private void opcode_ROL_accumulator()
     {
-		int _add = carry;
-		
-		carry = (a >> 7) &1;
-		
-		a = ((a << 1) & 0xFF) + _add;
-		
-		setNZFlag(a);
+        int _add = carry;
+        
+        carry = (a >> 7) &1;
+        
+        a = ((a << 1) & 0xFF) + _add;
+        
+        setNZFlag(a);
     }
 
     // Rotate Left
@@ -1219,11 +1216,11 @@ public final class MOS6502
     private void opcode_ROR_accumulator()
     {
         int _add = carry << 7;
-    	
-		carry = a & 1;
-		a = (a >> 1) + _add;
-		
-		setNZFlag(a);
+        
+        carry = a & 1;
+        a = (a >> 1) + _add;
+        
+        setNZFlag(a);
     }
 
     // Rotate Right
