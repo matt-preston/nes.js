@@ -1175,6 +1175,8 @@ public final class MOS6502
     // Pull Processor Status
     private void opcode_PLP_implied()
     {
+        int _oldInterruptDisable = interruptDisable;
+        
         int _temp = pop();
         
         carry            = (_temp) & 1;
@@ -1182,7 +1184,16 @@ public final class MOS6502
         interruptDisable = (_temp >> 2) & 1;
         decimal          = (_temp >> 3) & 1; 
         overflow         = (_temp >> 6) & 1;
-        negative         = (_temp >> 7) & 1;        
+        negative         = (_temp >> 7) & 1;
+        
+        if(_oldInterruptDisable == 0 && interruptDisable == 1)
+        {
+            delaySEIoperation = true;
+        }
+        else if(_oldInterruptDisable == 1 && interruptDisable == 0)
+        {
+            delayCLIoperation = true;
+        }
     }
 
     // ROL value then AND value
