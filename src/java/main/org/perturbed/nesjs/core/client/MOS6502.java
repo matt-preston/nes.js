@@ -39,7 +39,8 @@ public final class MOS6502
     private int carry, not_zero, interruptDisable, decimal, overflow, negative;
     
     private Interrupt interruptRequested;
-    private boolean delayIRQVector;
+    private boolean delayCLIoperation;
+    private boolean delaySEIoperation;
     
     private int cycles;
     
@@ -149,7 +150,8 @@ public final class MOS6502
                 if(interruptRequested == Interrupt.IRQ)
                 {
                     // interruptDisable == 1 means only allow /NMI
-                    if(interruptDisable == 0 && !delayIRQVector)
+                    // TODO this expression is a mess
+                    if((interruptDisable == 0 || delaySEIoperation) && !delayCLIoperation)
                     {
                         pushWord(pc);
                         push(getRegisterP(0));
@@ -157,7 +159,7 @@ public final class MOS6502
                         pc = readWord(Interrupt.IRQ.getVector());
                     }
 
-                    if(!delayIRQVector)
+                    if(!delayCLIoperation)
                     {
                         interruptRequested = null;
                         interruptDisable = 1;
@@ -176,7 +178,8 @@ public final class MOS6502
                 }
             }
             
-            delayIRQVector = false;
+            delayCLIoperation = false;
+            delaySEIoperation = false;
             
             _clocksRemain--;
             cycles = 0;
@@ -956,8 +959,11 @@ public final class MOS6502
     // Clear Interrupt Disable
     private void opcode_CLI_implied()
     {
-        interruptDisable = 0;
-        delayIRQVector = true;
+        if(interruptDisable != 0)
+        {
+            interruptDisable = 0;
+            delayCLIoperation = true;    
+        }
     }
 
     // Clear Overflow Flag
@@ -1300,7 +1306,11 @@ public final class MOS6502
     // Set Interrupt Disable
     private void opcode_SEI_implied()
     {
-        interruptDisable = 1;
+        if(interruptDisable != 1)
+        {
+            interruptDisable = 1;
+            delaySEIoperation = true;    
+        }
     }
     
     private final void opcode_SHA(int anAddress)
