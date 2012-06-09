@@ -2,6 +2,11 @@ package org.perturbed.nesjs.core.client;
 
 public class PPU
 {
+    public void clock(int aClockCycles)
+    {
+        // PPU runs at 3x the clock rate of the CPU
+    }
+    
     public void writeRegister(int anAddress, int aByte)
     {
         assert anAddress > 0x1FFF && anAddress < 0x2008  : "Tried to write to an out of range PPU address";

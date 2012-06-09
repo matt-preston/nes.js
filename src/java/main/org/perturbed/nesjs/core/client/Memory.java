@@ -20,7 +20,11 @@ public class Memory
     public void setAPU(APU anAPU)
     {
         apu = anAPU;
-        ppu = new PPU(); // TODO
+    }
+    
+    public void setPPU(PPU aPPU)
+    {
+        ppu = aPPU;
     }
     
     public void resetLowMemory() 

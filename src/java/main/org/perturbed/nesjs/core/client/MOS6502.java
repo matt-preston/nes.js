@@ -46,6 +46,7 @@ public final class MOS6502
     
     private Memory memory;
     private APU apu;
+    private PPU ppu;
 
     public MOS6502(Memory aMemory)
     {
@@ -54,8 +55,10 @@ public final class MOS6502
         
         apu = new APU();
         memory.setAPU(apu);
-        
         apu.setCPU(this);
+        
+        ppu = new PPU();
+        memory.setPPU(ppu);
         
         a = 0;
         x = 0;
@@ -444,6 +447,7 @@ public final class MOS6502
             assert y >= 0 && y <= 0xFF        : "Y out of bounds";
             assert s >= 0x0100 && s <= 0x01FF : "S out of bounds";
             
+            ppu.clock(cycles);
             apu.clock(cycles);
         }
         
