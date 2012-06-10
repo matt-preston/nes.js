@@ -1,8 +1,8 @@
-package org.perturbed.nesjs.benchmark;
+package org.perturbed.nesjs.resource.binary;
 
 import java.net.*;
 
-import org.perturbed.nesjs.benchmark.client.*;
+import org.perturbed.nesjs.resource.binary.client.*;
 
 import com.google.gwt.core.ext.*;
 import com.google.gwt.core.ext.TreeLogger.Type;

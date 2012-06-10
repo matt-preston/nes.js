@@ -1,6 +1,6 @@
-package org.perturbed.nesjs.benchmark.client;
+package org.perturbed.nesjs.resource.binary.client;
 
-import org.perturbed.nesjs.benchmark.*;
+import org.perturbed.nesjs.resource.binary.*;
 
 import com.google.gwt.resources.client.*;
 import com.google.gwt.resources.ext.*;
