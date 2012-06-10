@@ -1,0 +1,30 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <artifactId>nesjs</artifactId>
+        <groupId>org.perturbed</groupId>
+        <version>0.0.1</version>
+    </parent>
+    
+    <groupId>org.perturbed.nesjs</groupId>
+    <artifactId>binary-resource</artifactId>
+    <version>0.0.1</version>
+    <name>NES.js GWT binary resource</name>
+    
+    <dependencies>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-dev</artifactId>
+            <version>2.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>2.4.0</version>
+        </dependency>
+    </dependencies>
+    
+    
+</project>
