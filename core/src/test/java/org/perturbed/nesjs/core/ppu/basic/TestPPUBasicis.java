@@ -12,4 +12,10 @@ public class TestPPUBasicis extends BlarggTestCase
         runTestROM("01-vbl_basics.nes");
     }
     */
+    
+    @Test
+    public void testNothing()
+    {
+        // Just to keep maven happy...
+    }
 }
