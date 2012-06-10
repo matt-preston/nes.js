@@ -13,8 +13,7 @@
     <version>0.0.1</version>
     <name>NES.js core emulator</name>
     
-    <dependencies>        
+    <dependencies>
     </dependencies>
-    
     
 </project>

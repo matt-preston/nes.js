@@ -56,7 +56,8 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.8.2</version>
-            <scope>test</scope>
+            <!-- Doesn't seem to work in idea properly... -->
+            <!-- <scope>test</scope> -->
         </dependency>
     </dependencies>
 </project>

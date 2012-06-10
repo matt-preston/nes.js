@@ -10,7 +10,7 @@ import org.perturbed.nesjs.core.client.BlarggTestROM.TestLogger;
 import org.perturbed.nesjs.core.client.ROM;
 import org.perturbed.nesjs.core.client.Utils;
 
-public class BlarggTestCase
+public abstract class BlarggTestCase
 {
      public void runTestROM(String aROMName) throws IOException
      {
