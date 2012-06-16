@@ -41,15 +41,6 @@
                 </configuration>
             </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <directory>src/test/java</directory>
-                <includes>
-                    <include>**/*.nes</include>
-                    <include>**/*.log</include>
-                </includes>
-            </resource>
-        </resources>
     </build>
     <dependencies>
         <dependency>
