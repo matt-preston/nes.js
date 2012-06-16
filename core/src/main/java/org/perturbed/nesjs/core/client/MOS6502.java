@@ -1,7 +1,5 @@
 package org.perturbed.nesjs.core.client;
 
-
-
 /**
  * MOS Technology 6502 core
  *
@@ -39,8 +37,8 @@ public final class MOS6502
     private int carry, not_zero, interruptDisable, decimal, overflow, negative;
     
     private Interrupt interruptRequested;
-    private boolean delayCLIoperation;
-    private boolean delaySEIoperation;
+    private boolean delayCLIOperation;
+    private boolean delaySEIOperation;
     
     private int cycles;
     
@@ -154,7 +152,7 @@ public final class MOS6502
                 {
                     // interruptDisable == 1 means only allow /NMI
                     // TODO this expression is a mess
-                    if((interruptDisable == 0 || delaySEIoperation) && !delayCLIoperation)
+                    if((interruptDisable == 0 || delaySEIOperation) && !delayCLIOperation)
                     {
                         pushWord(pc);
                         push(getRegisterP(0));
@@ -162,7 +160,7 @@ public final class MOS6502
                         pc = readWord(Interrupt.IRQ.getVector());
                     }
 
-                    if(!delayCLIoperation)
+                    if(!delayCLIOperation)
                     {
                         interruptRequested = null;
                         interruptDisable = 1;
@@ -181,8 +179,8 @@ public final class MOS6502
                 }
             }
             
-            delayCLIoperation = false;
-            delaySEIoperation = false;
+            delayCLIOperation = false;
+            delaySEIOperation = false;
             
             _clocksRemain--;
             cycles = 0;
@@ -458,33 +456,33 @@ public final class MOS6502
 // Processor status flags
 //-------------------------------------------------------------     
     
-    private final boolean isZeroFlagSet()
+    private boolean isZeroFlagSet()
     {
         return not_zero == 0;
     }
     
-    private final boolean isCarryFlagSet()
+    private boolean isCarryFlagSet()
     {
         return carry > 0;
     }
     
-    private final boolean isNegativeFlagSet()
+    private boolean isNegativeFlagSet()
     {
         return negative > 0;
     }
     
-    private final boolean isOverflowFlagSet()
+    private boolean isOverflowFlagSet()
     {
         return overflow > 0;
     }
     
-    private final void setNZFlag(int aValue)
+    private void setNZFlag(int aValue)
     {
         negative = (aValue >> 7) & 1;
         not_zero = aValue & 0xFF;
     }
     
-    public final int getRegisterP(int aBRKValue)
+    private int getRegisterP(int aBRKValue)
     {
         assert aBRKValue == 0 || aBRKValue == 1;
         
@@ -496,127 +494,127 @@ public final class MOS6502
 // Addressing
 //-------------------------------------------------------------    
     
-    private final int immediate_R()
+    private int immediate_R()
     {
         return pc++;
     }
     
 // Zero page
     
-    private final int zeroPage_R()
+    private int zeroPage_R()
     {        
         return memory.readByte(pc++);
     }
     
-    private final int zeroPage_W()
+    private int zeroPage_W()
     {        
         return zeroPage_R();
     }
 
-    private final int zeroPage_RMW()
+    private int zeroPage_RMW()
     {        
         return zeroPage_R();
     }
     
 // Zero page X
     
-    private final int zeroPageX_R()
+    private int zeroPageX_R()
     {
         return zeroPageIndexed(x);        
     }
     
-    private final int zeroPageX_W()
+    private int zeroPageX_W()
     {
         return zeroPageX_R();        
     }
 
-    private final int zeroPageX_RMW()
+    private int zeroPageX_RMW()
     {
         return zeroPageX_R();        
     }
     
 // Zero page Y    
     
-    private final int zeroPageY_R()
+    private int zeroPageY_R()
     {
         return zeroPageIndexed(y);        
     }
     
-    private final int zeroPageY_W()
+    private int zeroPageY_W()
     {
         return zeroPageY_R();        
     }
     
 // Zero page Indexed helper    
     
-    private final int zeroPageIndexed(int aRegister)
+    private int zeroPageIndexed(int aRegister)
     {
         return (memory.readByte(pc++) + aRegister) & 0xFF;        
     } 
 
 // Relative    
     
-    private final int relative()
+    private int relative()
     {
         return pc++; 
     }
 
 // Absolute    
     
-    private final int absolute_R()
+    private int absolute_R()
     {
         int _result = readWord(pc);
         pc += 2;
         return _result;
     }
     
-    private final int absolute_W()
+    private int absolute_W()
     {
         return absolute_R();
     }
 
-    private final int absolute_RMW()
+    private int absolute_RMW()
     {
         return absolute_R();
     }
     
 // Absolute X
     
-    private final int absoluteX_R()
+    private int absoluteX_R()
     {
         return absoluteIndexed(x, true);
     }
 
-    private final int absoluteX_W()
+    private int absoluteX_W()
     {
         return absoluteIndexed(x, false);
     }
     
-    private final int absoluteX_RMW()
+    private int absoluteX_RMW()
     {
         return absoluteX_W();
     }
     
 // Absolute Y  
 
-    private final int absoluteY_R()
+    private int absoluteY_R()
     {
         return absoluteIndexed(y, true);
     }
     
-    private final int absoluteY_W()
+    private int absoluteY_W()
     {
         return absoluteIndexed(y, false);
     }
 
-    private final int absoluteY_RMW()
+    private int absoluteY_RMW()
     {
         return absoluteY_W();
     }
     
 // Absolute indexed helper    
     
-    private final int absoluteIndexed(int aRegister, boolean isPageBoundaryCyclePenalty)
+    private int absoluteIndexed(int aRegister, boolean isPageBoundaryCyclePenalty)
     {
         int _temp = readWord(pc);
         int _result = _temp + aRegister;
@@ -632,7 +630,7 @@ public final class MOS6502
 
 // Indirect    
     
-    private final int indirect()
+    private int indirect()
     {
         int _address = readWord(pc++);
         
@@ -650,40 +648,40 @@ public final class MOS6502
 
 // Indirect X
     
-    private final int indirectX_R()
+    private int indirectX_R()
     {
         int _address = (memory.readByte(pc++) + x) & 0xFF;       
         return readWordZeroPageWrap(_address);
     }
     
-    private final int indirectX_W()
+    private int indirectX_W()
     {
         return indirectX_R();
     }
     
-    private final int indirectX_RMW()
+    private int indirectX_RMW()
     {
         return indirectX_R();
     }
     
 // Indirect Y
     
-    private final int indirectY_R()
+    private int indirectY_R()
     {
         return indirectY(true);
     }
     
-    private final int indirectY_W()
+    private int indirectY_W()
     {
         return indirectY(false);
     }
     
-    private final int indirectY_RMW()
+    private int indirectY_RMW()
     {
         return indirectY_W();
     }
     
-    private final int indirectY(boolean isPageBoundaryCyclePenalty)
+    private int indirectY(boolean isPageBoundaryCyclePenalty)
     {
         int _address = memory.readByte(pc++);
         int _temp = readWordZeroPageWrap(_address);        
@@ -701,25 +699,25 @@ public final class MOS6502
 // Stack
 //-------------------------------------------------------------    
 
-    private final void push(int aByte)
+    private void push(int aByte)
     {
         memory.writeByte(s, aByte);
         s = 0x0100 | (--s & 0xFF);
     }
     
-    private final int pop()
+    private int pop()
     {
         s = 0x0100 | (++s & 0xFF);
         return memory.readByte(s);
     }
     
-    private final void pushWord(int aWord)
+    private void pushWord(int aWord)
     {
         push((aWord >> 8) & 255);
         push(aWord & 255);
     }
     
-    private final int popWord()
+    private int popWord()
     {
         int _byte1 = pop();
         return (pop() << 8) | _byte1;
@@ -729,22 +727,22 @@ public final class MOS6502
 // Utils
 //-------------------------------------------------------------    
     
-    private final int readWord(int anAddress)
+    private int readWord(int anAddress)
     {
         return readWord(anAddress, anAddress + 1);
     }
     
-    private final int readWordZeroPageWrap(int anAddress)
+    private int readWordZeroPageWrap(int anAddress)
     {
         return readWord(anAddress, (anAddress + 1) & 0xFF);
     }
     
-    private final int readWord(int anAddress, int aSecondAddress)
+    private int readWord(int anAddress, int aSecondAddress)
     {
         return memory.readByte(anAddress) | (memory.readByte(aSecondAddress) << 8);
     }
     
-    private final void branchOnCondition(boolean isBranch)
+    private void branchOnCondition(boolean isBranch)
     {        
         int _address = relative();
         if(isBranch)
@@ -764,12 +762,12 @@ public final class MOS6502
         }
     }
     
-    private final void addCycles(int aCycles)
+    private void addCycles(int aCycles)
     {
         cycles += aCycles;
     }
     
-    public final boolean isPageCrossed(int anAddress1, int anAddress) 
+    private boolean isPageCrossed(int anAddress1, int anAddress)
     { 
         return (((anAddress1 ^ anAddress) & 0xFF00) != 0);
     }
@@ -792,14 +790,14 @@ public final class MOS6502
     }
     
     // Equivalent to AND #i then LSR A.
-    private final void opcode_ALR(int anAddress)
+    private void opcode_ALR(int anAddress)
     {
         opcode_AND(anAddress);
         opcode_LSR_accumulator();
     }
  
     // AND followed by Copy N (bit 7) to C.
-    private final void opcode_ANC(int anAddress)
+    private void opcode_ANC(int anAddress)
     {
         opcode_AND(anAddress); 
 
@@ -813,13 +811,13 @@ public final class MOS6502
         setNZFlag(a);
     }
     
-    private final void opcode_ANE(int anAddress)
+    private void opcode_ANE(int anAddress)
     {
         // TODO Don't know what this does and don't have a test case for it besides timing
     }
 
     // AND byte with accumulator, then rotate one bit right in accumulator
-    private final void opcode_ARR(int anAddress)
+    private void opcode_ARR(int anAddress)
     {
         opcode_AND(anAddress);
         opcode_ROR_accumulator();
@@ -859,7 +857,7 @@ public final class MOS6502
     }
  
     // AND byte with accumulator, then transfer accumulator to X register.
-    private final void opcode_ATX(int anAddress)
+    private void opcode_ATX(int anAddress)
     {
         a = 0xFF; // TODO not sure about this, maybe |= value from anAddress? 
         opcode_AND(anAddress);
@@ -867,7 +865,7 @@ public final class MOS6502
     }
     
     // AND X register with accumulator and store result in X register, then subtract byte from X register (without borrow).
-    private final void opcode_AXS(int anAddress)
+    private void opcode_AXS(int anAddress)
     {
         int _value = memory.readByte(anAddress);
         int _temp = (a & x) - _value;
@@ -966,7 +964,7 @@ public final class MOS6502
         if(interruptDisable != 0)
         {
             interruptDisable = 0;
-            delayCLIoperation = true;    
+            delayCLIOperation = true;
         }
     }
 
@@ -1083,7 +1081,7 @@ public final class MOS6502
         pc = anAddress;
     }
 
-    private final void opcode_LAS(int anAddress)
+    private void opcode_LAS(int anAddress)
     {
         // TODO Don't know what this does and don't have a test case for it besides timing
     }
@@ -1192,11 +1190,11 @@ public final class MOS6502
         
         if(_oldInterruptDisable == 0 && interruptDisable == 1)
         {
-            delaySEIoperation = true;
+            delaySEIOperation = true;
         }
         else if(_oldInterruptDisable == 1 && interruptDisable == 0)
         {
-            delayCLIoperation = true;
+            delayCLIOperation = true;
         }
     }
 
@@ -1324,16 +1322,16 @@ public final class MOS6502
         if(interruptDisable != 1)
         {
             interruptDisable = 1;
-            delaySEIoperation = true;    
+            delaySEIOperation = true;
         }
     }
     
-    private final void opcode_SHA(int anAddress)
+    private void opcode_SHA(int anAddress)
     {
         // TODO Don't know what this does and don't have a test case for it besides timing
     }
 
-    private final void opcode_SHS(int anAddress)
+    private void opcode_SHS(int anAddress)
     {
         // TODO Don't know what this does and don't have a test case for it besides timing
     }
@@ -1371,7 +1369,7 @@ public final class MOS6502
     }
 
     // AND X register with the high byte of the target address of the argument + 1.
-    private final void opcode_SXA(int anAddress)
+    private void opcode_SXA(int anAddress)
     {
         int _value = (x & ((anAddress >> 8) + 1)) & 0xFF;
         
@@ -1386,7 +1384,7 @@ public final class MOS6502
     }
     
     // AND Y register with the high byte of the target address of the argument + 1.
-    private final void opcode_SYA(int anAddress)
+    private void opcode_SYA(int anAddress)
     {
         int _result = (y & (((anAddress) >> 8) + 1)) & 0xFF;
         
