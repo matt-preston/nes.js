@@ -41,9 +41,9 @@ public enum InstructionType
         return instructions;
     }
     
-    public static InstructionType getInstructionType(String aMnemomic)
+    public static InstructionType getInstructionType(String aMnemonic)
     {
-        return getInstructionType(Instruction.valueOf(aMnemomic));
+        return getInstructionType(Instruction.valueOf(aMnemonic));
     }
     
     public static InstructionType getInstructionType(Instruction anInstruction)
