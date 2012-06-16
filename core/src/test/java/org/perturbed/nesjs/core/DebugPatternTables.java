@@ -11,7 +11,7 @@ public class DebugPatternTables
     {
         DebugPatternTables _d = new DebugPatternTables();
         
-        _d.debug(TestNestest.class, "nestest.nes");
+        _d.debug(NESTestTest.class, "nestest.nes");
     }
     
     public void debug(Class<?> aClass, String aROMResource) throws IOException
