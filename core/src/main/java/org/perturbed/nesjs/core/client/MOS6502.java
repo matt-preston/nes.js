@@ -19,7 +19,7 @@ public final class MOS6502
     {
         NMI(0xFFFA), RESET(0xFFFC), IRQ(0xFFFE);
         
-        private int vector;
+        private final int vector;
         
         private Interrupt(int aVector)
         {
@@ -42,9 +42,9 @@ public final class MOS6502
     
     private int cycles;
     
-    private Memory memory;
-    private APU apu;
-    private PPU ppu;
+    private final Memory memory;
+    private final APU apu;
+    private final PPU ppu;
 
     public MOS6502(Memory aMemory)
     {
@@ -487,7 +487,7 @@ public final class MOS6502
         assert aBRKValue == 0 || aBRKValue == 1;
         
         int _zero = isZeroFlagSet() ? 1 : 0;
-        return carry << 0 | (_zero << 1) | (interruptDisable << 2) | (decimal << 3) | (aBRKValue << 4) | (1 << 5) | (overflow << 6) | (negative << 7);
+        return carry | (_zero << 1) | (interruptDisable << 2) | (decimal << 3) | (aBRKValue << 4) | (1 << 5) | (overflow << 6) | (negative << 7);
     }
     
 //-------------------------------------------------------------
