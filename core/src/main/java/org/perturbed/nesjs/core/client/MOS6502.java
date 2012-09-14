@@ -56,6 +56,7 @@ public final class MOS6502
         apu.setCPU(this);
         
         ppu = new PPU();
+        ppu.init();
         memory.setPPU(ppu);
         
         a = 0;
