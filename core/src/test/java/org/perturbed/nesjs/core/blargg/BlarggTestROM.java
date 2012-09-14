@@ -20,7 +20,9 @@ public class BlarggTestROM
 		public void testCompletedSuccessfully(String aString);		
 		public void testFailedWithError(String aMessage, int aStatus);
 	}
-	
+
+    private static final int MAX_LOOPS = 200;
+
 	private ROM rom;
 	
     public BlarggTestROM(ROM aROM)
@@ -35,11 +37,13 @@ public class BlarggTestROM
         MOS6502 _6502 = new MOS6502(_memory);
         
         boolean _hasTestResetCPU = false;
-        
+
+        int loops = 0;
+
         do
         {
             _6502.execute(100000);
-            
+
             if(!_hasTestResetCPU && isTestNeedsReset(_memory))
             {
                 _hasTestResetCPU = true;
@@ -52,7 +56,15 @@ public class BlarggTestROM
                 _6502.requestReset();
                 
                 aLogger.println("RESET");
-            }            
+            }
+
+            loops++;
+
+            if(loops > MAX_LOOPS)
+            {
+                aLogger.testFailedWithError("Test timed out, too many cycles without finishing the test.", loops);
+                return;
+            }
         }
         while(!isTestFinished(_memory));
         

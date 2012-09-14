@@ -23,22 +23,17 @@ public class MiscInstructionsTest extends BlarggTestROMTest
         runTestROM("02-branch_wrap.nes");
     }
 
-    /*
-     * Does not work at all yet, creates an infinite loop, needs a working PPU status
     @Test
+    @Ignore("Not implemented dummy reads in CPU yet")
     public void test03DummyReads() throws Exception
     {
         runTestROM("03-dummy_reads.nes");
     }
-    */
     
-    /*
-     * Requires a working APU implementation
-     * 
     @Test
-    public void test03DummyReadsAPU() throws Exception
+    @Ignore("Not implemented dummy reads in APU yet")
+    public void test04DummyReadsAPU() throws Exception
     {
         runTestROM("04-dummy_reads_apu.nes");
     }
-    */
 }
