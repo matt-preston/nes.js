@@ -41,11 +41,20 @@ public class PPU
 	// OAM_ADDR
 	private int objectAttributeMemoryAddress;
 	
-	// PPU registers & counters
-    private int registerVT; // Vertical tile index counter
-    private int registerHT; // Horizontal tile index counter
+	// PPU register latches & counters
+    private int registerVT; // Vertical tile index latch
+    private int registerHT; // Horizontal tile index latch
     private int registerFV; // Fine vertical scroll latch
     private int registerFH; // Fine horizontal scroll latch
+    private int registerV;  // Vertical name table selection latch
+    private int registerH;  // Horizontal name table selection latch
+    private int registerS;  // Background pattern table selection latch
+    private int counterFV;
+    private int counterV;
+    private int counterH;
+    private int counterVT;
+    private int counterHT;
+
     
 	
 	public void init() 
@@ -64,11 +73,20 @@ public class PPU
 			}	    	
 	    };
 	    ppuScrollAndAddressLatch = true;
-	    
-	    registerFH = 0;
-	    registerFV = 0;
-	    registerHT = 0;
-	    registerVT = 0;
+
+        registerVT = 0;
+        registerHT = 0;
+        registerFV = 0;
+        registerFH = 0;
+        registerV  = 0;
+        registerH  = 0;
+        registerS  = 0;
+
+        counterFV = 0;
+        counterV  = 0;
+        counterH  = 0;
+        counterVT = 0;
+        counterHT = 0;
 	}
 	
 
@@ -151,11 +169,35 @@ public class PPU
     	backgroundPatternTableSelection = Bits.getBit(aByte, 4);
     	spriteSize_8_16 = Bits.getBit(aByte, 5);
     	generateNMIAtVBLStart = Bits.getBit(aByte, 7);
+
+        registerH = Bits.getBit(aByte, 0);
+        registerV = Bits.getBit(aByte, 1);
+        registerS = Bits.getBit(aByte, 4);
     }
 
     private void setPPUAddr(int aByte)
     {
-//        System.out.println("Write PPUADDR");
+        if(ppuScrollAndAddressLatch)
+        {
+            registerFV = (aByte >> 4) & 0x3;
+            registerV  = Bits.getBit(aByte, 3);
+            registerH  = Bits.getBit(aByte, 2);
+            registerVT = (registerVT & 7) | ((aByte & 3) << 3); // ??
+        }
+        else
+        {
+            registerVT = (registerVT & 0x18) | ((aByte >> 5) & 0x7); // ??
+            registerHT = aByte & 0x1F;
+
+            // Init counters
+            counterFV = registerFV;
+            counterV  = registerV;
+            counterH  = registerH;
+            counterVT = registerVT;
+            counterHT = registerHT;
+        }
+
+        ppuScrollAndAddressLatch = !ppuScrollAndAddressLatch;
     }
     
     private int getPPUData()
