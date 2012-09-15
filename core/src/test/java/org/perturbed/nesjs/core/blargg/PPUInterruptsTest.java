@@ -12,7 +12,6 @@ public class PPUInterruptsTest extends BlarggTestROMTest
     }
 
     @Test
-    @Ignore("PPU VBL not implemented yet")
     public void test01VBLBasics() throws Exception
     {
         runTestROM("01-vbl_basics.nes");

@@ -20,8 +20,8 @@ class EmptyMemory implements Mem
 
 public class PPU
 {
-    private int currentScanline;
-    private int currentX;
+    private MOS6502 cpu;
+    private int cycles;
 	private Mem objectAttributeMemory;
     private Mem ppuMemory;
     
@@ -69,12 +69,14 @@ public class PPU
     private int counterVT;
     private int counterHT;
 
-    
+    public void setCPU(MOS6502 aCPU)
+    {
+        cpu = aCPU;
+    }
 	
 	public void init() 
 	{
-	    currentScanline = 0;
-	    currentX = 0;
+	    cycles = 0;
 	    objectAttributeMemory = new EmptyMemory();
         ppuMemory = new EmptyMemory();
 	    ppuScrollAndAddressLatch = true;
@@ -93,35 +95,63 @@ public class PPU
         counterVT = 0;
         counterHT = 0;
 	}
-	
 
+
+    /**
+     * 262 scanlines
+     *
+     *   0..19: nothing
+     *      20: dummy
+     * 21..260: render (240 lines)
+     *     261: dummy
+     *
+     * @param aClockCycles
+     */
 	public void clock(final int aClockCycles)
     {
         // PPU runs at 3x the clock rate of the CPU
-		for(int cycles = 0; cycles < aClockCycles * 3; cycles++) 
+		for(int index = 0; index < aClockCycles * 3; index++)
 		{
-			/*
-		    if(hitSprite0())
-		    {
-		    	setHitSprite0StatusFlag();
-		    }
-		    */
-			
-			currentX++;
-		    
+			int scanline = cycles / 341;
+            int pixelOf = cycles % 341;
+
+            if(scanline < 20)
+            {
+                // vertical blank, do nothing
+            }
+            else if(scanline == 20 && pixelOf == 0)
+            {
+                // Start of dummy scanline before 'real' scanlines
+                verticalBlankStarted = 0;
+            }
+            else if(scanline == 261 && pixelOf == 340)
+            {
+                // End of last (dummy) scanline
+                verticalBlankStarted = 1;
+
+                if(generateNMIAtVBLStart == 1)
+                {
+                    cpu.requestNMI();
+                }
+
+                // Start of new frame
+                cycles = -1;
+            }
+
+            cycles++;
 		}
     }
     
     public void writeRegister(final int anAddress, final int aByte)
     {
         assert anAddress > 0x1FFF && anAddress < 0x2008  : "Tried to write to an out of range PPU address";
-        assert anAddress != 0x2002 : "Tried to write to the PPUSTATUS register";
         assert aByte <= 0xFF : "Tried to write a value larger than a byte to a PPU address";
         
         switch(anAddress)
         {
             case 0x2000: setPPUCtrl(aByte); break;
             case 0x2001: setPPUMask(aByte); break;
+            case 0x2002: setPPUStatus(aByte); break;
             case 0x2003: setOAMAddr(aByte); break;
             case 0x2004: setOAMData(aByte); break;
             case 0x2005: setPPUScroll(aByte); break;
@@ -163,6 +193,11 @@ public class PPU
     	ppuScrollAndAddressLatch = true; // reset the latch
     	
         return status;
+    }
+
+    private void setPPUStatus(final int aByte)
+    {
+        // You shouldn't be able to set the PPU status...
     }
 
     private void setPPUCtrl(final int aByte)

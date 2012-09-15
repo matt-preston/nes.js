@@ -56,6 +56,7 @@ public final class MOS6502
         apu.setCPU(this);
         
         ppu = new PPU();
+        ppu.setCPU(this);
         ppu.init();
         memory.setPPU(ppu);
         
@@ -82,13 +83,15 @@ public final class MOS6502
     
     public final void requestIRQ()
     {
-        interruptRequested = Interrupt.IRQ;
+        if(interruptRequested == null)
+        {
+            interruptRequested = Interrupt.IRQ;
+        }
     }
     
     public final void requestNMI()
     {
-        // TODO
-        // interruptRequested = Interrupt.NMI;
+        interruptRequested = Interrupt.NMI;
     }
     
     public final int getRegisterA()
@@ -178,6 +181,17 @@ public final class MOS6502
                     interruptRequested = null;
                     interruptDisable = 1;
                 }
+                else if(interruptRequested == Interrupt.NMI)
+                {
+                    pushWord(pc);
+                    push(getRegisterP(0));
+
+                    pc = readWord(Interrupt.NMI.getVector());
+
+                    interruptRequested = null;
+                    interruptDisable = 1;
+                }
+
             }
             
             delayCLIOperation = false;
