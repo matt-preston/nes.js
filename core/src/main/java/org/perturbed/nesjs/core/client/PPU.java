@@ -6,11 +6,24 @@ interface Mem
 	void writeByte(int anAddress, int aByte);
 }
 
+class EmptyMemory implements Mem
+{
+    public int readByte(int anAddress)
+    {
+        return 0;
+    }
+
+    public void writeByte(int anAddress, int aByte)
+    {
+    }
+}
+
 public class PPU
 {
     private int currentScanline;
     private int currentX;
 	private Mem objectAttributeMemory;
+    private Mem ppuMemory;
     
 	private boolean ppuScrollAndAddressLatch;
     
@@ -40,6 +53,7 @@ public class PPU
 	
 	// OAM_ADDR
 	private int objectAttributeMemoryAddress;
+
 	
 	// PPU register latches & counters
     private int registerVT; // Vertical tile index latch
@@ -61,17 +75,8 @@ public class PPU
 	{
 	    currentScanline = 0;
 	    currentX = 0;
-	    objectAttributeMemory = new Mem()
-	    {
-			public int readByte(int anAddress) 
-			{
-				return 0;
-			}
-
-			public void writeByte(int anAddress, int aByte) 
-			{
-			}	    	
-	    };
+	    objectAttributeMemory = new EmptyMemory();
+        ppuMemory = new EmptyMemory();
 	    ppuScrollAndAddressLatch = true;
 
         registerVT = 0;
@@ -90,7 +95,7 @@ public class PPU
 	}
 	
 
-	public void clock(int aClockCycles)
+	public void clock(final int aClockCycles)
     {
         // PPU runs at 3x the clock rate of the CPU
 		for(int cycles = 0; cycles < aClockCycles * 3; cycles++) 
@@ -107,7 +112,7 @@ public class PPU
 		}
     }
     
-    public void writeRegister(int anAddress, int aByte)
+    public void writeRegister(final int anAddress, final int aByte)
     {
         assert anAddress > 0x1FFF && anAddress < 0x2008  : "Tried to write to an out of range PPU address";
         assert anAddress != 0x2002 : "Tried to write to the PPUSTATUS register";
@@ -125,7 +130,7 @@ public class PPU
         }
     }
 
-    public int readRegister(int anAddress)
+    public int readRegister(final int anAddress)
     {
         assert anAddress > 0x1FFF && anAddress < 0x2008  : "Tried to read from an out of range PPU address";
         assert anAddress == 0x2002 || anAddress == 0x2004 || anAddress == 0x2007 : "Tried to read from an invalid PPU address";
@@ -147,7 +152,7 @@ public class PPU
 
     private int getPPUStatus()
     {
-    	// Bits 0-4 are 'bits previously written to a PPU register'  Does I need to worry about them?
+    	// Bits 0-4 are 'bits previously written to a PPU register'  Do I need to worry about them?
     	int status = 0;
     	
     	status = Bits.setBit(status, spriteOverflow, 5);
@@ -160,22 +165,22 @@ public class PPU
         return status;
     }
 
-    private void setPPUCtrl(int aByte)
+    private void setPPUCtrl(final int aByte)
     {
-    	xScrollNameTableSelection = Bits.getBit(aByte, 0);
-    	yScrollNameTableSelection = Bits.getBit(aByte, 1);
-    	incrementPPUAddressBy_1_32 = Bits.getBit(aByte, 2);
-    	objectPatternTableSelection = Bits.getBit(aByte, 3);
+    	xScrollNameTableSelection       = Bits.getBit(aByte, 0);
+    	yScrollNameTableSelection       = Bits.getBit(aByte, 1);
+    	incrementPPUAddressBy_1_32      = Bits.getBit(aByte, 2);
+    	objectPatternTableSelection     = Bits.getBit(aByte, 3);
     	backgroundPatternTableSelection = Bits.getBit(aByte, 4);
-    	spriteSize_8_16 = Bits.getBit(aByte, 5);
-    	generateNMIAtVBLStart = Bits.getBit(aByte, 7);
+    	spriteSize_8_16                 = Bits.getBit(aByte, 5);
+    	generateNMIAtVBLStart           = Bits.getBit(aByte, 7);
 
         registerH = Bits.getBit(aByte, 0);
         registerV = Bits.getBit(aByte, 1);
         registerS = Bits.getBit(aByte, 4);
     }
 
-    private void setPPUAddr(int aByte)
+    private void setPPUAddr(final int aByte)
     {
         if(ppuScrollAndAddressLatch)
         {
@@ -202,16 +207,23 @@ public class PPU
     
     private int getPPUData()
     {
-//        System.out.println("Read PPUDATA");
-        return 0;
+        final int ppuAddress = getPPUAddressFromCounters();
+        final int value = ppuMemory.readByte(ppuAddress);
+
+        incrementPPUAddressAndSetCounters(ppuAddress);
+
+        return value;
     }
     
-    private void setPPUData(int aByte)
+    private void setPPUData(final int aByte)
     {
-//        System.out.println("Write PUDATA");
+        final int ppuAddress = getPPUAddressFromCounters();
+        ppuMemory.writeByte(ppuAddress, aByte);
+
+        incrementPPUAddressAndSetCounters(ppuAddress);
     }
 
-    private void setPPUScroll(int aByte)
+    private void setPPUScroll(final int aByte)
     {
     	if(ppuScrollAndAddressLatch) 
         {
@@ -229,7 +241,7 @@ public class PPU
         ppuScrollAndAddressLatch = !ppuScrollAndAddressLatch;
     }
 
-    private void setOAMAddr(int aByte)
+    private void setOAMAddr(final int aByte)
     {
         objectAttributeMemoryAddress = aByte;
     }
@@ -239,21 +251,41 @@ public class PPU
     	return objectAttributeMemory.readByte(objectAttributeMemoryAddress);
     }
 
-    private void setOAMData(int aByte)
+    private void setOAMData(final int aByte)
     {
     	objectAttributeMemory.writeByte(objectAttributeMemoryAddress, aByte);
-    	objectAttributeMemoryAddress = (objectAttributeMemoryAddress + 1) & 0xFF;
+
+        // Increment
+        objectAttributeMemoryAddress = (objectAttributeMemoryAddress + 1) & 0xFF; // Should it wrap?
     }
     
-    private void setPPUMask(int aByte)
+    private void setPPUMask(final int aByte)
     {
-    	disableColour = Bits.getBit(aByte, 0);
+    	disableColour            = Bits.getBit(aByte, 0);
         showBackgroundLeftColumn = Bits.getBit(aByte, 1);
-        showObjectsLeftColumn = Bits.getBit(aByte, 2);
-        enableBackgroundDisplay = Bits.getBit(aByte, 3);
-        enableObjectsDisplay = Bits.getBit(aByte, 4);
-        intensifyReds = Bits.getBit(aByte, 5);
-        intensifyGreens = Bits.getBit(aByte, 6);
-        intensifyBlues = Bits.getBit(aByte, 7);
+        showObjectsLeftColumn    = Bits.getBit(aByte, 2);
+        enableBackgroundDisplay  = Bits.getBit(aByte, 3);
+        enableObjectsDisplay     = Bits.getBit(aByte, 4);
+        intensifyReds            = Bits.getBit(aByte, 5);
+        intensifyGreens          = Bits.getBit(aByte, 6);
+        intensifyBlues           = Bits.getBit(aByte, 7);
+    }
+
+    private int getPPUAddressFromCounters()
+    {
+        return 0;  // TODO
+    }
+
+    private void setCountersFromPPUAddress(final int ppuAddress)
+    {
+        // TODO
+    }
+
+    private void incrementPPUAddressAndSetCounters(final int ppuAddress)
+    {
+        final int incrementBy = incrementPPUAddressBy_1_32 == 1 ? 32 : 1;
+        final int newPPUAddress = (ppuAddress + incrementBy) & 0xFFFF;  // Should it wrap?
+
+        setCountersFromPPUAddress(newPPUAddress);
     }
 }
