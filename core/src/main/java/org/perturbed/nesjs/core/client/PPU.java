@@ -273,12 +273,24 @@ public class PPU
 
     private int getPPUAddressFromCounters()
     {
-        return 0;  // TODO
+        int address  = (counterFV & 0x03) << 12;
+        address     |= (counterV  & 0x01) << 11;
+        address     |= (counterH  & 0x01) << 10;
+        address     |= (counterVT & 0x1F) << 5;
+        address     |= (counterHT & 0x1F);
+
+        return address & 0x7FFF; // TODO: why is this wrap needed?
     }
 
     private void setCountersFromPPUAddress(final int ppuAddress)
     {
-        // TODO
+        assert ppuAddress <= 0xFFFF : "Invalid PPU Address";
+
+        counterFV = (ppuAddress >> 12) & 0x03;
+        counterV  = (ppuAddress >> 11) & 0x01;
+        counterH  = (ppuAddress >> 10) & 0x01;
+        counterVT = (ppuAddress >> 5)  & 0x1F;
+        counterHT = ppuAddress & 0x1F;
     }
 
     private void incrementPPUAddressAndSetCounters(final int ppuAddress)
