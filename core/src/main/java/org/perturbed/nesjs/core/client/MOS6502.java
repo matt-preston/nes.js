@@ -42,7 +42,7 @@ public final class MOS6502
     
     private int cycles;
     
-    private final Memory2 memory;
+    private final Memory memory;
     private final APU apu;
     private final PPU ppu;
 

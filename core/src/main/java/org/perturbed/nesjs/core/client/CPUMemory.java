@@ -8,7 +8,7 @@ package org.perturbed.nesjs.core.client;
  *  
  * @author Matt
  */
-public class CPUMemory implements Memory2
+public class CPUMemory implements Memory
 {
     public final int[] lowMem = new int[Constants._2K];
     public final int[] prgMem = new int[Constants._64K];

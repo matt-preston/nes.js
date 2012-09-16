@@ -5,8 +5,8 @@ public class PPU
 {
     private MOS6502 cpu;
     private int cycles;
-	private Memory2 objectAttributeMemory;
-    private Memory2 ppuMemory;
+	private Memory objectAttributeMemory;
+    private Memory ppuMemory;
 
     
 	private boolean ppuScrollAndAddressLatch;
@@ -58,7 +58,7 @@ public class PPU
         cpu = aCPU;
     }
 
-    public void setPPUMemory(final Memory2 memory)
+    public void setPPUMemory(final Memory memory)
     {
         ppuMemory = memory;
     }

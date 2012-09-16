@@ -1,7 +1,7 @@
 package org.perturbed.nesjs.core.client;
 
 
-public class ObjectAttributeMemory implements Memory2
+public class ObjectAttributeMemory implements Memory
 {
     private final int[] bytes = new int[256];
     @Override

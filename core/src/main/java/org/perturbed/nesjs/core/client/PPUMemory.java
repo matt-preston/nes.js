@@ -1,7 +1,7 @@
 package org.perturbed.nesjs.core.client;
 
 // TODO implement mirroring & buffering etc...
-public class PPUMemory implements Memory2
+public class PPUMemory implements Memory
 {
     public final int[] chrMem = new int[Constants._16K];
 
