@@ -42,24 +42,25 @@ public final class MOS6502
     
     private int cycles;
     
-    private final Memory memory;
+    private final Memory2 memory;
     private final APU apu;
     private final PPU ppu;
 
-    public MOS6502(Memory aMemory)
+    public MOS6502(CPUMemory cpuMemory, PPUMemory ppuMemory)
     {
-        memory = aMemory;
-        memory.resetLowMemory();
-        
         apu = new APU();
-        memory.setAPU(apu);
         apu.setCPU(this);
         
         ppu = new PPU();
         ppu.setCPU(this);
+        ppu.setPPUMemory(ppuMemory);
         ppu.init();
-        memory.setPPU(ppu);
-        
+
+        cpuMemory.resetLowMemory();
+        cpuMemory.setAPU(apu);
+        cpuMemory.setPPU(ppu);
+        memory = cpuMemory;
+
         a = 0;
         x = 0;
         y = 0;
@@ -1023,7 +1024,7 @@ public final class MOS6502
         opcode_CMP(anAddress);
     }
 
-    // Decrement Memory
+    // Decrement CPUMemory
     private void opcode_DEC(int anAddress)
     {
         int _value = (memory.readByte(anAddress) - 1) & 0xFF;
@@ -1053,7 +1054,7 @@ public final class MOS6502
         setNZFlag(a);
     }
 
-    // Increment Memory
+    // Increment CPUMemory
     private void opcode_INC(int anAddress)
     {    
         int _value = (memory.readByte(anAddress) + 1) & 0xFF;

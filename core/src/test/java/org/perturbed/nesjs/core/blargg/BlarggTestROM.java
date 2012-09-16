@@ -1,7 +1,8 @@
 package org.perturbed.nesjs.core.blargg;
 
+import org.perturbed.nesjs.core.client.CPUMemory;
 import org.perturbed.nesjs.core.client.MOS6502;
-import org.perturbed.nesjs.core.client.Memory;
+import org.perturbed.nesjs.core.client.PPUMemory;
 import org.perturbed.nesjs.core.client.ROM;
 
 import java.io.IOException;
@@ -30,11 +31,12 @@ public class BlarggTestROM
         rom = aROM;	
     }
     
-    public void runTestToCompletion(TestLogger aLogger) throws IOException
+    public void runTestToCompletion(TestLogger aLogger)
     {
-        Memory _memory = rom.toMemory();
+        CPUMemory _cpuMemory = rom.getCPUMemory();
+        PPUMemory _ppuMemory = rom.getPPUMemory();
         
-        MOS6502 _6502 = new MOS6502(_memory);
+        MOS6502 _6502 = new MOS6502(_cpuMemory, _ppuMemory);
         
         boolean _hasTestResetCPU = false;
 
@@ -44,11 +46,11 @@ public class BlarggTestROM
         {
             _6502.execute(100000);
 
-            if(!_hasTestResetCPU && isTestNeedsReset(_memory))
+            if(!_hasTestResetCPU && isTestNeedsReset(_cpuMemory))
             {
                 _hasTestResetCPU = true;
                 
-                String _message = getNullTerminatedString(_memory, 0x6004);
+                String _message = getNullTerminatedString(_cpuMemory, 0x6004);
                 aLogger.println(_message);
                 
                 // Reset after 100ms, so just spin the CPU for a bit
@@ -66,10 +68,10 @@ public class BlarggTestROM
                 return;
             }
         }
-        while(!isTestFinished(_memory));
+        while(!isTestFinished(_cpuMemory));
         
-        int _statusByte = _memory.readByte(0x6000);
-        String _message = getNullTerminatedString(_memory, 0x6004);
+        int _statusByte = _cpuMemory.readByte(0x6000);
+        String _message = getNullTerminatedString(_cpuMemory, 0x6004);
         
         if(_statusByte == 0)
         {
@@ -85,7 +87,7 @@ public class BlarggTestROM
 // Private methods
 //-----------------------------------   
     
-    private final boolean isTestNeedsReset(Memory aMemory)
+    private final boolean isTestNeedsReset(CPUMemory aMemory)
     {
         if(isTestRunning(aMemory))
         {
@@ -101,7 +103,7 @@ public class BlarggTestROM
         return false;
     }
     
-    private final boolean isTestFinished(Memory aMemory)
+    private final boolean isTestFinished(CPUMemory aMemory)
     {
         if(isTestRunning(aMemory))
         {
@@ -116,14 +118,14 @@ public class BlarggTestROM
         return false;
     }
     
-    private final boolean isTestRunning(Memory aMemory)
+    private final boolean isTestRunning(CPUMemory aMemory)
     {
         return (aMemory.readByte(0x6001) == 0xDE) && 
         	   (aMemory.readByte(0x6002) == 0xB0) && 
         	   (aMemory.readByte(0x6003) == 0x61);
     }
     
-    private String getNullTerminatedString(Memory aMemory, int aStartAddress)
+    private String getNullTerminatedString(CPUMemory aMemory, int aStartAddress)
     {
         StringBuilder _builder = new StringBuilder();
         

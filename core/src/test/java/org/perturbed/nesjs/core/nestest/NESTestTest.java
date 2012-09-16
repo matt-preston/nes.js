@@ -19,9 +19,10 @@ public class NESTestTest
     public void testNESTestROMAndCompareWithLog() throws Exception
     {
         ROM _rom = ResourceROMLoader.loadROMResource(this.getClass(), "/nestest/nestest.nes");
-        Memory _memory = _rom.toMemory();
+        CPUMemory _cpuMemory = _rom.getCPUMemory();
+        PPUMemory _ppuMemory = _rom.getPPUMemory();
     	
-        MOS6502 _6502 = new MOS6502(_memory);
+        MOS6502 _6502 = new MOS6502(_cpuMemory, _ppuMemory);
             
         _6502.setRegisterPC(0xC000);
 
@@ -47,8 +48,8 @@ public class NESTestTest
             _stepCount++;
         }
         
-        int _02h = _memory.readByte(0x02);
-        int _03h = _memory.readByte(0x03);
+        int _02h = _cpuMemory.readByte(0x02);
+        int _03h = _cpuMemory.readByte(0x03);
         
         /**
          * Should both be 0x00 according to docs, must related to now I initialise the memory, as

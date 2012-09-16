@@ -18,7 +18,7 @@ public class PPUInterruptsTest extends BlarggTestROMTest
     }
 
     @Test
-    @Ignore("PPU VBL not implemented yet")
+    //@Ignore("PPU VBL not implemented yet")
     public void test02VBLSetTime() throws Exception
     {
         runTestROM("02-vbl_set_time.nes");

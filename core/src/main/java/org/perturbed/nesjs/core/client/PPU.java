@@ -1,29 +1,13 @@
 package org.perturbed.nesjs.core.client;
 
-interface Mem
-{
-	int readByte(int anAddress);
-	void writeByte(int anAddress, int aByte);
-}
-
-class EmptyMemory implements Mem
-{
-    public int readByte(int anAddress)
-    {
-        return 0;
-    }
-
-    public void writeByte(int anAddress, int aByte)
-    {
-    }
-}
 
 public class PPU
 {
     private MOS6502 cpu;
     private int cycles;
-	private Mem objectAttributeMemory;
-    private Mem ppuMemory;
+	private Memory2 objectAttributeMemory;
+    private Memory2 ppuMemory;
+
     
 	private boolean ppuScrollAndAddressLatch;
     
@@ -69,17 +53,21 @@ public class PPU
     private int counterVT;
     private int counterHT;
 
-    public void setCPU(MOS6502 aCPU)
+    public void setCPU(final MOS6502 aCPU)
     {
         cpu = aCPU;
+    }
+
+    public void setPPUMemory(final Memory2 memory)
+    {
+        ppuMemory = memory;
     }
 	
 	public void init() 
 	{
 	    cycles = 0;
-	    objectAttributeMemory = new EmptyMemory();
-        ppuMemory = new EmptyMemory();
-	    ppuScrollAndAddressLatch = true;
+	    objectAttributeMemory = new ObjectAttributeMemory();
+        ppuScrollAndAddressLatch = true;
 
         registerVT = 0;
         registerHT = 0;

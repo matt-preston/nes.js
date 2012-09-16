@@ -11,14 +11,14 @@ public class DebugPatternTables
     {
         DebugPatternTables _d = new DebugPatternTables();
         
-        _d.debug(NESTestTest.class, "nestest.nes");
+        _d.debug(NESTestTest.class, "/nestest/nestest.nes");
     }
     
     public void debug(Class<?> aClass, String aROMResource) throws IOException
     {
         ROM _rom = ResourceROMLoader.loadROMResource(aClass, aROMResource);
         
-        Memory _memory = _rom.toMemory();
+        PPUMemory _memory = _rom.getPPUMemory();
         
         for(int _tile = 0; _tile < 256; _tile++)
         {
