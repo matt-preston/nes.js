@@ -18,14 +18,12 @@ public class PPUInterruptsTest extends BlarggTestROMTest
     }
 
     @Test
-    //@Ignore("PPU VBL not implemented yet")
     public void test02VBLSetTime() throws Exception
     {
         runTestROM("02-vbl_set_time.nes");
     }
 
     @Test
-    @Ignore("PPU VBL not implemented yet")
     public void test03VBLClearTime() throws Exception
     {
         runTestROM("03-vbl_clear_time.nes");

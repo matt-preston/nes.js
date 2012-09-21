@@ -53,6 +53,8 @@ public class PPU
     private int counterVT;
     private int counterHT;
 
+    private boolean getPPUSTATUSCalled;
+
     public void setCPU(final MOS6502 aCPU)
     {
         cpu = aCPU;
@@ -68,6 +70,7 @@ public class PPU
 	    cycles = 0;
 	    objectAttributeMemory = new ObjectAttributeMemory();
         ppuScrollAndAddressLatch = true;
+        getPPUSTATUSCalled = false;
 
         registerVT = 0;
         registerHT = 0;
@@ -103,7 +106,13 @@ public class PPU
 			int scanline = cycles / 341;
             int pixelOf = cycles % 341;
 
-            if(scanline < 20)
+            // Caution: Reading PPUSTATUS at the exact start of vertical blank will return a 0 in D7
+            // but clear the latch anyway, causing the program to miss frames. See NMI for details.
+            if(scanline == 0 && pixelOf == 0 && !getPPUSTATUSCalled)
+            {
+                verticalBlankStarted = 1;
+            }
+            else if(scanline < 20)
             {
                 // vertical blank, do nothing
             }
@@ -115,8 +124,6 @@ public class PPU
             else if(scanline == 261 && pixelOf == 340)
             {
                 // End of last (dummy) scanline
-                verticalBlankStarted = 1;
-
                 if(generateNMIAtVBLStart == 1)
                 {
                     cpu.requestNMI();
@@ -127,6 +134,7 @@ public class PPU
             }
 
             cycles++;
+            getPPUSTATUSCalled = false;
 		}
     }
     
@@ -170,16 +178,18 @@ public class PPU
 
     private int getPPUStatus()
     {
+        getPPUSTATUSCalled = true;
+
     	// Bits 0-4 are 'bits previously written to a PPU register'  Do I need to worry about them?
     	int status = 0;
-    	
+
     	status = Bits.setBit(status, spriteOverflow, 5);
     	status = Bits.setBit(status, sprite0Hit, 6);
     	status = Bits.setBit(status, verticalBlankStarted, 7);
     	
     	verticalBlankStarted = 0; // cleared by the read
     	ppuScrollAndAddressLatch = true; // reset the latch
-    	
+
         return status;
     }
 
