@@ -100,6 +100,15 @@ public class PPU
      */
 	public void clock(final int aClockCycles)
     {
+        if(cpuClocksUntilNMI > -1)
+        {
+            cpuClocksUntilNMI--;
+            if(cpuClocksUntilNMI == -1)
+            {
+                cpu.requestNMI();
+            }
+        }
+
         // PPU runs at 3x the clock rate of the CPU
 		for(int index = 0; index < aClockCycles * 3; index++)
 		{
@@ -198,9 +207,13 @@ public class PPU
         // You shouldn't be able to set the PPU status...
     }
 
+    private int cpuClocksUntilNMI = -1;
+
     private void setPPUCtrl(final int aByte)
     {
-    	xScrollNameTableSelection       = Bits.getBit(aByte, 0);
+    	boolean wasNMIEnabled = generateNMIAtVBLStart == 1;
+
+        xScrollNameTableSelection       = Bits.getBit(aByte, 0);
     	yScrollNameTableSelection       = Bits.getBit(aByte, 1);
     	incrementPPUAddressBy_1_32      = Bits.getBit(aByte, 2);
     	objectPatternTableSelection     = Bits.getBit(aByte, 3);
@@ -211,6 +224,18 @@ public class PPU
         registerH = Bits.getBit(aByte, 0);
         registerV = Bits.getBit(aByte, 1);
         registerS = Bits.getBit(aByte, 4);
+
+        if(!wasNMIEnabled && generateNMIAtVBLStart == 1)
+        {
+            if(verticalBlankStarted == 1)
+            {
+                cpuClocksUntilNMI = 1;
+            }
+        }
+        else
+        {
+            cpuClocksUntilNMI = -1;
+        }
     }
 
     private void setPPUAddr(final int aByte)

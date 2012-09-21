@@ -30,7 +30,6 @@ public class PPUInterruptsTest extends BlarggTestROMTest
     }
 
     @Test
-    @Ignore("PPU VBL not implemented yet")
     public void test04NMIControl() throws Exception
     {
         runTestROM("04-nmi_control.nes");
