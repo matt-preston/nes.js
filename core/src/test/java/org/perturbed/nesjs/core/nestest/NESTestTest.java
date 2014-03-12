@@ -1,141 +1,141 @@
 package org.perturbed.nesjs.core.nestest;
 
-import static org.perturbed.nesjs.core.client.Utils.*;
-
-import java.io.*;
-import java.util.*;
-
-import junit.framework.ComparisonFailure;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.perturbed.nesjs.core.*;
-import org.perturbed.nesjs.core.client.*;
+import org.perturbed.nesjs.core.ResourceROMLoader;
+import org.perturbed.nesjs.core.client.CPUMemory;
+import org.perturbed.nesjs.core.client.MOS6502;
+import org.perturbed.nesjs.core.client.PPUMemory;
+import org.perturbed.nesjs.core.client.ROM;
+
+import junit.framework.ComparisonFailure;
+
+import static org.perturbed.nesjs.core.client.Utils.toHexString;
 
 
-public class NESTestTest
-{
-    @Test
-    public void testNESTestROMAndCompareWithLog() throws Exception
-    {
-        ROM _rom = ResourceROMLoader.loadROMResource(this.getClass(), "/nestest/nestest.nes");
-        CPUMemory _cpuMemory = _rom.getCPUMemory();
-        PPUMemory _ppuMemory = _rom.getPPUMemory();
-    	
-        MOS6502 _6502 = new MOS6502(_cpuMemory, _ppuMemory);
-            
-        _6502.setRegisterPC(0xC000);
+public class NESTestTest {
 
-        int _cycles = 0;
-        int _stepCount = 1;
-        
-        for (CPUState _state : getExpectedCpuStates())
-        {
-            assertHexEquals("PC not valid at step [" + _stepCount + "]", _state.pc, _6502.getRegisterPC());
-            assertHexEquals("A not valid at step [" + _stepCount + "]", _state.a, _6502.getRegisterA());
-            assertHexEquals("X not valid at step [" + _stepCount + "]", _state.x, _6502.getRegisterX());
-            assertHexEquals("Y not valid at step [" + _stepCount + "]", _state.y, _6502.getRegisterY());
-            assertPEquals("P not valid at step [" + _stepCount + "]", _state.p, _6502.getRegisterP());
-            assertHexEquals("SP not valid at step [" + _stepCount + "]", _state.s, _6502.getRegisterS());
-            
-            _cycles += (_6502.getCycles() * 3); // it's comparing to PPU cycles, where 1 CPU clock = 3 PPU clocks
-            
-            _cycles = _cycles % 341; // Each scanline is 341 PPU cycles long
-            
-            Assert.assertEquals("Cycles not valid at step [" + _stepCount + "]", _state.cycles, _cycles);
-            
-            _6502.step();            
-            _stepCount++;
-        }
-        
-        int _02h = _cpuMemory.readByte(0x02);
-        int _03h = _cpuMemory.readByte(0x03);
-        
-        /**
-         * Should both be 0x00 according to docs, must related to now I initialise the memory, as
-         * I put 0xFF in there and it is never modified. 
-         */
-        Assert.assertEquals(0xFF, _02h); 
-        Assert.assertEquals(0xFF, _03h);        
-    }
-    
-    private void assertHexEquals(String aMessage, int anExpected, int anActual)
-    {
-        if(anExpected != anActual)
-        {
-            throw new ComparisonFailure(aMessage, toHexString(anExpected), toHexString(anActual));
-        }
+  @Test
+  public void testNESTestROMAndCompareWithLog() throws Exception {
+    ROM rom = ResourceROMLoader.loadROMResource(this.getClass(), "/nestest/nestest.nes");
+    CPUMemory cpuMemory = rom.getCPUMemory();
+    PPUMemory ppuMemory = rom.getPPUMemory();
+
+    MOS6502 cpu = new MOS6502(cpuMemory, ppuMemory);
+
+    cpu.setRegisterPC(0xC000);
+
+    int cycles = 0;
+    int stepCount = 1;
+
+    for (CPUState state : getExpectedCpuStates()) {
+      assertHexEquals("PC not valid at step [" + stepCount + "]", state.pc, cpu.getRegisterPC());
+      assertHexEquals("A not valid at step [" + stepCount + "]", state.a, cpu.getRegisterA());
+      assertHexEquals("X not valid at step [" + stepCount + "]", state.x, cpu.getRegisterX());
+      assertHexEquals("Y not valid at step [" + stepCount + "]", state.y, cpu.getRegisterY());
+      assertPEquals("P not valid at step [" + stepCount + "]", state.p, cpu.getRegisterP());
+      assertHexEquals("SP not valid at step [" + stepCount + "]", state.s, cpu.getRegisterS());
+
+      // it's comparing to PPU cycles, where 1 CPU clock = 3 PPU clocks
+      cycles += (cpu.getCycles() * 3);
+
+      // Each scanline is 341 PPU cycles long
+      cycles = cycles % 341;
+
+      Assert.assertEquals("Cycles not valid at step [" + stepCount + "]", state.cycles, cycles);
+
+      cpu.step();
+      stepCount++;
     }
 
-    private void assertPEquals(String aMessage, int anExpected, int anActual)
-    {
-        if(anExpected != anActual)
-        {
-            String _expected = ProcessorStatus.toString(anExpected) + " [" + Integer.toHexString(anExpected) + "]";
-            String _actual   = ProcessorStatus.toString(anActual) + " [" + Integer.toHexString(anActual) + "]";
-            
-            throw new ComparisonFailure(aMessage, _expected, _actual);
-        }
+    int byte1 = cpuMemory.readByte(0x02);
+    int byte2 = cpuMemory.readByte(0x03);
+
+    /**
+     * Should both be 0x00 according to docs, must related to now I initialise the memory, as
+     * I put 0xFF in there and it is never modified.
+     */
+    Assert.assertEquals(0xFF, byte1);
+    Assert.assertEquals(0xFF, byte2);
+  }
+
+  private void assertHexEquals(String message, int expected, int actual) {
+    if (expected != actual) {
+      throw new ComparisonFailure(message, toHexString(expected), toHexString(actual));
     }
-    
-    private List<CPUState> getExpectedCpuStates() throws Exception
-    {
-        InputStream _in = getClass().getResourceAsStream("/nestest/nestest-full.log");
-        Scanner _scanner = new Scanner(_in, "UTF-8");
-        
-        List<CPUState> _states = new ArrayList<CPUState>();
-        
-        while(_scanner.hasNextLine())
-        {
-            int _pc = _scanner.nextInt(16);        
-            int _op = _scanner.nextInt(16);
-            
-            _scanner.skip("[^:]+:");
-            int _a = _scanner.nextInt(16);
-            
-            _scanner.skip("\\s+X:");
-            int _x = _scanner.nextInt(16);
-            
-            _scanner.skip("\\s+Y:");
-            int _y = _scanner.nextInt(16);
-            
-            _scanner.skip("\\s+P:");
-            int _p = _scanner.nextInt(16);
-            
-            _scanner.skip("\\s+SP:");
-            int _s = _scanner.nextInt(16) + 0x0100;
-            
-            _scanner.skip("\\s+CYC:");
-            int _cycles = _scanner.nextInt();
-            
-            _states.add(new CPUState(_pc, _s, _a, _x, _y, _p, _cycles));
-            
-            _scanner.nextLine(); // skip to the end of the line
-        }
-        
-        return _states;
+  }
+
+  private void assertPEquals(String message, int expected, int actual) {
+    if (expected != actual) {
+      String expectedValue =
+          ProcessorStatus.toString(expected) + " [" + Integer.toHexString(expected) + "]";
+      String actualValue =
+          ProcessorStatus.toString(actual) + " [" + Integer.toHexString(actual) + "]";
+
+      throw new ComparisonFailure(message, expectedValue, actualValue);
     }
-    
-    private class CPUState
-    {
-        public int pc;        
-        public int s;
-        
-        public int a;
-        public int x;
-        public int y;
-        public int p;
-        public int cycles;
-        
-        public CPUState(int aPc, int aS, int aA, int aX, int aY, int aP, int aCycles)
-        {
-            pc = aPc;            
-            s = aS;
-            a = aA;
-            x = aX;
-            y = aY;
-            p = aP;
-            cycles = aCycles;
-        }        
+  }
+
+  private List<CPUState> getExpectedCpuStates() throws Exception {
+    InputStream in = getClass().getResourceAsStream("/nestest/nestest-full.log");
+    Scanner scanner = new Scanner(in, "UTF-8");
+
+    List<CPUState> states = new ArrayList<CPUState>();
+
+    while (scanner.hasNextLine()) {
+      int pc = scanner.nextInt(16);
+      int op = scanner.nextInt(16);
+
+      scanner.skip("[^:]+:");
+      int a = scanner.nextInt(16);
+
+      scanner.skip("\\s+X:");
+      int x = scanner.nextInt(16);
+
+      scanner.skip("\\s+Y:");
+      int y = scanner.nextInt(16);
+
+      scanner.skip("\\s+P:");
+      int p = scanner.nextInt(16);
+
+      scanner.skip("\\s+SP:");
+      int s = scanner.nextInt(16) + 0x0100;
+
+      scanner.skip("\\s+CYC:");
+      int cycles = scanner.nextInt();
+
+      states.add(new CPUState(pc, s, a, x, y, p, cycles));
+
+      scanner.nextLine(); // skip to the end of the line
     }
+
+    return states;
+  }
+
+  private class CPUState {
+
+    public int pc;
+    public int s;
+
+    public int a;
+    public int x;
+    public int y;
+    public int p;
+    public int cycles;
+
+    public CPUState(int pc, int s, int a, int x, int y, int p, int cycles) {
+      this.pc = pc;
+      this.s = s;
+      this.a = a;
+      this.x = x;
+      this.y = y;
+      this.p = p;
+      this.cycles = cycles;
+    }
+  }
 }

@@ -1,32 +1,31 @@
 package org.perturbed.nesjs.core;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
-import org.perturbed.nesjs.core.client.*;
+import org.perturbed.nesjs.core.client.ROM;
 
-public class ResourceROMLoader
-{
-    public static ROM loadROMResource(Class<?> aClass, String aResourceName) throws IOException
-    {
-        InputStream _in = aClass.getResourceAsStream(aResourceName);
-        ByteArrayOutputStream _out = new ByteArrayOutputStream();
-        
-        int _next;
-        while((_next = _in.read()) != -1)
-        {
-            _out.write(_next);
-        }
-        
-        _in.close();
-        
-        byte[] _buffer = _out.toByteArray();
-        int[] _bytes = new int[_buffer.length];
-        
-        for(int _index = 0; _index < _buffer.length; _index++)
-        {
-            _bytes[_index] = _buffer[_index] & 0xFF;
-        }
-        
-        return new ROM(_bytes);
+public class ResourceROMLoader {
+
+  public static ROM loadROMResource(Class<?> clazz, String resourceName) throws IOException {
+    InputStream in = clazz.getResourceAsStream(resourceName);
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+    int next;
+    while ((next = in.read()) != -1) {
+      out.write(next);
     }
+
+    in.close();
+
+    byte[] buffer = out.toByteArray();
+    int[] bytes = new int[buffer.length];
+
+    for (int i = 0; i < buffer.length; i++) {
+      bytes[i] = buffer[i] & 0xFF;
+    }
+
+    return new ROM(bytes);
+  }
 }
