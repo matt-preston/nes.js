@@ -63,10 +63,6 @@ public class ROM {
       throw new IOException("Don't know how to handle " + prgROMUnitCount + " PRG ROM units");
     }
 
-    if (chrROMUnitCount != 1) {
-      throw new IOException("Don't know how to handle " + prgROMUnitCount + " CHR ROM units");
-    }
-
     // Load the PRG ROM
     int[][] prgROM = new int[prgROMUnitCount][Constants._16K];
     int offset = 16; // Starts after the 16 byte header - TODO a trainer may be present before the PRG ROM
@@ -77,8 +73,13 @@ public class ROM {
     }
 
     // Load the CHR ROM
-    int[] chrROM = new int[Constants._8K];
-    copyBytes(offset, Constants._8K, bytes, chrROM);
+    int[][] chrROM = new int[chrROMUnitCount][Constants._8K];
+    for(int i = 0; i < chrROMUnitCount; i++){
+
+      copyBytes(offset, Constants._8K, bytes, chrROM[i]);
+      offset += Constants._8K;
+    }
+
 
     cpuMemory = new CPUMemory();
     ppuMemory = new PPUMemory();
@@ -91,7 +92,10 @@ public class ROM {
       loadRomBank(prgROM[0], cpuMemory.prgMem, 0xC000);
     }
 
-    loadRomBank(chrROM, ppuMemory.chrMem, 0x0000);
+    for(int i = 0; i < chrROMUnitCount; i++) {
+      loadRomBank(chrROM[i], ppuMemory.chrMem, 0x0000 + (i * Constants._8K));
+    }
+
   }
 
 

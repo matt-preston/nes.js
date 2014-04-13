@@ -27,11 +27,9 @@ public final class MOS6502 {
 
   private int a, x, y;
   private int s, pc;
-  private int carry, not_zero, interruptDisable, decimal, overflow, negative;
+  private ProcessorStatus p;
 
   private Interrupt interruptRequested;
-  private boolean delayCLIOperation;
-  private boolean delaySEIOperation;
 
   private int cycles;
 
@@ -58,13 +56,10 @@ public final class MOS6502 {
     y = 0;
 
     // flags
-    carry = 0;
-    not_zero = 1;
-    interruptDisable = 1;
-    decimal = 0;
-    overflow = 0;
-    negative = 0;
+    p = new ProcessorStatus();
 
+    // reset
+    p.setInterruptDisableImmediately(1);
     s = 0x01FF - 2;
     pc = readWord(Interrupt.RESET.getVector());
   }
@@ -95,11 +90,8 @@ public final class MOS6502 {
     return y;
   }
 
-  /**
-   * Status Register   7  6  5  4  3  2  1  0 N  V  U  B  D  I  Z  C
-   */
   public final int getRegisterP() {
-    return getRegisterP(0);
+    return p.getRegisterValue();
   }
 
   public final int getRegisterS() {
@@ -126,50 +118,45 @@ public final class MOS6502 {
     int clocksRemain = numberOfCycles;
 
     while (clocksRemain > 0) {
-      // TODO - refactor out of this method
+
       if (interruptRequested != null) {
-        if (interruptRequested == Interrupt.IRQ) {
-          // interruptDisable == 1 means only allow /NMI
-          // TODO this expression is a mess
-          if ((interruptDisable == 0 || delaySEIOperation) && !delayCLIOperation) {
-            pushWord(pc);
-            push(getRegisterP(0));
-
-            pc = readWord(Interrupt.IRQ.getVector());
-          }
-
-          if (!delayCLIOperation) {
-            interruptRequested = null;
-            interruptDisable = 1;
-          }
-        } else if (interruptRequested == Interrupt.RESET) {
+        if (interruptRequested == Interrupt.RESET) {
           pc = readWord(Interrupt.RESET.getVector());
 
           // On reset, pc (2 bytes) and p are pushed onto the stack.  But the values
           // should not actually be written to memory.
           s -= 3;
 
-          interruptRequested = null;
-          interruptDisable = 1;
+          p.setInterruptDisableImmediately(1);
         } else if (interruptRequested == Interrupt.NMI) {
+          addCycles(7);
           pushWord(pc);
-          push(getRegisterP(0));
+          push(p.getRegisterValue());
 
           pc = readWord(Interrupt.NMI.getVector());
+          p.setInterruptDisableImmediately(1);
+        } else {
+          if(p.isInterruptDisable()) {
+            addCycles(7);
+            pushWord(pc);
+            push(p.getRegisterValue());
 
-          interruptRequested = null;
-          interruptDisable = 1;
+            pc = readWord(Interrupt.IRQ.getVector());
+            p.setInterruptDisableImmediately(1);
+          }
         }
 
+        interruptRequested = null;
       }
 
-      delayCLIOperation = false;
-      delaySEIOperation = false;
+      p.clockInterruptDelay();
 
       clocksRemain--;
       cycles = 0;
 
       int opcode = memory.readByte(pc++);
+
+      //System.out.printf("%s %s: %s\n", Utils.toHexString(pc), OpcodeNames.name(opcode), Utils.toBinaryString(p.getRegisterValue()));
 
       switch (opcode) {
         case 0x69:
@@ -1099,39 +1086,6 @@ public final class MOS6502 {
   }
 
 //-------------------------------------------------------------
-// Processor status flags
-//-------------------------------------------------------------     
-
-  private boolean isZeroFlagSet() {
-    return not_zero == 0;
-  }
-
-  private boolean isCarryFlagSet() {
-    return carry > 0;
-  }
-
-  private boolean isNegativeFlagSet() {
-    return negative > 0;
-  }
-
-  private boolean isOverflowFlagSet() {
-    return overflow > 0;
-  }
-
-  private void setNZFlag(int value) {
-    negative = (value >> 7) & 1;
-    not_zero = value & 0xFF;
-  }
-
-  private int getRegisterP(int brkValue) {
-    assert brkValue == 0 || brkValue == 1;
-
-    int zero = isZeroFlagSet() ? 1 : 0;
-    return carry | (zero << 1) | (interruptDisable << 2) | (decimal << 3) | (brkValue << 4) |
-        (1 << 5) | (overflow << 6) | (negative << 7);
-  }
-
-//-------------------------------------------------------------
 // Addressing
 //-------------------------------------------------------------    
 
@@ -1374,13 +1328,13 @@ public final class MOS6502 {
   // Add with Carry
   private void opcode_ADC(int address) {
     int value = memory.readByte(address);
-    int temp = a + value + carry;
+    int temp = a + value + p.getCarry();
 
-    overflow = ((!(((a ^ value) & 0x80) != 0) && (((a ^ temp) & 0x80)) != 0) ? 1 : 0);
+    p.setOverflow(((!(((a ^ value) & 0x80) != 0) && (((a ^ temp) & 0x80)) != 0) ? 1 : 0));
     a = temp & 0xFF;
 
-    carry = temp > 0xFF ? 1 : 0;
-    setNZFlag(temp);
+    p.setCarry(temp > 0xFF ? 1 : 0);
+    p.setNZFlag(temp);
   }
 
   // Equivalent to AND #i then LSR A.
@@ -1393,13 +1347,13 @@ public final class MOS6502 {
   private void opcode_ANC(int address) {
     opcode_AND(address);
 
-    carry = (a >> 7) & 1;
+    p.setCarry((a >> 7) & 1);
   }
 
   // Logical AND
   private void opcode_AND(int address) {
     a &= memory.readByte(address);
-    setNZFlag(a);
+    p.setNZFlag(a);
   }
 
   private void opcode_ANE(int address) {
@@ -1416,42 +1370,42 @@ public final class MOS6502 {
      */
     switch (a & 0x60) {
       case 0x00:
-        carry = 0;
-        overflow = 0;
+        p.setCarry(0);
+        p.setOverflow(0);
         break; // bit 5 and bit 6 clear
       case 0x20:
-        carry = 0;
-        overflow = 1;
+        p.setCarry(0);
+        p.setOverflow(1);
         break; // bit 5 set, bit 6 clear
       case 0x40:
-        carry = 1;
-        overflow = 1;
+        p.setCarry(1);
+        p.setOverflow(1);
         break; // bit 6 set, bit 5 clear
       case 0x60:
-        carry = 1;
-        overflow = 0;
+        p.setCarry(1);
+        p.setOverflow(0);
         break; // bit 5 and bit 6 set
     }
   }
 
   // Arithmetic Shift Left
   private void opcode_ASL_accumulator() {
-    carry = (a >> 7) & 1;
+    p.setCarry((a >> 7) & 1);
     a = (a << 1) & 0xFF;
 
-    setNZFlag(a);
+    p.setNZFlag(a);
   }
 
   // Arithmetic Shift Left
   private void opcode_ASL(int address) {
     int value = memory.readByte(address);
 
-    carry = (value >> 7) & 1;
+    p.setCarry((value >> 7) & 1);
     value = (value << 1) & 0xFF;
 
     memory.writeByte(address, value);
 
-    setNZFlag(value);
+    p.setNZFlag(value);
   }
 
   // AND byte with accumulator, then transfer accumulator to X register.
@@ -1466,51 +1420,51 @@ public final class MOS6502 {
     int value = memory.readByte(address);
     int temp = (a & x) - value;
 
-    carry = temp < 0 ? 0 : 1;
+    p.setCarry(temp < 0 ? 0 : 1);
 
     x = temp & 0xFF;
-    setNZFlag(x);
+    p.setNZFlag(x);
   }
 
   // Branch if Carry Clear
   private void opcode_BCC_relative() {
-    branchOnCondition(!isCarryFlagSet());
+    branchOnCondition(!p.isCarryFlagSet());
   }
 
   // Branch if Carry Set
   private void opcode_BCS_relative() {
-    branchOnCondition(isCarryFlagSet());
+    branchOnCondition(p.isCarryFlagSet());
   }
 
   // Branch if Equal
   private void opcode_BEQ_relative() {
-    branchOnCondition(isZeroFlagSet());
+    branchOnCondition(p.isZeroFlagSet());
   }
 
   // Bit Test
   private void opcode_BIT(int address) {
     int value = memory.readByte(address);
 
-    negative = (value >> 7) & 1;
-    overflow = (value >> 6) & 1;
+    p.setNegative((value >> 7) & 1);
+    p.setOverflow((value >> 6) & 1);
     value &= a;
 
-    not_zero = value;
+    p.setNotZero(value);
   }
 
   // Branch if Minus
   private void opcode_BMI_relative() {
-    branchOnCondition(isNegativeFlagSet());
+    branchOnCondition(p.isNegativeFlagSet());
   }
 
   // Branch if Not Equal
   private void opcode_BNE_relative() {
-    branchOnCondition(!isZeroFlagSet());
+    branchOnCondition(!p.isZeroFlagSet());
   }
 
   // Branch if Positive
   private void opcode_BPL_relative() {
-    branchOnCondition(!isNegativeFlagSet());
+    branchOnCondition(!p.isNegativeFlagSet());
   }
 
   // Force Interrupt
@@ -1518,65 +1472,64 @@ public final class MOS6502 {
     pushWord(pc + 1);
 
     opcode_PHP_implied();
-    opcode_SEI_implied();
+
+    p.setInterruptDisableImmediately(1);
+
     opcode_JMP(readWord(Interrupt.IRQ.getVector()));
   }
 
   // Branch if Overflow Clear
   private void opcode_BVC_relative() {
-    branchOnCondition(!isOverflowFlagSet());
+    branchOnCondition(!p.isOverflowFlagSet());
   }
 
   // Branch if Overflow Set
   private void opcode_BVS_relative() {
-    branchOnCondition(isOverflowFlagSet());
+    branchOnCondition(p.isOverflowFlagSet());
   }
 
   // Clear Carry Flag
   private void opcode_CLC_implied() {
-    carry = 0;
+    p.setCarry(0);
   }
 
   // Clear Decimal Mode
   private void opcode_CLD_implied() {
-    decimal = 0;
+    p.setDecimal(0);
   }
 
   // Clear Interrupt Disable
   private void opcode_CLI_implied() {
-    if (interruptDisable != 0) {
-      interruptDisable = 0;
-      delayCLIOperation = true;
-    }
+    p.setInterruptDisableWithDelay(0);
   }
 
   // Clear Overflow Flag
   private void opcode_CLV_implied() {
-    overflow = 0;
+    p.setOverflow(0);
   }
 
   // Compare
   private void opcode_CMP(int address) {
     int temp = a - memory.readByte(address);
 
-    carry = (temp >= 0 ? 1 : 0);
-    setNZFlag(temp);
+    p.setCarry((temp >= 0 ? 1 : 0));
+    p.setNZFlag(temp);
   }
 
   // Compare X Register
   private void opcode_CPX(int address) {
     int temp = x - memory.readByte(address);
 
-    carry = (temp >= 0 ? 1 : 0);
-    setNZFlag(temp);
+    p.setCarry((temp >= 0 ? 1 : 0));
+    p.setNZFlag(temp);
   }
 
   // Compare Y Register
   private void opcode_CPY(int address) {
     int temp = y - memory.readByte(address);
 
-    carry = (temp >= 0 ? 1 : 0);
-    setNZFlag(temp);
+    p.setCarry((temp >= 0 ? 1 : 0));
+    p.setNZFlag(temp);
   }
 
   // DEC value then CMP value
@@ -1590,25 +1543,25 @@ public final class MOS6502 {
     int value = (memory.readByte(address) - 1) & 0xFF;
     memory.writeByte(address, value);
 
-    setNZFlag(value);
+    p.setNZFlag(value);
   }
 
   // Decrement X Register
   private void opcode_DEX_implied() {
     x = (x - 1) & 0xFF;
-    setNZFlag(x);
+    p.setNZFlag(x);
   }
 
   // Decrement Y Register
   private void opcode_DEY_implied() {
     y = (y - 1) & 0xFF;
-    setNZFlag(y);
+    p.setNZFlag(y);
   }
 
   // Exclusive OR
   private void opcode_EOR(int address) {
     a ^= memory.readByte(address);
-    setNZFlag(a);
+    p.setNZFlag(a);
   }
 
   // Increment CPUMemory
@@ -1616,19 +1569,19 @@ public final class MOS6502 {
     int value = (memory.readByte(address) + 1) & 0xFF;
     memory.writeByte(address, value);
 
-    setNZFlag(value);
+    p.setNZFlag(value);
   }
 
   // Increment X Register
   private void opcode_INX_implied() {
     x = (x + 1) & 0xFF;
-    setNZFlag(x);
+    p.setNZFlag(x);
   }
 
   // Increment Y Register
   private void opcode_INY_implied() {
     y = (y + 1) & 0xFF;
-    setNZFlag(y);
+    p.setNZFlag(y);
   }
 
   // INC value then SBC value
@@ -1661,41 +1614,41 @@ public final class MOS6502 {
   // Load Accumulator
   private void opcode_LDA(int address) {
     a = memory.readByte(address);
-    setNZFlag(a);
+    p.setNZFlag(a);
   }
 
   // Load X with memory
   private void opcode_LDX(int address) {
     x = memory.readByte(address);
-    setNZFlag(x);
+    p.setNZFlag(x);
   }
 
   // Load Y Register
   private void opcode_LDY(int address) {
     y = memory.readByte(address);
-    setNZFlag(y);
+    p.setNZFlag(y);
   }
 
   // Logical Shift Right
   private void opcode_LSR_accumulator() {
-    carry = a & 1; // old bit 0
+    p.setCarry(a & 1); // old bit 0
     a >>= 1;
 
-    not_zero = a;
-    negative = 0;
+    p.setNotZero(a);
+    p.setNegative(0);
   }
 
   // Logical Shift Right
   private void opcode_LSR(int address) {
     int value = memory.readByte(address);
 
-    carry = value & 1; // old bit 0
+    p.setCarry(value & 1); // old bit 0
     value >>= 1;
 
     memory.writeByte(address, value);
 
-    not_zero = value;
-    negative = 0;
+    p.setNotZero(value);
+    p.setNegative(0);
   }
 
   // No operation
@@ -1709,7 +1662,7 @@ public final class MOS6502 {
   // Logical Inclusive OR
   private void opcode_ORA(int address) {
     a |= memory.readByte(address);
-    setNZFlag(a);
+    p.setNZFlag(a);
   }
 
   // Push Accumulator
@@ -1719,33 +1672,25 @@ public final class MOS6502 {
 
   // Push Processor Status
   private void opcode_PHP_implied() {
-    push(getRegisterP(1));
+    push(p.getRegisterValue(1));
   }
 
   // Pull Accumulator
   private void opcode_PLA_implied() {
     a = pop();
-    setNZFlag(a);
+    p.setNZFlag(a);
   }
 
   // Pull Processor Status
   private void opcode_PLP_implied() {
-    int oldInterruptDisable = interruptDisable;
-
     int temp = pop();
 
-    carry = (temp) & 1;
-    not_zero = ((temp >> 1) & 1) == 1 ? 0 : 1;
-    interruptDisable = (temp >> 2) & 1;
-    decimal = (temp >> 3) & 1;
-    overflow = (temp >> 6) & 1;
-    negative = (temp >> 7) & 1;
-
-    if (oldInterruptDisable == 0 && interruptDisable == 1) {
-      delaySEIOperation = true;
-    } else if (oldInterruptDisable == 1 && interruptDisable == 0) {
-      delayCLIOperation = true;
-    }
+    p.setCarry((temp) & 1);
+    p.setNotZero(((temp >> 1) & 1) == 1 ? 0 : 1);
+    p.setInterruptDisableWithDelay((temp >> 2) & 1);
+    p.setDecimal((temp >> 3) & 1);
+    p.setOverflow((temp >> 6) & 1);
+    p.setNegative((temp >> 7) & 1);
   }
 
   // ROL value then AND value
@@ -1756,49 +1701,49 @@ public final class MOS6502 {
 
   // Rotate Left
   private void opcode_ROL_accumulator() {
-    int add = carry;
+    int add = p.getCarry();
 
-    carry = (a >> 7) & 1;
+    p.setCarry((a >> 7) & 1);
 
     a = ((a << 1) & 0xFF) + add;
 
-    setNZFlag(a);
+    p.setNZFlag(a);
   }
 
   // Rotate Left
   private void opcode_ROL(int address) {
     int value = memory.readByte(address);
-    int add = carry;
+    int add = p.getCarry();
 
-    carry = (value >> 7) & 1;
+    p.setCarry((value >> 7) & 1);
     value = ((value << 1) & 0xFF) + add;
 
     memory.writeByte(address, value);
 
-    setNZFlag(value);
+    p.setNZFlag(value);
   }
 
   // Rotate Right
   private void opcode_ROR_accumulator() {
-    int add = carry << 7;
+    int add = p.getCarry() << 7;
 
-    carry = a & 1;
+    p.setCarry(a & 1);
     a = (a >> 1) + add;
 
-    setNZFlag(a);
+    p.setNZFlag(a);
   }
 
   // Rotate Right
   private void opcode_ROR(int address) {
     int value = memory.readByte(address);
-    int add = carry << 7;
+    int add = p.getCarry() << 7;
 
-    carry = value & 1;
+    p.setCarry(value & 1);
     value = (value >> 1) + add;
 
     memory.writeByte(address, value);
 
-    setNZFlag(value);
+    p.setNZFlag(value);
   }
 
   // ROR value then ADC value
@@ -1811,12 +1756,12 @@ public final class MOS6502 {
   private void opcode_RTI_implied() {
     int temp = pop();
 
-    carry = (temp) & 1;
-    not_zero = ((temp >> 1) & 1) == 1 ? 0 : 1;
-    interruptDisable = (temp >> 2) & 1;
-    decimal = (temp >> 3) & 1;
-    overflow = (temp >> 6) & 1;
-    negative = (temp >> 7) & 1;
+    p.setCarry((temp) & 1);
+    p.setNotZero(((temp >> 1) & 1) == 1 ? 0 : 1);
+    p.setInterruptDisableImmediately((temp >> 2) & 1);
+    p.setDecimal((temp >> 3) & 1);
+    p.setOverflow((temp >> 6) & 1);
+    p.setNegative((temp >> 7) & 1);
 
     pc = popWord();
   }
@@ -1834,32 +1779,29 @@ public final class MOS6502 {
   // Subtract with Carry
   private void opcode_SBC(int address) {
     int value = memory.readByte(address);
-    int temp = a - value - (1 - carry);
+    int temp = a - value - (1 - p.getCarry());
 
-    carry = temp < 0 ? 0 : 1;
-    overflow = ((((a ^ temp) & 0x80) != 0 && ((a ^ value) & 0x80) != 0) ? 1 : 0);
+    p.setCarry(temp < 0 ? 0 : 1);
+    p.setOverflow(((((a ^ temp) & 0x80) != 0 && ((a ^ value) & 0x80) != 0) ? 1 : 0));
 
-    setNZFlag(temp);
+    p.setNZFlag(temp);
 
     a = temp & 0xFF;
   }
 
   // Set the carry flag
   private void opcode_SEC_implied() {
-    carry = 1;
+    p.setCarry(1);
   }
 
   // Set Decimal Flag
   private void opcode_SED_implied() {
-    decimal = 1;
+    p.setDecimal(1);
   }
 
   // Set Interrupt Disable
   private void opcode_SEI_implied() {
-    if (interruptDisable != 1) {
-      interruptDisable = 1;
-      delaySEIOperation = true;
-    }
+    p.setInterruptDisableWithDelay(1);
   }
 
   private void opcode_SHA(int address) {
@@ -1926,25 +1868,25 @@ public final class MOS6502 {
   // Transfer Accumulator to X
   private void opcode_TAX_implied() {
     x = a;
-    setNZFlag(x);
+    p.setNZFlag(x);
   }
 
   // Transfer Accumulator to Y
   private void opcode_TAY_implied() {
     y = a;
-    setNZFlag(y);
+    p.setNZFlag(y);
   }
 
   // Transfer Stack Pointer to X
   private void opcode_TSX_implied() {
     x = s & 0xFF; // Only transfer the lower 8 bits
-    setNZFlag(x);
+    p.setNZFlag(x);
   }
 
   // Transfer X to Accumulator
   private void opcode_TXA_implied() {
     a = x;
-    setNZFlag(a);
+    p.setNZFlag(a);
   }
 
   // Transfer X to Stack Pointer
@@ -1955,6 +1897,6 @@ public final class MOS6502 {
   // Transfer Y to Accumulator
   private void opcode_TYA_implied() {
     a = y;
-    setNZFlag(a);
+    p.setNZFlag(a);
   }
 }

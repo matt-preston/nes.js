@@ -16,19 +16,19 @@ public class InterruptsTest extends BlarggTestROMTest {
   }
 
   @Test
-  @Ignore("Not implemented NMI yet")
+  @Ignore("Doesn't work yet, not sure why")
   public void test02NmiAndBrk() throws Exception {
     runTestROM("2-nmi_and_brk.nes");
   }
 
   @Test
-  @Ignore("Not implemented NMI yet")
+  @Ignore("Doesn't work yet, not sure why")
   public void test03NmiAndIrq() throws Exception {
     runTestROM("3-nmi_and_irq.nes");
   }
 
   @Test
-  @Ignore("Not implemented DMA yet")
+  @Ignore("Doesn't work yet, not sure why")
   public void test04IrqAndDma() throws Exception {
     runTestROM("4-irq_and_dma.nes");
   }
