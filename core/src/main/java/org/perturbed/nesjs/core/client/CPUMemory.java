@@ -37,7 +37,7 @@ public class CPUMemory implements Memory {
 
 
   public final int readByte(int address) {
-    assert address >= 0 && address <= 0xFFFF : "Tried to read an out of range address";
+    assert address >= 0 && address <= 0xFFFF : "Tried to read an out of range address: " + Utils.toHexString(address);
 
     // Mask to 16 bit
     address = address & 0xFFFF;
@@ -56,9 +56,11 @@ public class CPUMemory implements Memory {
       return ppu.readRegister(0x2000 + (address & 0x7));
     } else {
       // Must be between 0x4000 and 0x4018, but the only readable register is 0x4015
-      assert address == 0x4015;
-
-      return apu.getStatusRegister();
+      if(address == 0x4015) {
+        return apu.getStatusRegister();
+      } else {
+        return 0x40;
+      }
     }
   }
 

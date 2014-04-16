@@ -1086,14 +1086,16 @@ public final class MOS6502 {
   }
 
 //-------------------------------------------------------------
-// Addressing
+// Addressing modes
 //-------------------------------------------------------------    
+
+// Immediate addressing
 
   private int immediate_R() {
     return pc++;
   }
 
-// Zero page
+// Zero page addressing
 
   private int zeroPage_R() {
     return memory.readByte(pc++);
@@ -1107,7 +1109,7 @@ public final class MOS6502 {
     return zeroPage_R();
   }
 
-// Zero page X
+// Zero page indexed addressing
 
   private int zeroPageX_R() {
     return zeroPageIndexed(x);
@@ -1121,8 +1123,6 @@ public final class MOS6502 {
     return zeroPageX_R();
   }
 
-// Zero page Y    
-
   private int zeroPageY_R() {
     return zeroPageIndexed(y);
   }
@@ -1131,19 +1131,17 @@ public final class MOS6502 {
     return zeroPageY_R();
   }
 
-// Zero page Indexed helper    
-
   private int zeroPageIndexed(int register) {
     return (memory.readByte(pc++) + register) & 0xFF;
   }
 
-// Relative    
+// Relative addressing
 
   private int relative() {
     return pc++;
   }
 
-// Absolute    
+// Absolute addressing
 
   private int absolute_R() {
     int result = readWord(pc);
@@ -1159,49 +1157,60 @@ public final class MOS6502 {
     return absolute_R();
   }
 
-// Absolute X
+// Absolute indexed addressing
 
   private int absoluteX_R() {
-    return absoluteIndexed(x, true);
+    return absoluteIndexed_R(x);
   }
 
   private int absoluteX_W() {
-    return absoluteIndexed(x, false);
+    return absoluteIndexed_W(x);
   }
 
   private int absoluteX_RMW() {
-    return absoluteX_W();
+    return absoluteIndexed_RMW(x);
   }
 
-// Absolute Y  
-
   private int absoluteY_R() {
-    return absoluteIndexed(y, true);
+    return absoluteIndexed_R(y);
   }
 
   private int absoluteY_W() {
-    return absoluteIndexed(y, false);
+    return absoluteIndexed_W(y);
   }
 
   private int absoluteY_RMW() {
-    return absoluteY_W();
+    return absoluteIndexed_RMW(y);
   }
 
-// Absolute indexed helper    
+  private int absoluteIndexed_R(int register) {
+    final int address = readWord(pc);
+    final int result = (address + register) & 0xFFFF;
 
-  private int absoluteIndexed(int register, boolean pageBoundaryCyclePenalty) {
-    int temp = readWord(pc);
-    int result = temp + register;
-
-    if (pageBoundaryCyclePenalty && isPageCrossed(temp, result)) {
+    if(isPageCrossed(address, result)) {
+      memory.readByte((address & 0xFF00) | (result & 0xFF)); // Dummy read
       addCycles(1);
     }
 
     pc += 2;
-    return result & 0xFFFF;
+    return result;
   }
 
-// Indirect    
+  private int absoluteIndexed_W(int register) {
+    final int address = readWord(pc);
+    final int result = (address + register) & 0xFFFF;
+
+    memory.readByte((address & 0xFF00) | (result & 0xFF)); // Dummy read
+
+    pc += 2;
+    return result;
+  }
+
+  private int absoluteIndexed_RMW(int register) {
+    return absoluteIndexed_W(register);
+  }
+
+// Absolute indirect addressing
 
   private int indirect() {
     int address = readWord(pc++);
@@ -1215,7 +1224,7 @@ public final class MOS6502 {
     }
   }
 
-// Indirect X
+// Indexed indirect addressing
 
   private int indirectX_R() {
     int address = (memory.readByte(pc++) + x) & 0xFF;
@@ -1230,30 +1239,30 @@ public final class MOS6502 {
     return indirectX_R();
   }
 
-// Indirect Y
+// Indirect indexed addressing
 
   private int indirectY_R() {
-    return indirectY(true);
+    final int address = readWordZeroPageWrap(memory.readByte(pc++));
+    final int result = (address + y) & 0xFFFF;
+
+    if(isPageCrossed(address, result)) {
+      memory.readByte((address & 0xFF00) | (result & 0xFF)); // Dummy read
+      addCycles(1);
+    }
+
+    return result;
   }
 
   private int indirectY_W() {
-    return indirectY(false);
+    final int address = readWordZeroPageWrap(memory.readByte(pc++));
+    final int result = (address + y) & 0xFFFF;
+
+    memory.readByte((address & 0xFF00) | (result & 0xFF)); // Dummy read
+    return result;
   }
 
   private int indirectY_RMW() {
     return indirectY_W();
-  }
-
-  private int indirectY(boolean isPageBoundaryCyclePenalty) {
-    int address = memory.readByte(pc++);
-    int temp = readWordZeroPageWrap(address);
-    int result = temp + y;
-
-    if (isPageBoundaryCyclePenalty && isPageCrossed(temp, result)) {
-      addCycles(1);
-    }
-
-    return result & 0xFFFF;
   }
 
 //-------------------------------------------------------------
