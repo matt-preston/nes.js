@@ -18,7 +18,7 @@ public class BlarggTestROM {
     void testFailedWithError(String message, int status);
   }
 
-  private static final int MAX_LOOPS = 200;
+  private static final int MAX_LOOPS = 2000;
 
   private final ROM rom;
 

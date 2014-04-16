@@ -31,15 +31,13 @@ public abstract class BlarggTestROMTest {
       @Override
       public void testFailedWithError(String message, int status) {
         System.out.println(message);
-
         Assert.fail("Test failure, invalid status code [" + Utils.toHexString(status) + "]");
       }
 
       @Override
       public void testCompletedSuccessfully(String string) {
         System.out.println(string);
-
-        Assert.assertTrue(string.contains("Passed"));
+        Assert.assertTrue(string.toLowerCase().contains("passed"));
       }
     });
   }

@@ -52,15 +52,8 @@ public class ROM {
 
     int mapperType = (header[6] >> 4) | (header[7] & 0xF0);
 
-    if (mapperType != 0) {
+    if (mapperType > 1) {
       throw new IOException("Can't handle mapper type [" + mapperType + "] ROMs");
-    }
-
-    /**
-     * Mapper 000 should only have 1 or 2 banks
-     */
-    if (prgROMUnitCount > 2) {
-      throw new IOException("Don't know how to handle " + prgROMUnitCount + " PRG ROM units");
     }
 
     // Load the PRG ROM
@@ -80,7 +73,6 @@ public class ROM {
       offset += Constants._8K;
     }
 
-
     cpuMemory = new CPUMemory();
     ppuMemory = new PPUMemory();
 
@@ -95,7 +87,6 @@ public class ROM {
     for(int i = 0; i < chrROMUnitCount; i++) {
       loadRomBank(chrROM[i], ppuMemory.chrMem, 0x0000 + (i * Constants._8K));
     }
-
   }
 
 
